@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Exit, Header, Item, Title, Wrapper } from './style';
+import { Container, Item, Title, } from './style';
 import { NavLink } from "react-router-dom"
 import { sidebarObj as sidebar } from '../../utils/sidebar';
 // import { ReactComponent as Logout } from "../../assets/icon/log-out.svg"
@@ -13,7 +13,7 @@ const Sidebar = () => {
                     return {
                         color: isActive ? 'blue' : '#black',
                         textDecoration: "none",
-                        backgroundColor: isActive ? "#dee2e6" : "#e9ecef",
+                        backgroundColor: isActive ? "rgba(235,235,235,1)" : "#f5f3f4",
                         display: 'flex',
                         flexDirection: 'row',
                         alignItems: "center",

@@ -1,4 +1,5 @@
 import Generic from "../pages/generic"
+import MyDay from "../components/myday"
 
 import { ReactComponent as Sun } from "../assets/icons/sun.svg"
 import { ReactComponent as Star } from "../assets/icons/star.svg"
@@ -14,7 +15,7 @@ export const sidebarObj = [
         id: 1,
         title: "My Day",
         icon: Sun,
-        Component: Generic,
+        Component: MyDay,
         path: "myDay"
     },
     {

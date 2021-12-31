@@ -7,14 +7,14 @@ width:300px;
 height:100vh;
 min-height: 800px;
 background-color:#f5f3f4;
-padding-top:100px;
+padding-top:80px;
 
 `
 export const Item = styled.div`
 display:flex;
 color:black;
-:nth-child(2n){
-    margin-top:20px;
+&:nth-child(3){
+color:red;
 }
 `
 
