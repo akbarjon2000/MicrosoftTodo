@@ -1,8 +1,9 @@
 {
     "version": 3,
-    "mappings": "AAAA,MAAM",
+    "mappings": "AAEA,AAAA,EAAE,CAAC;EACD,SAAS,ECHH,IAAI;CDIX",
     "sources": [
-        "sidebar.scss"
+        "sidebar.scss",
+        "../variables/variables.sass"
     ],
     "names": [],
     "file": "sidebar.css"

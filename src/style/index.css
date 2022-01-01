@@ -10,3 +10,21 @@ html body {
 body {
   overflow: hidden !important;
 }
+.display__row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.listTitle {
+  color: #34373d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 2rem;
+  font-weight: 600;
+  padding: 6px 8px;
+}
+.icon {
+  width: 24px;
+}
