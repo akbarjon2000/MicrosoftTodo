@@ -12,6 +12,9 @@ flex-direction:column;
     background-size: 100% 53px;
     box-shadow: inset 0 1px 0 0 #e5e5e5;
 }
-
+.nav{
+    display:flex;
+    align-items:center;
+}
 
 `

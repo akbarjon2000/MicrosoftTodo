@@ -10,5 +10,5 @@ const MyDay = () => {
         </Container>
     )
 }
-//hello world
+
 export default MyDay;

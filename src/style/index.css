@@ -3,6 +3,7 @@
   margin: 0;
   box-sizing: border-box;
   user-select: none;
+  color: #34373d !important;
 }
 html body {
   font-family: "Segoe", "Segoe UI", "Arial", "sans-serif";
@@ -24,7 +25,10 @@ body {
   font-size: 2rem;
   font-weight: 600;
   padding: 6px 8px;
+  line-height: normal;
 }
 .icon {
   width: 24px;
+  margin: 0;
+  padding: 0;
 }
