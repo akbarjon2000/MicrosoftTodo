@@ -1,13 +1,22 @@
-import React from 'react'
-import { Container, Item, Title, } from './style';
+import React, { useContext } from 'react'
 import { NavLink } from "react-router-dom"
+//FILES
+import { Container, Item, Title, } from './style';
 import { sidebarObj as sidebar } from '../../utils/sidebar';
-// import { ReactComponent as Logout } from "../../assets/icon/log-out.svg"
-// import { ReactComponent as Bitmap } from "../../assets/icon/Bitmap.svg"
-const Sidebar = () => {
+//ICONS
+import { IoMenuOutline } from "react-icons/io5"
+//CONTEXT:
+import { MenuContext } from '../../context/menubarContext';
 
+
+
+const Sidebar = () => {
+    const [hide, setHide] = useContext(MenuContext);
     return (
-        <Container>
+        <Container hide={hide}>
+            <button className='menuIcon' onClick={() => setHide(true)}>
+                <IoMenuOutline size={20} className='icon' />
+            </button>
             {sidebar.map(({ id, title, path, icon: Icon }) => (
                 <NavLink to={path} key={id} style={({ isActive }) => {
                     return {
@@ -21,7 +30,7 @@ const Sidebar = () => {
                         width: '100%',
                         padding: "0 20px"
                     }
-                }}><Item><Icon /><Title>{title}</Title> </Item>
+                }}><Item><Icon className="icon" /><Title>{title}</Title> </Item>
                 </NavLink>
             ))}
 

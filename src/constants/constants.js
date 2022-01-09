@@ -9,3 +9,8 @@ export const Colors = {
 
 
 }
+
+
+export const STYLING_CONFIGS = {
+    root_size: 16
+}

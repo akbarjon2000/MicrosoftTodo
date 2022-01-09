@@ -5,7 +5,10 @@ import { Container } from './style';
 const MyDay = () => {
     return (
         <Container>
-            <Navbar />
+            <div style={{ position: "relative" }}>
+
+                <Navbar />
+            </div>
             <div className='underlines'></div>
         </Container>
     )

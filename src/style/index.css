@@ -3,31 +3,24 @@
   margin: 0;
   box-sizing: border-box;
   user-select: none;
-  color: #34373d !important;
+  /* color: #34373d; */
 }
 html body {
   font-family: "Segoe", "Segoe UI", "Arial", "sans-serif";
 }
-body {
-  overflow: hidden !important;
-}
-.display__row {
+
+.center {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
 }
-.listTitle {
-  color: #34373d;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 2rem;
-  font-weight: 600;
-  padding: 6px 8px;
-  line-height: normal;
+.align__center {
+  display: flex;
+  align-items: center;
 }
 .icon {
+  color: #767678;
   width: 24px;
   margin: 0;
   padding: 0;
