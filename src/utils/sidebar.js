@@ -9,8 +9,8 @@ import { VscHome } from "react-icons/vsc"
 // import { ReactComponent as Calendar } from "../assets/icons/calendar.svg"
 // import { ReactComponent as User } from "../assets/icons/user.svg"
 // import { ReactComponent as Home } from "../assets/icons/home.svg"
-import { ReactComponent as Cart } from "../assets/icons/cart4.svg"
-import { ReactComponent as Hand } from "../assets/icons/hand.svg"
+// import { ReactComponent as Cart } from "../assets/icons/cart4.svg"
+// import { ReactComponent as Hand } from "../assets/icons/hand.svg"
 
 
 export const sidebarObj = [
