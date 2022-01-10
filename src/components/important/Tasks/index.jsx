@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Container } from './TaskStyle'
 import { nanoid } from "nanoid"
 //ICONS
 import { AiOutlineCheckCircle } from "react-icons/ai"
 import { BsCircle } from "react-icons/bs"
 import { IoStarOutline } from "react-icons/io5"
-// import { MyTaskContext } from '../../../context/tasksContext'
+import { MyTaskContext } from '../../../context/tasksContext'
 
 //CONTEXT
 

@@ -1,6 +1,9 @@
+//COMPONENTS
 import Generic from "../pages/generic"
 import MyDay from "../components/myday"
+import Important from "../components/important"
 
+//ICONS
 import { BsSun } from "react-icons/bs"
 import { IoStarOutline, IoCalendarOutline } from "react-icons/io5"
 import { AiOutlineUser } from "react-icons/ai"
@@ -19,7 +22,7 @@ export const sidebarObj = [
         id: 2,
         title: "Important",
         icon: IoStarOutline,
-        Component: Generic,
+        Component: Important,
         path: "important"
     },
     {

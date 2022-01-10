@@ -10,10 +10,7 @@ const TasksContext = ({ children }) => {
         repeat: "",
         add: false
     });
-    useEffect(() => {
-        localStorage.setItem("localData", JSON.stringify(data));
-        console.log(localStorage)
-    }, [data])
+
     return (
         <MyTaskContext.Provider value={[data, setData]}>
             {children}
