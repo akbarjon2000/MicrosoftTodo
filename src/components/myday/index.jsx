@@ -1,15 +1,16 @@
 import React from 'react'
 import Navbar from './nav';
 import { Container } from './style';
+import Tasks from './Tasks';
+
 
 const MyDay = () => {
     return (
         <Container>
-            <div style={{ position: "relative" }}>
 
-                <Navbar />
-            </div>
-            <div className='underlines'></div>
+            <Navbar />
+            <Tasks />
+            {/* <div className='underlines'></div> */}
         </Container>
     )
 }

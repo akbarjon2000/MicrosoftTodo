@@ -3,13 +3,14 @@ import { pxToRem } from '../../../utils/pxToRem';
 import { Colors } from '../../../constants/constants';
 export const Container = styled.div`
 width:100%;
-height:100px;
+${'' /* height:${pxToRem(100)}; */}
 padding:12px 16px 0;
+${'' /* margin-bottom:100px; */}
 
 .header{
 width:100%;
 height:100px;
-display:column;
+display:flex;
 align-items:center;
 justify-content:center;
 }
@@ -64,6 +65,8 @@ background-color:${Colors.grey};
 border-radius:5px;
 padding:0 8px;
 padding-top:8px;
+border:1px solid rgb(235,235,235);
+
 .input{
     width:100%;
     border:none;

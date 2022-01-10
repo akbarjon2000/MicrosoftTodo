@@ -10,9 +10,23 @@ import { IoCalendarOutline } from "react-icons/io5"
 
 //CONTEXT
 import { MenuContext } from '../../../context/menubarContext';
+import { MyTaskContext } from '../../../context/tasksContext';
+
+
 const Navbar = () => {
     const [hide, setHide] = useContext(MenuContext);
     const [active, setActive] = useState(false)
+    const [data, setData] = useContext(MyTaskContext);
+
+    const handleChange = (e) => {
+        setData({
+            text: `${e.target.value}`
+        })
+    }
+    const Add = () => {
+        setData({ add: true });
+        localStorage.setItem("info", data)
+    }
     return (
         <Container hide={hide}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -46,7 +60,7 @@ const Navbar = () => {
                         <BsCircle className='icon' ></BsCircle>
                         : <AiOutlinePlus className='icon' style={{ cursor: "pointer" }} />
                     }
-                    <input type="text" placeholder='Add a task' className='input' />
+                    <input type="text" placeholder='Add a task' className='input' value={data.text} onChange={(e) => handleChange(e)} />
                 </div>
                 {active &&
                     <div className='align__center alarm'>
@@ -55,11 +69,13 @@ const Navbar = () => {
                             <VscBell className='icon' style={{ marginRight: "5px" }} />
                             <BsArrowRepeat className='icon' style={{ marginRight: "5px" }} />
                         </div>
-                        <p className='add'>Add</p>
+                        <p className='add' onClick={() => Add}>Add</p>
                     </div>
                 }
             </AddMenu>
+
         </Container >
+
     )
 }
 

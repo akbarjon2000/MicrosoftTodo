@@ -1,23 +1,17 @@
 import Generic from "../pages/generic"
 import MyDay from "../components/myday"
 
-import { ReactComponent as Sun } from "../assets/icons/sun.svg"
-// import { ReactComponent as Star } from "../assets/icons/star.svg"
+import { BsSun } from "react-icons/bs"
 import { IoStarOutline, IoCalendarOutline } from "react-icons/io5"
 import { AiOutlineUser } from "react-icons/ai"
 import { VscHome } from "react-icons/vsc"
-// import { ReactComponent as Calendar } from "../assets/icons/calendar.svg"
-// import { ReactComponent as User } from "../assets/icons/user.svg"
-// import { ReactComponent as Home } from "../assets/icons/home.svg"
-// import { ReactComponent as Cart } from "../assets/icons/cart4.svg"
-// import { ReactComponent as Hand } from "../assets/icons/hand.svg"
 
 
 export const sidebarObj = [
     {
         id: 1,
         title: "My Day",
-        icon: Sun,
+        icon: BsSun,
         Component: MyDay,
         path: "myDay"
     },

@@ -30,7 +30,7 @@ const Sidebar = () => {
                         width: '100%',
                         padding: "0 20px"
                     }
-                }}><Item><Icon className="icon" /><Title>{title}</Title> </Item>
+                }}><Item><Icon className="icon" size={20} /><Title>{title}</Title> </Item>
                 </NavLink>
             ))}
 
