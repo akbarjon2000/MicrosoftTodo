@@ -29,8 +29,8 @@ const Navbar = () => {
         console.log(localStorage)
     }, [data])
     console.log(localStorage)
-    const localData = [];
-    const newData = {
+    var localData = [];
+    var newData = {
         id: nanoid(3),
         text: data.text,
         reminder: data.reminder,
