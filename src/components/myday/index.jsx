@@ -7,12 +7,12 @@ import { Container } from './style';
 const MyDay = () => {
     return (
         <Container>
-            <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
+            <div style={{ width: "100%", display: "flex", flexDirection: "column", overflow: "scroll" }}>
                 <Navbar />
 
-                <div className='underlines'></div>
+                {/* <div className='underlines'></div> */}
             </div>
-            <Drawer />
+            {/* <Drawer /> */}
         </Container>
     )
 }

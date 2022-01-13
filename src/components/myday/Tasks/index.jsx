@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { Container } from './TaskStyle'
-import { nanoid } from "nanoid"
 //ICONS
 import { AiOutlineCheckCircle } from "react-icons/ai"
 import { BsCircle, BsDot } from "react-icons/bs"
 import { IoStarOutline } from "react-icons/io5"
+
 
 
 
@@ -14,6 +14,7 @@ const Tasks = ({ value }) => {
 
 
     return (
+
 
 
         <Container marked={marked}>
@@ -46,7 +47,6 @@ const Tasks = ({ value }) => {
             <IoStarOutline className='icon' fill='#6e8eeb' color='#6e8eeb' />
 
         </Container >
-
 
 
     )
