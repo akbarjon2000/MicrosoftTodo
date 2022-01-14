@@ -1,5 +1,4 @@
 import React from 'react'
-import Drawer from './drawer/Drawer';
 import Navbar from './nav';
 import { Container } from './style';
 

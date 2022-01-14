@@ -6,7 +6,7 @@ import { BsSun } from "react-icons/bs"
 import { IoMdClose } from "react-icons/io"
 import { Colors } from '../../../constants/constants'
 import { VscBell } from "react-icons/vsc"
-import { IoCalendarOutline } from "react-icons/io5"
+
 
 const Drawer = () => {
     const [text, setText] = useState('Hello WOrld')

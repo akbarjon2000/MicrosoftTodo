@@ -1,10 +1,21 @@
 import React, { useReducer, createContext } from 'react'
 import { nanoid } from 'nanoid';
-
+// import axios from "../utils/axios";
 export const ReducerContext = createContext();
 
 
 const ReducerContextProvider = ({ children }) => {
+    // const fetchData = async () => {
+    //     try {
+    //         const data = await axios.get("todos/")
+    //         console.log(data)
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
+    // useEffect(() => {
+    //     fetchData();
+    // }, []);
     const reducer = (state, action) => {
         switch (action.type) {
             case "MyDayAdd":
@@ -12,7 +23,7 @@ const ReducerContextProvider = ({ children }) => {
                     id: nanoid(3),
                     category: action.payload.category,
                     text: action.payload.text,
-                    date: "Today",
+                    date: action.payload.date,
                     reminder: "Remind",
                     repeat: "",
                     completed: false

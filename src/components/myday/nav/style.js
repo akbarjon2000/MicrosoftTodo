@@ -99,3 +99,33 @@ export const UnderLine = styled.div`
     box-shadow: inset 0 1px 0 0 #e5e5e5;
 
 `
+export const Modal = styled.div`
+width:${pxToRem(200)};
+height:${pxToRem(210)};
+background-color:white;
+position:absolute;
+display:${({ modal1 }) => modal1 ? "column" : "none"};
+border:1px solid rgb(230,230,230);
+border-radius:${pxToRem(2)};
+box-shadow:2px 2px 2px 1px rgba(200,200,200,0.2);
+left:${pxToRem(200)};
+z-index:1000;
+
+
+.title{
+width: 100%;
+height: ${pxToRem(42)};
+border-bottom: 1px solid rgba(200, 200, 200);
+color:${Colors.greyTextColor};
+font-weight:600;
+}
+.dateInfo{
+    width:100%;
+    height:${pxToRem(36)};
+    justify-content:space-between;
+    padding:0 ${pxToRem(8)};
+    &:hover{
+        background-color:${Colors.grey};
+    }
+}
+`
