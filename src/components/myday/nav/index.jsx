@@ -3,6 +3,7 @@ import { AddMenu, Container, Modal, UnderLine } from './style'
 import { nanoid } from 'nanoid';
 import { pxToRem } from '../../../utils/pxToRem';
 import { Colors } from '../../../constants/constants';
+// import axios from "../../../utils/axios";
 //ICONS
 import { BsThreeDots, BsCircle, BsArrowRepeat, BsCalendar2Date } from "react-icons/bs";
 import { IoMenuOutline, IoTodayOutline, IoCalendarOutline, IoCalendarClearOutline } from "react-icons/io5"
@@ -15,12 +16,12 @@ import { AiOutlinePlus } from "react-icons/ai"
 //CONTEXT
 import { MenuContext } from '../../../context/menubarContext';
 import Tasks from '../Tasks';
-import { ReducerContext } from '../../../context/reducerContext';
+// import { ReducerContext } from '../../../context/reducerContext';
 import Drawer from '../drawer/Drawer';
 
 
 
-const Navbar = () => {
+const Navbar = ({ todos }) => {
     const [hide, setHide] = useContext(MenuContext);
     const [active, setActive] = useState(false)
     // const [data, setData] = useContext(MyTaskContext);
@@ -31,16 +32,16 @@ const Navbar = () => {
         modal3: false
     })
     const [date, setDate] = useState('');
-    const [todos, dispatch] = useContext(ReducerContext);
 
     const handleChange = (e) => {
         setData(e.target.value);
     }
     console.log(date)
     const Add = () => {
-        dispatch({ type: "MyDayAdd", payload: { text: data, category: "My Day", date: date } });
-        setData("")
+        // dispatch({ type: "MyDayAdd", payload: { text: data, category: "My Day", date: date } });
+        // setData("")
     }
+
 
     return (
         <div style={{ display: "flex", width: "100%" }}>
@@ -115,8 +116,8 @@ const Navbar = () => {
                     </AddMenu>
 
                 </Container >
-                {todos.map((value) => (
-                    <Tasks value={value} dispatch={dispatch} key={nanoid(4)} />
+                {todos.map(({ id, attributes }) => (
+                    <Tasks value={{ id, ...attributes }} key={nanoid(4)} />
                 ))}
                 <UnderLine />
             </div>
