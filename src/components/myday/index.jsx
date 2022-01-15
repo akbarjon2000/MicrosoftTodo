@@ -10,7 +10,7 @@ const MyDay = () => {
             const { data } = await axios.get("/todos");
             const { data: todo } = data;
             setTodos(todo)
-            console.log(todos)
+            console.log(todo)
         } catch (error) {
             console.log(error)
         }
