@@ -18,7 +18,7 @@ justify-content:space-between;
 
 
 .star{
-    ${'' /* fill:${({ marked }) => marked && "#6e8eeb"}; */}
+    
  stroke:white;
     color:white;
 }
