@@ -6,12 +6,12 @@ export const Container = styled.div`
 display:flex;
 align-items:center;
 justify-content:center;
-background-color:${Colors.grey};
+background-image: linear-gradient(to right, #ebe0dc, #d9e2d6, #ece9da);
 height:100vh;
 width:100%;
 .body{
     width:${pxToRem(450)};
-    height:${pxToRem(350)};
+    min-height:${pxToRem(350)};
     background-color:white;
 display:flex;
 flex-direction:column;
@@ -41,6 +41,7 @@ padding:${pxToRem(50)};
     border-bottom:1px solid white;
     width:fit-content;
     font-size:${pxToRem(14)};
+    cursor:pointer;
     &:hover{
         border-bottom:1px solid ${Colors.blue};
     }
@@ -59,6 +60,10 @@ margin-top:auto;
     background-color:rgba(210,210,210,1);
     border:none;
     outline:none;
+    cursor: pointer;
+    &:hover{
+        background-color: rgba(190,190,190,1)
+    }
 }
 .nextBtn{
     width:${pxToRem(100)};
@@ -68,5 +73,9 @@ margin-top:auto;
     color:white;
     border:none;
     outline:none;
+    cursor: pointer;
+      &:hover{
+        background-color: rgba(0,100,200,1)
+    }
 }
 `

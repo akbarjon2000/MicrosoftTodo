@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { Colors } from '../../../constants/constants';
-import { pxToRem } from '../../../utils/pxToRem';
+import { Colors } from '../../../../constants/constants';
+import { pxToRem } from '../../../../utils/pxToRem';
 
 export const Container = styled.div`
 overflow-y:hidden;
