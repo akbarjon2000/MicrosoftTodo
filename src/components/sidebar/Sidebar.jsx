@@ -37,4 +37,4 @@ const Sidebar = () => {
         </Container>
     )
 }
-export default Sidebar;
+export default Sidebar

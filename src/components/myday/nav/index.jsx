@@ -60,9 +60,6 @@ const Navbar = ({ todos }) => {
             <div style={{ width: "100%" }}>
 
                 <Container hide={hide}>
-                    {/* <audio controls>
-                    <source src='' type='audio/mpeg' />
-                </audio> */}
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
 
                         <div className='header' style={{ display: "flex", justifyContent: "flex-start" }}>

@@ -24,7 +24,7 @@ const ReducerContextProvider = ({ children }) => {
     const [todos, dispatch] = useReducer(reducer, [])
     return (
         <ReducerContext.Provider value={[todos, dispatch]}>
-            {children};
+            {children}
         </ReducerContext.Provider>
     )
 }

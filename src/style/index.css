@@ -5,7 +5,7 @@
   user-select: none;
 }
 body {
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 html body {
   font-family: "Segoe", "Segoe UI", "Arial", "sans-serif";
