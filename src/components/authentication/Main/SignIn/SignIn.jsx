@@ -5,6 +5,7 @@ import logo from '../../../../assets/images/RE1Mu3b.png'
 import { Container } from './style'
 import axios from '../../../../utils/axios'
 import { LogInContext } from '../../../../context/LogInContext'
+import Swal from 'sweetalert2'
 // import {useHistory} from 'react-router-dom'
 
 function SignIn() {
@@ -27,9 +28,21 @@ function SignIn() {
             console.log(data);
             setLoading(true)
             setIsLoggedIn(true);
+            Swal.fire({
+                icon: "success",
+                title: "Successful log in!",
+                text: "Enjoy your time!!!",
+                timer: 2000
+            })
 
         } catch (error) {
             console.log(error);
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: error.response.data.error.message,
+
+            })
         }
     }
 

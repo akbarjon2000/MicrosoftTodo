@@ -6,7 +6,7 @@ export const Container = styled.div`
 width:50%;
 height:100vh;
 background-color:${Colors.grey};
-display:flex;
+display:${({ drawerIsActive }) => drawerIsActive ? "flex" : "none"};
 flex-direction:column;
 align-items:center;
 ${'' /* display:none; */}
@@ -124,5 +124,43 @@ padding:0 ${pxToRem(8)};
 }
 .close{
     color:${Colors.greyTextColor};
+}
+`
+export const DueDate = styled(Remind)`
+
+`
+export const Repeat = styled(Remind)`
+
+`
+export const Category = styled(Remind)`
+width:95%;
+margin: ${pxToRem(10)} 0;
+border: 1px solid rgb(230,230,230);
+
+
+`
+
+export const AddFile = styled(Remind)`
+width:95%;
+margin-bottom:${pxToRem(10)};
+border: 1px solid rgb(230,230,230);
+
+`
+
+export const Editor = styled.div`
+width:95%;
+height:${pxToRem(93)};
+background-color:white;
+padding:${pxToRem(15)};
+border: 1px solid rgb(230,230,230);
+&:hover{
+border:1px solid rgb(200,200,200);
+}
+
+.textArea{
+    min-height: ${pxToRem(30)};
+border:none;
+outline:none;
+width:100%;
 }
 `

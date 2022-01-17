@@ -1,9 +1,13 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
+
 import { AddMenu, Container, Modal, UnderLine } from './style'
 import { nanoid } from 'nanoid';
 import { pxToRem } from '../../../utils/pxToRem';
 import { Colors } from '../../../constants/constants';
+
 import axios from "../../../utils/axios";
+import Drawer from '../drawer/Drawer';
+import Tasks from '../Tasks';
 //ICONS
 import { BsThreeDots, BsCircle, BsArrowRepeat, BsCalendar2Date } from "react-icons/bs";
 import { IoMenuOutline, IoTodayOutline, IoCalendarOutline, IoCalendarClearOutline } from "react-icons/io5"
@@ -15,9 +19,7 @@ import { AiOutlinePlus } from "react-icons/ai"
 
 //CONTEXT
 import { MenuContext } from '../../../context/menubarContext';
-import Tasks from '../Tasks';
-import Drawer from '../drawer/Drawer';
-
+import { DrawerContext } from '../../../context/DrawerContext';
 
 
 const Navbar = ({ todos }) => {
@@ -30,14 +32,16 @@ const Navbar = ({ todos }) => {
         important: false,
         date: "",
     })
-    const [hide, setHide] = useContext(MenuContext);
-    const [active, setActive] = useState(false)
 
     const [modals, setModals] = useState({
         modal1: false,
         modal2: false,
         modal3: false
     })
+
+    const [hide, setHide] = useContext(MenuContext);
+    const [active, setActive] = useState(false);
+    const [change, setChange] = useState(todos);
 
     const handleChange = (e) => {
         setTodo({ text: e.target.value });
@@ -48,13 +52,15 @@ const Navbar = ({ todos }) => {
         try {
             const { data } = await axios.post("/todos", { data: todo })
             console.log(data)
-            console.log(todo)
+            setTodo({ text: "" });
         } catch (error) {
             console.log(error);
         }
     }
 
-
+    useEffect(() => {
+        Add();
+    }, [change])
     return (
         <div style={{ display: "flex", width: "100%" }}>
             <div style={{ width: "100%" }}>

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Container } from './TaskStyle'
 //ICONS
 import { AiOutlineCheckCircle } from "react-icons/ai"
 import { BsCircle, BsDot } from "react-icons/bs"
 import { IoStarOutline, IoStar } from "react-icons/io5"
 import axios from '../../../utils/axios'
+import { DrawerContext } from '../../../context/DrawerContext'
 
 
 
@@ -14,7 +15,7 @@ const Tasks = ({ value }) => {
     const { completed, important, id } = value;
     const [isImportant, setIsImportant] = useState(value.important);
     const [isCompleted, setIsCompleted] = useState(value.completed);
-
+    const [drawerIsActive, setDrawerIsActive] = useContext(DrawerContext);
     useEffect(() => {
         if (isImportant !== important) {
             handleImportant();
@@ -44,8 +45,13 @@ const Tasks = ({ value }) => {
         }
     }
 
+    const handleDrawerUtility = () => {
+        // e.stopPropogation();
+        setDrawerIsActive(prevState => ({ ...prevState, id: id, open: true }));
+    }
+
     return (
-        <Container >
+        <Container onClick={handleDrawerUtility}>
 
             <div className='align__center'>
                 <div onMouseEnter={() => setIcon(true)} onMouseLeave={() => setIcon(false)} onClick={() => setIsCompleted(!isCompleted)} >
