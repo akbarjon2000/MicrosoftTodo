@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Navbar from './nav';
 import { Container } from './style';
 import axios from '../../utils/axios';
+import Drawer from './drawer/Drawer';
 
 const MyDay = () => {
     const [todos, setTodos] = useState([]);
@@ -25,6 +26,7 @@ const MyDay = () => {
             <div style={{ width: "100%", display: "flex", flexDirection: "column", overflow: "scroll" }}>
                 <Navbar todos={todos} />
             </div>
+            <Drawer />
         </Container>
     )
 }

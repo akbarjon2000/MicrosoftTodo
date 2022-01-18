@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Container } from './TaskStyle'
 //ICONS
-import { AiOutlineCheckCircle } from "react-icons/ai"
+import { AiOutlineCheckCircle, AiFillCheckCircle } from "react-icons/ai"
 import { BsCircle, BsDot } from "react-icons/bs"
 import { IoStarOutline, IoStar } from "react-icons/io5"
 import axios from '../../../utils/axios'
@@ -12,6 +12,7 @@ import { DrawerContext } from '../../../context/DrawerContext'
 
 const Tasks = ({ value }) => {
     const [icon, setIcon] = useState(false)
+    const [taskIsActive, setTaskIsActive] = useState(false);
     const { completed, important, id } = value;
     const [isImportant, setIsImportant] = useState(value.important);
     const [isCompleted, setIsCompleted] = useState(value.completed);
@@ -48,15 +49,20 @@ const Tasks = ({ value }) => {
     const handleDrawerUtility = () => {
         // e.stopPropogation();
         setDrawerIsActive(prevState => ({ ...prevState, id: id, open: true }));
+        setTaskIsActive(true);
     }
 
     return (
-        <Container onClick={handleDrawerUtility}>
+        <Container onClick={handleDrawerUtility} taskIsActive={taskIsActive}>
 
             <div className='align__center'>
-                <div onMouseEnter={() => setIcon(true)} onMouseLeave={() => setIcon(false)} onClick={() => setIsCompleted(!isCompleted)} >
+                <div
+                    // onMouseEnter={() => setIcon(true)}
+                    // onMouseLeave={() => setIcon(false)}
+                    onClick={() => setIsCompleted(!isCompleted)}
+                >
                     {(icon || isCompleted) ?
-                        <AiOutlineCheckCircle className='icon star' color="#6e8eeb" size={21} title='Mark as complete!' />
+                        <AiFillCheckCircle className='icon ' color="#6e8eeb" size={21} title='Mark as complete!' />
                         : <BsCircle className='icon center' color="#6e8eeb" size={18} />
                     }
                 </div>

@@ -4,13 +4,13 @@ import { pxToRem } from '../../../utils/pxToRem';
 
 export const Container = styled.div`
 width:50%;
-height:100vh;
+height:100%;    
 background-color:${Colors.grey};
 display:${({ drawerIsActive }) => drawerIsActive ? "flex" : "none"};
 flex-direction:column;
 align-items:center;
 ${'' /* display:none; */}
-
+overflow-y:scroll;
 
 `
 
@@ -156,11 +156,47 @@ border: 1px solid rgb(230,230,230);
 &:hover{
 border:1px solid rgb(200,200,200);
 }
+${'' /* margin-bottom:auto; */}
 
 .textArea{
     min-height: ${pxToRem(30)};
 border:none;
 outline:none;
 width:100%;
+}
+`
+
+export const Close = styled.div`
+width:100%;
+height:${pxToRem(45)};
+background-color:${Colors.grey};
+border-top: 1px solid #eaeaea;
+border-top:1px solid red;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding: 5px 15px;
+text-rendering: optimizeLegibility;
+position:sticky;
+bottom: 0;
+.close{
+    width:${pxToRem(30)};
+    height:${pxToRem(30)};
+    &:hover{
+        background-color:white;
+border-radius:4px;
+    }
+}
+.delete{
+   width:${pxToRem(30)};
+    height:${pxToRem(30)};
+    &:hover{
+        background-color:white;
+border-radius:4px;
+    } 
+}
+.text{
+    color:${Colors.textcolor};
+    font-size:${pxToRem(12)};
 }
 `

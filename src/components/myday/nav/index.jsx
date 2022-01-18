@@ -6,7 +6,6 @@ import { pxToRem } from '../../../utils/pxToRem';
 import { Colors } from '../../../constants/constants';
 
 import axios from "../../../utils/axios";
-import Drawer from '../drawer/Drawer';
 import Tasks from '../Tasks';
 //ICONS
 import { BsThreeDots, BsCircle, BsArrowRepeat, BsCalendar2Date } from "react-icons/bs";
@@ -19,7 +18,7 @@ import { AiOutlinePlus } from "react-icons/ai"
 
 //CONTEXT
 import { MenuContext } from '../../../context/menubarContext';
-import { DrawerContext } from '../../../context/DrawerContext';
+// import { DrawerContext } from '../../../context/DrawerContext';
 
 
 const Navbar = ({ todos }) => {
@@ -136,7 +135,7 @@ const Navbar = ({ todos }) => {
                 ))}
                 <UnderLine />
             </div>
-            <Drawer />
+            {/* <Drawer /> */}
         </div>
 
     )

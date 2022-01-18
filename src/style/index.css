@@ -4,9 +4,9 @@
   box-sizing: border-box;
   user-select: none;
 }
-/* body {
+body {
   overflow: hidden;
-} */
+}
 html body {
   font-family: "Segoe", "Segoe UI", "Arial", "sans-serif";
 }

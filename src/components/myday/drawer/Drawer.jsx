@@ -1,15 +1,15 @@
-import React, { useContext, useDebugValue, useEffect, useState } from 'react'
-import { AddMyDay, AddStep, Container, Steps, Remind, DueDate, Repeat, Category, AddFile, Editor } from './style'
+import React, { useContext, useEffect, useState } from 'react'
+import { AddMyDay, AddStep, Container, Steps, Remind, DueDate, Repeat, Category, AddFile, Editor, Close } from './DraweraStyle'
 import axios from '../../../utils/axios'
 import { DrawerContext } from '../../../context/DrawerContext'
 //ICONS:
 import { TiTick } from "react-icons/ti"
-import { BiStar } from "react-icons/bi"
+import { BiStar, BiExit } from "react-icons/bi"
 import { BsSun, BsArrowRepeat } from "react-icons/bs"
 import { IoMdClose, IoIosAttach } from "react-icons/io"
 import { IoCalendarOutline, IoPricetagOutline, } from "react-icons/io5"
 import { Colors } from '../../../constants/constants'
-import { VscBell } from "react-icons/vsc"
+import { VscBell, VscTrash } from "react-icons/vsc"
 
 
 const Drawer = () => {
@@ -19,18 +19,16 @@ const Drawer = () => {
     const [text, setText] = useState("Hello world")
     const [drawerIsActive, setDrawerIsActive] = useContext(DrawerContext);
     // console.log(text)
-    // const fetchTask = async () => {
-    //     try {
-    //         const { data } = await axios.get("/todos");
-    //         console.log("Data from Drawer", data.data);
-    //         const tasks = await data.data.filter((value) => value.id === drawerIsActive.id).map((value) => value.attributes);
-    //         setTask(tasks);
-
-
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
+    const fetchTask = async () => {
+        try {
+            const { data } = await axios.get("/todos");
+            console.log("Data from Drawer", data.data);
+            const tasks = await data.data.filter((value) => value.id === drawerIsActive.id).map((value) => value.attributes);
+            setTask(tasks);
+        } catch (error) {
+            console.log(error)
+        }
+    }
     const updateTitle = async () => {
         try {
             const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { text: text } })
@@ -131,7 +129,16 @@ const Drawer = () => {
             <Editor>
                 <input type="text" placeholder="Add note" className='textArea' />
             </Editor>
+            <Close>
+                <div className='close center' >
+                    <BiExit className='icon' onClick={() => setDrawerIsActive({ open: false })} />
+                </div>
+                <p className='text'>Created Today</p>
+                <div className='delete center'>
+                    <VscTrash className=' icon' />
+                </div>
 
+            </Close>
         </Container >
     )
 }
