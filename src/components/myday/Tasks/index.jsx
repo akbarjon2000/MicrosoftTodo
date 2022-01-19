@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Container } from './TaskStyle'
 //ICONS
-import { AiOutlineCheckCircle, AiFillCheckCircle } from "react-icons/ai"
+import { AiFillCheckCircle } from "react-icons/ai"
 import { BsCircle, BsDot } from "react-icons/bs"
 import { IoStarOutline, IoStar } from "react-icons/io5"
 import axios from '../../../utils/axios'
@@ -11,11 +11,11 @@ import { DrawerContext } from '../../../context/DrawerContext'
 
 
 const Tasks = ({ value }) => {
+    const { completed, important, id } = value;
     const [icon, setIcon] = useState(false)
     const [taskIsActive, setTaskIsActive] = useState(false);
-    const { completed, important, id } = value;
-    const [isImportant, setIsImportant] = useState(value.important);
-    const [isCompleted, setIsCompleted] = useState(value.completed);
+    const [isImportant, setIsImportant] = useState(important);
+    const [isCompleted, setIsCompleted] = useState(completed);
     const [drawerIsActive, setDrawerIsActive] = useContext(DrawerContext);
     useEffect(() => {
         if (isImportant !== important) {
@@ -46,27 +46,31 @@ const Tasks = ({ value }) => {
         }
     }
 
-    const handleDrawerUtility = () => {
+    const handleDrawerUtility = (e) => {
         // e.stopPropogation();
         setDrawerIsActive(prevState => ({ ...prevState, id: id, open: true }));
         setTaskIsActive(true);
     }
 
-    return (
-        <Container onClick={handleDrawerUtility} taskIsActive={taskIsActive}>
+    const handleComplete = (e) => {
 
-            <div className='align__center'>
+        setIsCompleted(!isCompleted)
+    }
+    return (
+        <Container taskIsActive={taskIsActive}>
+
+            <div className='align__center' style={{ width: "100%" }}>
                 <div
                     // onMouseEnter={() => setIcon(true)}
                     // onMouseLeave={() => setIcon(false)}
-                    onClick={() => setIsCompleted(!isCompleted)}
+                    onClick={handleComplete}
                 >
                     {(icon || isCompleted) ?
                         <AiFillCheckCircle className='icon ' color="#6e8eeb" size={21} title='Mark as complete!' />
                         : <BsCircle className='icon center' color="#6e8eeb" size={18} />
                     }
                 </div>
-                <div>
+                <div onClick={handleDrawerUtility} style={{ width: "100%" }}>
                     <p style={{ marginLeft: "10px" }}>{value.text}</p>
                     <div className='align__center'>
                         <p className='text align__center' style={{ marginLeft: "10px" }}>Tasks</p>

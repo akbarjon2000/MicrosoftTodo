@@ -8,7 +8,7 @@ height:${pxToRem(52)};
 &:hover{
 background-color:${({ taskIsActive }) => taskIsActive ? "#f4f6ff" : Colors.grey};
 }
-background-color:${({ taskIsActive }) => taskIsActive ? "#f4f6ff" : "white"};
+// background-color:${({ taskIsActive }) => taskIsActive ? "#f4f6ff" : "white"};
 padding:8px;
 margin-left:16px;
 margin-right:16px !important;
