@@ -90,6 +90,35 @@ border:1px solid rgb(235,235,235);
 .date{
     display:none;
 }
+.modalSelector{
+    width:fit-content;
+    height:${pxToRem(32)};
+    padding:${pxToRem(3)} 0;
+    background-color:#fafafa;
+    display:flex;
+    align-items:center;
+    padding-right:5px;
+    border:1px solid rgba(200,200,200,1);
+    border-radius:7%;
+    margin-right:${pxToRem(8)};
+}
+.modalIcon{
+    width:${pxToRem(25)};
+    height:${pxToRem(25)};
+    &:hover{
+    background-color:rgba(200,200,200,0.3);
+    }
+    border:none;
+    border-radius:20%;
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    justify-content:center;
+    margin:0;
+    padding:0;
+    margin-right:${pxToRem(8)};
+
+}
 `
 export const UnderLine = styled.div`
     margin: 0 24px 0;

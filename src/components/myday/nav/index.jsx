@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState } from 'react'
 
 import { AddMenu, Container, Modal1, Modal2, Modal3, UnderLine } from './style'
 import { nanoid } from 'nanoid';
@@ -8,14 +8,12 @@ import { Colors } from '../../../constants/constants';
 import axios from "../../../utils/axios";
 import Tasks from '../Tasks';
 //ICONS
-import { BsThreeDots, BsCircle, BsArrowRepeat, BsCalendar2Date, BsClockHistory } from "react-icons/bs";
+import { BsThreeDots, BsCircle, BsArrowRepeat, BsCalendar2Date } from "react-icons/bs";
 import { IoMenuOutline, IoTodayOutline, IoCalendarOutline, IoCalendarClearOutline } from "react-icons/io5"
 import { IoIosArrowForward } from "react-icons/io"
 import { VscArrowSwap, VscBell, VscTrash } from "react-icons/vsc"
 import { GoLightBulb } from "react-icons/go"
 import { AiOutlinePlus } from "react-icons/ai"
-import { RiArrowRightCircleLine } from "react-icons/ri"
-import { MdDoubleArrow } from "react-icons/md"
 import { ReactComponent as Daily } from "../../../assets/icons/daily.svg"
 import { ReactComponent as Weekdays } from "../../../assets/icons/weekdays.svg"
 import { ReactComponent as Weekly } from "../../../assets/icons/weekly.svg"
@@ -55,27 +53,30 @@ const Navbar = ({ todos }) => {
 
     const handleChange = (e) => {
         setTodo({ text: e.target.value });
-        console.log(todo)
+        console.log(todo);
     }
 
     const Add = async () => {
-        try {
-            const { data } = await axios.post("/todos", { data: todo })
-            console.log(data)
-            setTodo({ text: "" });
-        } catch (error) {
-            console.log(error);
+        if (todo.text !== "") {
+            try {
+                const { data } = await axios.post("/todos", { data: todo })
+                console.log(data)
+                setTodo({ text: "" });
+            } catch (error) {
+                console.log(error);
+            }
         }
+
     }
 
     // useEffect(() => {
     //     Add();
-    // }, [change])
+    // }, [])
     return (
         <div style={{ display: "flex", width: "100%" }}>
             <div style={{ width: "100%" }}>
 
-                <Container hide={hide}>
+                <Container hide={hide} onClick={() => setModals({ modal1: !modals.modal1, modal2: false, modal3: false })}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
 
                         <div className='header' style={{ display: "flex", justifyContent: "flex-start" }}>
@@ -102,7 +103,6 @@ const Navbar = ({ todos }) => {
                     </div>
                     <AddMenu active={active} >
                         <div className='align__center' onClick={() => setActive(true)}>
-
                             {active ?
                                 <BsCircle className='icon' ></BsCircle>
                                 : <AiOutlinePlus className='icon' style={{ cursor: "pointer" }} />
@@ -111,8 +111,11 @@ const Navbar = ({ todos }) => {
                         </div>
                         {active &&
                             <div className='align__center alarm'>
-                                <div>
-                                    <IoCalendarOutline onClick={() => setModals({ modal1: !modals.modal1, modal2: false, modal3: false })} className='icon' style={{ marginRight: "5px" }} />
+                                <div className="align__center">
+                                    <button className={`${todo.date ? "modalSelector" : "modalIcon"}`}>
+                                        <IoCalendarOutline onClick={() => setModals({ modal1: !modals.modal1, modal2: false, modal3: false })} className='icon' style={{}} />
+                                        <p style={{ color: `${Colors.greyTextColor}` }}>{todo.date && todo.date}</p>
+                                    </button>
                                     <Modal1 modal1={modals.modal1} className='modal' onClick={() => setModals({ modal1: false })} >
                                         <p className='center title'>Due</p>
                                         <div className='align__center dateInfo' onClick={() => setTodo(previewState => ({ ...previewState, date: "Today" }))} style={{ color: `${Colors.greyTextColor}` }} >
@@ -138,7 +141,10 @@ const Navbar = ({ todos }) => {
                                             </div>
                                         }
                                     </Modal1>
-                                    <VscBell className='icon' style={{ marginRight: "5px" }} onClick={() => setModals({ modal1: false, modal2: !modals.modal2, modal3: false })} />
+                                    <button className={`${todo.reminder ? "modalSelector" : "modalIcon"}`}>
+                                        <VscBell className='icon' style={{}} onClick={() => setModals({ modal1: false, modal2: !modals.modal2, modal3: false })} />
+                                        <p style={{ color: `${Colors.greyTextColor}` }}>{todo.reminder && todo.reminder}</p>
+                                    </button>
                                     <Modal2 modal2={modals.modal2} className='modal' onClick={() => setModals({ modal2: false })} >
                                         <p className='center title'>Reminder</p>
                                         <div className='align__center dateInfo' onClick={() => setTodo(previewState => ({ ...previewState, reminder: "Later today" }))} style={{ color: `${Colors.greyTextColor}` }} >
@@ -164,26 +170,29 @@ const Navbar = ({ todos }) => {
                                             </div>
                                         }
                                     </Modal2>
-                                    <BsArrowRepeat onClick={() => setModals({ modal1: false, modal2: false, modal3: !modals.modal3 })} className='icon' style={{ marginRight: "5px" }} />
+                                    <button className={`${todo.repeat ? "modalSelector" : "modalIcon"}`}>
+                                        <BsArrowRepeat onClick={() => setModals({ modal1: false, modal2: false, modal3: !modals.modal3 })} className='icon' style={{}} />
+                                        <p style={{ color: `${Colors.greyTextColor}` }}>{todo.repeat && todo.repeat}</p>
+                                    </button>
                                     <Modal3 modal3={modals.modal3} className='modal' onClick={() => setModals({ modal3: false })} >
                                         <p className='center title'>Repeat</p>
-                                        <div className='align__center dateInfo' onClick={() => setTodo(previewState => ({ ...previewState, repeat: "Today" }))} style={{ color: `${Colors.greyTextColor}` }} >
+                                        <div className='align__center dateInfo' onClick={() => setTodo(previewState => ({ ...previewState, repeat: "Daily" }))} style={{ color: `${Colors.greyTextColor}` }} >
                                             <div className='align__center'><Daily className='icon' style={{ fill: "#7e7e80" }} /> <p style={{ marginLeft: "10px" }}>Daily</p></div>
                                             <span >{(new Date()).toDateString().slice(0, 3)}</span>
                                         </div>
-                                        <div className='align__center dateInfo' onClick={() => setTodo(previewState => ({ ...previewState, repeat: "Tomorrow" }))} style={{ color: `${Colors.greyTextColor}` }} >
+                                        <div className='align__center dateInfo' onClick={() => setTodo(previewState => ({ ...previewState, repeat: "Weekdays" }))} style={{ color: `${Colors.greyTextColor}` }} >
                                             <div className='align__center'><Weekdays style={{ fill: "#7e7e80" }} className='icon' /> <p style={{ marginLeft: "10px" }}>Weekdays</p></div>
                                             <span >{(new Date()).toDateString().slice(0, 3)}</span>
                                         </div>
-                                        <div className='align__center dateInfo' onClick={() => setTodo(previewState => ({ ...previewState, repeat: "Next week" }))} style={{ color: `${Colors.greyTextColor}` }} >
+                                        <div className='align__center dateInfo' onClick={() => setTodo(previewState => ({ ...previewState, repeat: "Weekly" }))} style={{ color: `${Colors.greyTextColor}` }} >
                                             <div className='align__center'><Weekly style={{ fill: "#7e7e80" }} className='icon' /> <p style={{ marginLeft: "10px" }}>Weekly</p></div>
                                             <span >{(new Date()).toDateString().slice(0, 3)}</span>
                                         </div>
-                                        <div className='align__center dateInfo' onClick={() => setTodo(previewState => ({ ...previewState, repeat: "Next week" }))} style={{ color: `${Colors.greyTextColor}` }} >
+                                        <div className='align__center dateInfo' onClick={() => setTodo(previewState => ({ ...previewState, repeat: "Monthly" }))} style={{ color: `${Colors.greyTextColor}` }} >
                                             <div className='align__center'><Monthly style={{ fill: "#7e7e80" }} className='icon' /> <p style={{ marginLeft: "10px" }}>Monthly</p></div>
                                             <span >{(new Date()).toDateString().slice(0, 3)}</span>
                                         </div>
-                                        <div className='align__center dateInfo' onClick={() => setTodo(previewState => ({ ...previewState, repeat: "Next week" }))} style={{ color: `${Colors.greyTextColor}`, borderBottom: "1px solid rgba(200, 200, 200)" }} >
+                                        <div className='align__center dateInfo' onClick={() => setTodo(previewState => ({ ...previewState, repeat: "Yearly" }))} style={{ color: `${Colors.greyTextColor}`, borderBottom: "1px solid rgba(200, 200, 200)" }} >
                                             <div className='align__center'><Yearly style={{ fill: "#7e7e80" }} className='icon' /> <p style={{ marginLeft: "10px" }}>Yearly</p></div>
                                             <span >{(new Date()).toDateString().slice(0, 3)}</span>
                                         </div>
@@ -210,7 +219,6 @@ const Navbar = ({ todos }) => {
                 ))}
                 <UnderLine />
             </div>
-            {/* <Drawer /> */}
         </div>
 
     )
