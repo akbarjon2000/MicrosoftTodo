@@ -1,6 +1,6 @@
-import React, { useContext, useState } from 'react'
-
-import { AddMenu, Container, Modal1, Modal2, Modal3, UnderLine } from './style'
+import React, { useContext, useState, useRef } from 'react'
+import ReactToPrint from "react-to-print"
+import { AddMenu, Container, ListOptionsModal, Modal1, Modal2, Modal3, UnderLine } from './style'
 import { nanoid } from 'nanoid';
 import { pxToRem } from '../../../utils/pxToRem';
 import { Colors } from '../../../constants/constants';
@@ -8,7 +8,7 @@ import { Colors } from '../../../constants/constants';
 import axios from "../../../utils/axios";
 import Tasks from '../Tasks';
 //ICONS
-import { BsThreeDots, BsCircle, BsArrowRepeat, BsCalendar2Date } from "react-icons/bs";
+import { BsThreeDots, BsCircle, BsArrowRepeat, BsCalendar2Date, BsPrinter } from "react-icons/bs";
 import { IoMenuOutline, IoTodayOutline, IoCalendarOutline, IoCalendarClearOutline } from "react-icons/io5"
 import { IoIosArrowForward } from "react-icons/io"
 import { VscArrowSwap, VscBell, VscTrash } from "react-icons/vsc"
@@ -29,6 +29,9 @@ import { MenuContext } from '../../../context/menubarContext';
 
 
 const Navbar = ({ todos }) => {
+
+    const componentRef = useRef();
+
     const [todo, setTodo] = useState({
         category: "My Day",
         text: "",
@@ -42,6 +45,7 @@ const Navbar = ({ todos }) => {
     })
 
     const [modals, setModals] = useState({
+        listOptions: false,
         modal1: false,
         modal2: false,
         modal3: false
@@ -69,6 +73,10 @@ const Navbar = ({ todos }) => {
 
     }
 
+    // const handleModalClose = (e) => {
+    //     // e.stopPropogation();
+    //     setModals({ modal1: false, modal2: false, modal3: false })
+    // }
     // useEffect(() => {
     //     Add();
     // }, [])
@@ -76,7 +84,7 @@ const Navbar = ({ todos }) => {
         <div style={{ display: "flex", width: "100%" }}>
             <div style={{ width: "100%" }}>
 
-                <Container hide={hide} onClick={() => setModals({ modal1: !modals.modal1, modal2: false, modal3: false })}>
+                <Container hide={hide} ref={componentRef}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
 
                         <div className='header' style={{ display: "flex", justifyContent: "flex-start" }}>
@@ -88,9 +96,20 @@ const Navbar = ({ todos }) => {
                             <div>
                                 <div className=' nav align__center' >
                                     <h3>My Day</h3>
-                                    <div className='dotsCon center' title='list opntions'>
+                                    <div className='dotsCon center' title='list opntions' onClick={() => setModals({ modal1: false, modal2: false, modal3: false, listOptions: !modals.listOptions })}>
                                         <BsThreeDots className='icon' />
                                     </div>
+                                    <ListOptionsModal listOptions={modals.listOptions} className='modal' onClick={() => setModals({ listOptions: false })} >
+                                        <p className='center title'>List options</p>
+                                        <ReactToPrint
+                                            trigger={() => <div className='align__center printList '><BsPrinter className='icon' /> <p style={{ marginLeft: "10px" }}>Print list</p></div>}
+                                            content={() => componentRef.current}
+                                            className='align__center ' onClick={() =>
+                                                setTodo(previewState => ({ ...previewState, date: "Today" }))}
+                                            style={{ color: `${Colors.greyTextColor}` }} >
+                                            <div className='align__center'><BsPrinter className='icon' /> <p style={{ marginLeft: "10px" }}>Print list</p></div>
+                                        </ReactToPrint>
+                                    </ListOptionsModal>
                                 </div>
                                 <p>{(new Date()).toDateString().slice(0, -5)}</p>
                             </div>
@@ -113,7 +132,7 @@ const Navbar = ({ todos }) => {
                             <div className='align__center alarm'>
                                 <div className="align__center">
                                     <button className={`${todo.date ? "modalSelector" : "modalIcon"}`}>
-                                        <IoCalendarOutline onClick={() => setModals({ modal1: !modals.modal1, modal2: false, modal3: false })} className='icon' style={{}} />
+                                        <IoCalendarOutline onClick={() => setModals({ modal1: !modals.modal1, modal2: false, modal3: false, listOptions: false })} className='icon' style={{}} />
                                         <p style={{ color: `${Colors.greyTextColor}` }}>{todo.date && todo.date}</p>
                                     </button>
                                     <Modal1 modal1={modals.modal1} className='modal' onClick={() => setModals({ modal1: false })} >
@@ -142,7 +161,7 @@ const Navbar = ({ todos }) => {
                                         }
                                     </Modal1>
                                     <button className={`${todo.reminder ? "modalSelector" : "modalIcon"}`}>
-                                        <VscBell className='icon' style={{}} onClick={() => setModals({ modal1: false, modal2: !modals.modal2, modal3: false })} />
+                                        <VscBell className='icon' style={{}} onClick={() => setModals({ modal1: false, modal2: !modals.modal2, modal3: false, listOptions: false })} />
                                         <p style={{ color: `${Colors.greyTextColor}` }}>{todo.reminder && todo.reminder}</p>
                                     </button>
                                     <Modal2 modal2={modals.modal2} className='modal' onClick={() => setModals({ modal2: false })} >
@@ -171,7 +190,7 @@ const Navbar = ({ todos }) => {
                                         }
                                     </Modal2>
                                     <button className={`${todo.repeat ? "modalSelector" : "modalIcon"}`}>
-                                        <BsArrowRepeat onClick={() => setModals({ modal1: false, modal2: false, modal3: !modals.modal3 })} className='icon' style={{}} />
+                                        <BsArrowRepeat onClick={() => setModals({ modal1: false, modal2: false, modal3: !modals.modal3, listOptions: false })} className='icon' style={{}} />
                                         <p style={{ color: `${Colors.greyTextColor}` }}>{todo.repeat && todo.repeat}</p>
                                     </button>
                                     <Modal3 modal3={modals.modal3} className='modal' onClick={() => setModals({ modal3: false })} >
@@ -219,7 +238,7 @@ const Navbar = ({ todos }) => {
                 ))}
                 <UnderLine />
             </div>
-        </div>
+        </div >
 
     )
 }

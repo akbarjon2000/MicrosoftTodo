@@ -25,6 +25,7 @@ const MyDay = () => {
 
             <div style={{ width: "100%", display: "flex", flexDirection: "column", overflow: "scroll" }}>
                 <Navbar todos={todos} />
+                <div className='underlines'></div>
             </div>
             <Drawer />
         </Container>
