@@ -7,78 +7,71 @@ import { DrawerContext } from '../../../context/DrawerContext'
 import { BiStar, BiExit } from "react-icons/bi"
 import { BsSun, BsArrowRepeat } from "react-icons/bs"
 import { IoMdClose, IoIosAttach } from "react-icons/io"
-import { IoCalendarOutline, IoPricetagOutline, } from "react-icons/io5"
+import { IoCalendarOutline, IoPricetagOutline, IoStar } from "react-icons/io5"
 import { Colors } from '../../../constants/constants'
 import { VscBell, VscTrash } from "react-icons/vsc"
 import { AiFillCheckCircle } from "react-icons/ai"
 import { BsCircle } from "react-icons/bs"
 
 
-const Drawer = () => {
+const Drawer = ({ todos, fetchTodo }) => {
     const [active, setActive] = useState(false)
-    const [myday, setMyDay] = useState(true)
     const [drawerIsActive, setDrawerIsActive] = useContext(DrawerContext);
     const [text, setText] = useState('')
+    const [task, setTask] = useState({});
+    // console.log(task.completed)
     const [important, setImportant] = useState(null);
-    const [completed, setCompleted] = useState(null);
-    const [task, setTask] = useState({
-        category: "My Day",
-        text: "",
-        content: "",
-        steps: [],
-        completed: false,
-        important: false,
-        date: "",
-
-    });
-    const fetchTask = async () => {
-        try {
-            const { data } = await axios.get("/todos");
-            console.log("Data from Drawer", data.data);
-            const tasks = await data.data.filter((value) => value.id === drawerIsActive.id).map((value) => value.attributes);
-            console.log(tasks.map((value) => value.text))
-            setText(tasks.map((value) => value.text));
-            setImportant(tasks.map((value) => value.important));
-            setCompleted(tasks.map((value) => value.completed));
-            console.log(completed)
-            // tasks.map((value) => {
-            //     const { text, category, content, steps, completed, important, date } = value;
-            //     setTask(prevState => ({
-            //         ...prevState,
-            //         text: text,
-            //         category: category,
-            //         content: content,
-            //         steps: steps,
-            //         completed: completed,
-            //         important: important,
-            //         date: date
-            //     }))
-            // })
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    const [completed, setCompleted] = useState(task.completed);
+    const [myday, setMyDay] = useState(true)
 
     useEffect(() => {
-        fetchTask();
-        // updateTitle();
-    }, [drawerIsActive])
+        fetchTodo();
+        let todo = todos.filter((value) => value.id === drawerIsActive.id)
+        todo.map((value) => {
+            setTask(value.attributes)
+        })
 
-    const updateTitle = async () => {
-        try {
-            const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { text: text } })
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    }, [drawerIsActive.id])
 
-    useEffect(() => {
-        updateTitle();
-    }, [text])
+    // console.log(drawerIsActive.id)
+    // console.log(todos)
+    // console.log(task)
+    // const fetchTask = async () => {
+    //     try {
+    //         const { data } = await axios.get("/todos");
+    //         // console.log("Data from Drawer", data.data);
+    //         const tasks = await data.data.filter((value) => value.id === drawerIsActive.id).map((value) => value.attributes);
+    //        tasks.map((value) => {setTask(value.attributes)})
+    //         // setText(tasks.map((value) => value.text));
+    //         // setImportant(tasks.map((value) => value.important));
+    //         // setCompleted(tasks.map((value) => value.completed));
+    //         // console.log(completed)
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+
+    // useEffect(() => {
+    //     fetchTask();
+    //     // updateTitle();
+    // }, [drawerIsActive])
+
+    // const updateTitle = async () => {
+    //     try {
+    //         const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { text: text } })
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+
+    // useEffect(() => {
+    //     updateTitle();
+    // }, [text])
 
     const updateImportance = async () => {
         try {
             const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { important: important } });
+            fetchTodo();
         } catch (error) {
             console.log(error);
         }
@@ -91,6 +84,7 @@ const Drawer = () => {
     const updateCompleted = async () => {
         try {
             const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { completed: completed } });
+            fetchTodo();
         } catch (error) {
             console.log(error);
         }
@@ -101,8 +95,9 @@ const Drawer = () => {
     }, [completed]);
 
     const handleInputChange = ({ target }) => {
-        // setTask(prevState => ({ ...prevState, text: target.value }))
-        setText(target.value)
+        setTask(prevState => ({ ...prevState, text: target.value }));
+        const { data } = axios.put(`/todos/${drawerIsActive.id}`, { data: { text: target.value } })
+        fetchTodo();
     }
     const updateCategory = async () => {
         if (myday === true) {
@@ -123,17 +118,21 @@ const Drawer = () => {
 
     useEffect(() => {
         updateCategory();
+        fetchTodo();
     }, [myday])
+
     return (
         <Container drawerIsActive={drawerIsActive.open}>
             <AddStep>
                 <div className='align__center' style={{ height: "100%", justifyContent: "space-between" }}>
                     {/* <div className='circle center'><TiTick color='#6e8eeb' /></div> */}
                     <div onClick={() => setCompleted(!completed)}>
-                        {completed ? <AiFillCheckCircle className='icon' color="#6e8eeb" size={21} /> : <BsCircle className='icon' color="#6e8eeb" size={19} />}
+                        {task.completed ? <AiFillCheckCircle className='icon' color="#6e8eeb" size={21} /> : <BsCircle className='icon' color="#6e8eeb" size={19} />}
                     </div>
-                    <input value={text} className="input" onChange={handleInputChange} />
-                    <BiStar className='icon' />
+                    <input value={task.text} className="input" onChange={handleInputChange} />
+                    <div onClick={() => setImportant(!important)}>
+                        {task.important ? <IoStar className='icon' color="#6e8eeb" /> : <BiStar className='icon' />}
+                    </div>
                 </div>
             </AddStep>
             <Steps active={active}>
@@ -144,11 +143,11 @@ const Drawer = () => {
                 </div>
             </Steps>
             <AddMyDay myDay={myday}>
-                <div className='align__center' onClick={() => setMyDay(true)} style={{ width: "100%" }}>
-                    <BsSun className='icon' style={{ color: `${myday ? Colors.blue : ""}` }} />
-                    <p style={{ marginLeft: "20px" }}>{myday ? "Added to My Day" : "Add to My Day"}</p>
+                <div className='align__center' style={{ width: "100%" }}>
+                    <BsSun className='icon' style={{ color: `${task.category === "My Day" ? Colors.blue : ""}` }} />
+                    <p style={{ marginLeft: "20px" }}>{task.category === "My Day" ? "Added to My Day" : "Add to My Day"}</p>
                 </div>
-                <IoMdClose style={{ display: `${myday ? "" : "none"}` }} className='icon' onClick={() => setMyDay(false)} />
+                <IoMdClose style={{ display: `${task.category === "My Day" ? "" : "none"}` }} className='icon' onClick={() => setMyDay(false)} />
             </AddMyDay>
             <div style={{ border: "1px solid rgb(230, 230, 230)", width: "95%" }}>
                 <Remind style={{ justifyContent: "space-between" }}>

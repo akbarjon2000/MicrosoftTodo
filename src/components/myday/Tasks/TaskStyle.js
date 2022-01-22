@@ -23,6 +23,7 @@ box-shadow: inset 0 1px 0 0 #e5e5e5;
 }
 `
 export const RighClickMenu = styled.div`
+display: ${({ showContextMenu }) => showContextMenu ? "block" : "none"};
 max-height:${pxToRem(592)};
 width:${pxToRem(237)};
 background-color:#fff;
@@ -33,6 +34,8 @@ border-radius: 2px;
 padding: 6px 0;
 top:${({ clientY }) => clientY + "px"};
 left:${({ clientX }) => clientX + "px"};
+transform: translateX(237px) !important;
+transform: translateY(${({ y }) => y}) !important;
 
 .section{
 padding:0 8px 0 4px;

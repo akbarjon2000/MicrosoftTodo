@@ -1,13 +1,15 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, lazy, Suspense } from 'react'
 import Navbar from '../components/navbar/Navbar'
 import Sidebar from '../components/sidebar/Sidebar'
+import MyDay from '../components/myday'
+
+const SignIn = lazy(() => import('../components/authentication/Main/SignIn/SignIn'))
+const SignUp = lazy(() => import('../components/authentication/Main/SignUp/SignUp'))
+const LandingPage = lazy(() => import('../components/authentication/Main/LandingPage/LandingPage'));
+
 import { sidebarObj } from '../utils/sidebar'
 import { Route, Routes } from "react-router-dom"
 import { Wrapper } from './style'
-import SignIn from '../components/authentication/Main/SignIn/SignIn'
-import SignUp from '../components/authentication/Main/SignUp/SignUp'
-import MyDay from '../components/myday'
-import LandingPage from '../components/authentication/Main/LandingPage/LandingPage'
 
 //CONTEXT
 import MenuHideContext from '../context/menubarContext'
@@ -47,11 +49,17 @@ const Root = () => {
         )
     } else {
         return (
-            <Routes>
-                <Route path='/sign-in' element={<SignIn />} />
-                <Route path='/sign-up' element={<SignUp />} />
-                <Route path='*' element={<LandingPage />} />
-            </Routes>
+            <>
+                <Suspense fallback={<div>Loading...</div>}>
+                    <Routes>
+                        <Route path='/sign-in' element={<SignIn />} />
+                        <Route path='/sign-up' element={<SignUp />} />
+                        <Route path='*' element={<LandingPage />} />
+                    </Routes>
+                </Suspense>
+
+
+            </>
         )
     }
 

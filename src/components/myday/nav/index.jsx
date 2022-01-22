@@ -28,7 +28,7 @@ import { MenuContext } from '../../../context/menubarContext';
 // import { DrawerContext } from '../../../context/DrawerContext';
 
 
-const Navbar = ({ todos }) => {
+const Navbar = ({ todos, fetchTodo }) => {
 
     const componentRef = useRef();
 
@@ -65,6 +65,7 @@ const Navbar = ({ todos }) => {
             try {
                 const { data } = await axios.post("/todos", { data: todo })
                 console.log(data)
+                fetchTodo();
                 setTodo({ text: "" });
             } catch (error) {
                 console.log(error);
@@ -234,7 +235,7 @@ const Navbar = ({ todos }) => {
 
                 </Container >
                 {todos.map(({ id, attributes }) => (
-                    <Tasks value={{ id, ...attributes }} key={nanoid(4)} />
+                    <Tasks value={{ id, ...attributes }} key={nanoid(4)} fetchTodo={fetchTodo} />
                 ))}
                 <UnderLine />
             </div>

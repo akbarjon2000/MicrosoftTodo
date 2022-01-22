@@ -24,10 +24,10 @@ const MyDay = () => {
         <Container>
 
             <div style={{ width: "100%", display: "flex", flexDirection: "column", overflow: "scroll" }}>
-                <Navbar todos={todos} />
+                <Navbar todos={todos} fetchTodo={fetchTodo} />
                 <div className='underlines'></div>
             </div>
-            <Drawer />
+            <Drawer todos={todos} fetchTodo={fetchTodo} />
         </Container>
     )
 }
