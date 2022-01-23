@@ -17,6 +17,16 @@ import { BsCircle } from "react-icons/bs"
 const Drawer = ({ todos, fetchTodo }) => {
     const [active, setActive] = useState(false)
     const [drawerIsActive, setDrawerIsActive] = useContext(DrawerContext);
+    const [closeDisplay, setCloseDisplay] = useState({
+        close1: false,
+        close2: false,
+        close3: false,
+        close4: false,
+        close5: false,
+        close6: false,
+
+
+    })
     const [text, setText] = useState('')
     const [task, setTask] = useState({});
     // console.log(task.completed)
@@ -121,6 +131,17 @@ const Drawer = ({ todos, fetchTodo }) => {
         fetchTodo();
     }, [myday])
 
+    const handleCloseDisplay = (e) => {
+        const { id } = e.target;
+        setCloseDisplay(prevState => ({ ...prevState, [id]: true }));
+
+    }
+
+    const handleCloseDisappear = (e) => {
+        const { id } = e.target;
+        setCloseDisplay(prevState => ({ ...prevState, [id]: false }));
+    }
+
     return (
         <Container drawerIsActive={drawerIsActive.open}>
             <AddStep>
@@ -142,25 +163,32 @@ const Drawer = ({ todos, fetchTodo }) => {
                     <p className='add'>Add</p>
                 </div>
             </Steps>
-            <AddMyDay myDay={myday}>
+            <AddMyDay myDay={myday} onMouseEnter={handleCloseDisplay} onMouseLeave={handleCloseDisappear} id="close1">
                 <div className='align__center' style={{ width: "100%" }}>
                     <BsSun className='icon' style={{ color: `${task.category === "My Day" ? Colors.blue : ""}` }} />
                     <p style={{ marginLeft: "20px" }}>{task.category === "My Day" ? "Added to My Day" : "Add to My Day"}</p>
                 </div>
-                <IoMdClose style={{ display: `${task.category === "My Day" ? "" : "none"}` }} className='icon' onClick={() => setMyDay(false)} />
+                <IoMdClose style={{ display: `${(task.category && closeDisplay.close1) ? "" : "none"}`, cursor: "pointer" }} className='icon' onClick={() => setMyDay(false)} />
             </AddMyDay>
             <div style={{ border: "1px solid rgb(230, 230, 230)", width: "95%" }}>
-                <Remind style={{ justifyContent: "space-between" }}>
+                <Remind style={{ justifyContent: "space-between" }} onMouseEnter={handleCloseDisplay} onMouseLeave={handleCloseDisappear} id="close2">
                     <div className="align__center" >
-                        <span className='iconContainer center'> <VscBell className='icon' /></span>
+                        <span className='iconContainer center'> <VscBell className='icon' style={{ color: task.reminder && `${Colors.blue}` }} /></span>
                         <div style={{ display: "flex", flexDirection: "column", }} className='text'>
-                            <p>Remind me</p>
+                            <p>{task.reminder ?
+                                <div>
+                                    <p style={{ color: `${Colors.blue}` }} className='align__center'>Remind me <br /> {task.reminder}</p>
+
+                                </div>
+
+                                : <p>Remind me</p>
+                            }</p>
                             {/* <p>Fri, February 11</p> */}
                         </div>
                     </div>
-                    <IoMdClose className='close' />
+                    <IoMdClose style={{ display: `${(task.reminder && closeDisplay.close2) ? "" : "none"}`, cursor: "pointer" }} className='close' />
                 </Remind>
-                <DueDate style={{ justifyContent: "space-between" }}>
+                <DueDate style={{ justifyContent: "space-between" }} onMouseEnter={handleCloseDisplay} onMouseLeave={handleCloseDisappear} id="close3">
                     <div className="align__center" >
                         <span className='iconContainer center'> <IoCalendarOutline className='icon' /></span>
                         <div style={{ display: "flex", flexDirection: "column", }} className='text'>
@@ -168,9 +196,9 @@ const Drawer = ({ todos, fetchTodo }) => {
                             {/* <p>Fri, February 11</p> */}
                         </div>
                     </div>
-                    <IoMdClose className='close' />
+                    <IoMdClose className='close' style={{ display: `${(task.date && closeDisplay.close3) ? "" : "none"}`, cursor: "pointer" }} />
                 </DueDate>
-                <Repeat style={{ justifyContent: "space-between" }}>
+                <Repeat style={{ justifyContent: "space-between" }} onMouseOver={handleCloseDisplay} onMouseOut={handleCloseDisappear} id="close4">
                     <div className="align__center" >
                         <span className='iconContainer center'> <BsArrowRepeat className='icon' /></span>
                         <div style={{ display: "flex", flexDirection: "column", }} className='text'>
@@ -178,20 +206,19 @@ const Drawer = ({ todos, fetchTodo }) => {
                             {/* <p>Fri, February 11</p> */}
                         </div>
                     </div>
-                    <IoMdClose className='close' />
+                    <IoMdClose className='close' style={{ display: `${(task.repeat && closeDisplay.close4) ? "" : "none"}`, cursor: "pointer" }} />
                 </Repeat>
 
-            </div>
+            </div >
 
             <Category style={{ justifyContent: "space-between" }}>
                 <div className="align__center" >
                     <span className='iconContainer center'> <IoPricetagOutline className='icon' /></span>
                     <div style={{ display: "flex", flexDirection: "column", }} className='text'>
-                        <p>Pick a category</p>
+                        <input type="text" placeholder="Pick a category" />
                         {/* <p>Fri, February 11</p> */}
                     </div>
                 </div>
-                <IoMdClose className='close' />
             </Category>
             <AddFile style={{ justifyContent: "space-between" }}>
                 <div className="align__center" style={{ width: "100%" }} >
@@ -201,7 +228,6 @@ const Drawer = ({ todos, fetchTodo }) => {
                         <input type="file" id='file' name='file' style={{ display: "none" }} />
                     </div>
                 </div>
-                <IoMdClose className='close' />
             </AddFile>
             <Editor>
                 <input type="text" placeholder="Add note" className='textArea' />
