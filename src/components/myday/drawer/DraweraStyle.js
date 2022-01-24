@@ -132,11 +132,28 @@ export const DueDate = styled(Remind)`
 export const Repeat = styled(Remind)`
 
 `
-export const Category = styled(Remind)`
+export const Category = styled.div`
+background-color:white;
 width:95%;
+height:${pxToRem(52)};
 margin: ${pxToRem(10)} 0;
 border: 1px solid rgb(230,230,230);
-
+align-items:center;
+padding:0 ${pxToRem(8)};
+.categoryInput{
+    height:50px;
+    width:200px;
+    border:none;
+    outline:none;
+    ::placeholder{
+        font-size:15px;
+        color:${Colors.greyTextColor};
+    }
+    padding-left:${pxToRem(10)};
+}
+.dataList{
+   background-color:red;
+}
 
 `
 
@@ -190,6 +207,7 @@ border-radius:4px;
 .delete{
    width:${pxToRem(30)};
     height:${pxToRem(30)};
+    cursor: pointer;
     &:hover{
         background-color:white;
 border-radius:4px;

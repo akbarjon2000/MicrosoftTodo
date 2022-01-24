@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { AddMyDay, AddStep, Container, Steps, Remind, DueDate, Repeat, Category, AddFile, Editor, Close } from './DraweraStyle'
 import axios from '../../../utils/axios'
 import { DrawerContext } from '../../../context/DrawerContext'
+import Swal from "sweetalert2";
 //ICONS:
 
 import { BiStar, BiExit } from "react-icons/bi"
@@ -100,6 +101,7 @@ const Drawer = ({ todos, fetchTodo }) => {
         }
     }
 
+
     useEffect(() => {
         updateCompleted();
     }, [completed]);
@@ -142,6 +144,34 @@ const Drawer = ({ todos, fetchTodo }) => {
         setCloseDisplay(prevState => ({ ...prevState, [id]: false }));
     }
 
+    const handleDelete = async () => {
+        try {
+            Swal.fire({
+                icon: "warning",
+                title: `${task.text} will be permanently deleted.`,
+                text: "you won't be able to undo this action.",
+                showCancelButton: true
+            }).then(async (value) => {
+                if (value.isConfirmed) {
+                    const { data } = await axios.delete(`/todos/${drawerIsActive.id}`);
+                    setDrawerIsActive(prevState => ({ ...prevState, open: false }));
+                    fetchTodo();
+                }
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const handleCloseClick = async (key) => {
+        try {
+            const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { [key]: "" } });
+            fetchTodo();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <Container drawerIsActive={drawerIsActive.open}>
             <AddStep>
@@ -166,8 +196,15 @@ const Drawer = ({ todos, fetchTodo }) => {
             <AddMyDay myDay={myday} onMouseEnter={handleCloseDisplay} onMouseLeave={handleCloseDisappear} id="close1">
                 <div className='align__center' style={{ width: "100%" }}>
                     <BsSun className='icon' style={{ color: `${task.category === "My Day" ? Colors.blue : ""}` }} />
-                    <p style={{ marginLeft: "20px" }}>{task.category === "My Day" ? "Added to My Day" : "Add to My Day"}</p>
+                    {/* <p style={{ marginLeft: "20px" }}>{task.category === "My Day" ? "Added to My Day" : "Add to My Day"}</p> */}
+                    <div>{task.category === "My Day" ?
+                        <div>
+                            <p style={{ color: `${Colors.blue}` }} className='align__center'>Added to<br /> {task.cetegory}</p>
+                        </div>
+                        : <p>Add to My Day</p>
+                    }</div>
                 </div>
+
                 <IoMdClose style={{ display: `${(task.category && closeDisplay.close1) ? "" : "none"}`, cursor: "pointer" }} className='icon' onClick={() => setMyDay(false)} />
             </AddMyDay>
             <div style={{ border: "1px solid rgb(230, 230, 230)", width: "95%" }}>
@@ -175,38 +212,49 @@ const Drawer = ({ todos, fetchTodo }) => {
                     <div className="align__center" >
                         <span className='iconContainer center'> <VscBell className='icon' style={{ color: task.reminder && `${Colors.blue}` }} /></span>
                         <div style={{ display: "flex", flexDirection: "column", }} className='text'>
-                            <p>{task.reminder ?
+                            <div>{task.reminder ?
                                 <div>
                                     <p style={{ color: `${Colors.blue}` }} className='align__center'>Remind me <br /> {task.reminder}</p>
 
                                 </div>
 
                                 : <p>Remind me</p>
-                            }</p>
+                            }</div>
                             {/* <p>Fri, February 11</p> */}
                         </div>
                     </div>
-                    <IoMdClose style={{ display: `${(task.reminder && closeDisplay.close2) ? "" : "none"}`, cursor: "pointer" }} className='close' />
+                    <IoMdClose onClick={() => handleCloseClick("reminder")} style={{ display: `${(task.reminder && closeDisplay.close2) ? "" : "none"}`, cursor: "pointer" }} className='close' />
                 </Remind>
                 <DueDate style={{ justifyContent: "space-between" }} onMouseEnter={handleCloseDisplay} onMouseLeave={handleCloseDisappear} id="close3">
                     <div className="align__center" >
-                        <span className='iconContainer center'> <IoCalendarOutline className='icon' /></span>
+                        <span className='iconContainer center'> <IoCalendarOutline className='icon' style={{ color: task.date && `${Colors.blue}` }} /></span>
                         <div style={{ display: "flex", flexDirection: "column", }} className='text'>
-                            <p>Add a due date</p>
-                            {/* <p>Fri, February 11</p> */}
+                            <div>{task.date ?
+                                <div>
+                                    <p style={{ color: `${Colors.blue}` }} className='align__center'>{task.date}</p>
+
+                                </div>
+
+                                : <p>Add a due date</p>
+                            }</div>
                         </div>
                     </div>
-                    <IoMdClose className='close' style={{ display: `${(task.date && closeDisplay.close3) ? "" : "none"}`, cursor: "pointer" }} />
+                    <IoMdClose onClick={() => handleCloseClick("date")} className='close' style={{ display: `${(task.date && closeDisplay.close3) ? "" : "none"}`, cursor: "pointer" }} />
                 </DueDate>
                 <Repeat style={{ justifyContent: "space-between" }} onMouseOver={handleCloseDisplay} onMouseOut={handleCloseDisappear} id="close4">
                     <div className="align__center" >
-                        <span className='iconContainer center'> <BsArrowRepeat className='icon' /></span>
+                        <span className='iconContainer center'> <BsArrowRepeat className='icon' style={{ color: task.date && `${Colors.blue}` }} /></span>
+
                         <div style={{ display: "flex", flexDirection: "column", }} className='text'>
-                            <p>Repeat</p>
-                            {/* <p>Fri, February 11</p> */}
+                            <div>{task.repeat ?
+                                <div>
+                                    <p style={{ color: `${Colors.blue}` }} className='align__center'>{task.repeat}</p>
+                                </div>
+                                : <p>Repeat</p>
+                            }</div>
                         </div>
                     </div>
-                    <IoMdClose className='close' style={{ display: `${(task.repeat && closeDisplay.close4) ? "" : "none"}`, cursor: "pointer" }} />
+                    <IoMdClose onClick={() => handleCloseClick("repeat")} className='close' style={{ display: `${(task.repeat && closeDisplay.close4) ? "" : "none"}`, cursor: "pointer" }} />
                 </Repeat>
 
             </div >
@@ -215,7 +263,14 @@ const Drawer = ({ todos, fetchTodo }) => {
                 <div className="align__center" >
                     <span className='iconContainer center'> <IoPricetagOutline className='icon' /></span>
                     <div style={{ display: "flex", flexDirection: "column", }} className='text'>
-                        <input type="text" placeholder="Pick a category" />
+                        <input type="text" placeholder="Pick a category" list="categoryList" className='categoryInput' />
+                        <datalist id='categoryList' className='dataList'>
+                            <option>Yellov category</option>
+                            <option>Red category</option>
+                            <option>Green category</option>
+                            <option>Orange category</option>
+                            <option>Purple category</option>
+                        </datalist>
                         {/* <p>Fri, February 11</p> */}
                     </div>
                 </div>
@@ -237,7 +292,7 @@ const Drawer = ({ todos, fetchTodo }) => {
                     <BiExit className='icon' onClick={() => setDrawerIsActive({ open: false })} />
                 </div>
                 <p className='text'>Created Today</p>
-                <div className='delete center'>
+                <div className='delete center' onClick={handleDelete} >
                     <VscTrash className=' icon' />
                 </div>
 
