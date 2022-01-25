@@ -232,7 +232,6 @@ const Navbar = ({ todos, fetchTodo }) => {
                             </div>
                         }
                     </AddMenu>
-
                 </Container >
                 {todos.map(({ id, attributes }) => (
                     <Tasks value={{ id, ...attributes }} key={nanoid(4)} fetchTodo={fetchTodo} />
@@ -240,7 +239,6 @@ const Navbar = ({ todos, fetchTodo }) => {
                 <UnderLine />
             </div>
         </div >
-
     )
 }
 
