@@ -8,13 +8,38 @@ background-color:${Colors.blue};
 display:flex;
 align-items:center;
 justify-content:space-between;
-input{
+.search{
+    
     width:${pxToRem(400)};
     height:${pxToRem(32)};
     border-radius:${pxToRem(3)};
     outline:none;
     border:none;
     background-color: ${Colors.lightblue};
+    cursor: pointer;
+    &:hover{
+        background-color:white;
+    }
+}
+.searchbtn{
+   width:${pxToRem(40)};
+   height:100%;
+   &:hover{
+       background-color:white;
+   }
+    border-radius:${pxToRem(3)};
+   cursor: pointer;
+}
+.searchInput{
+    width:100%;
+    height:100%;
+    border:none;
+    outline:none;
+    background-color:inherit;
+    padding-left:${pxToRem(10)};
+    padding-right:${pxToRem(10)};
+display:${({ show }) => show ? "" : "none"};
+
 }
 .iconbtn{
     width:48px;

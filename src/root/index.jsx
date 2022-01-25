@@ -2,6 +2,7 @@ import React, { useContext, useEffect, lazy, Suspense } from 'react'
 import Navbar from '../components/navbar/Navbar'
 import Sidebar from '../components/sidebar/Sidebar'
 import MyDay from '../components/myday'
+import Searchbar from "../components/Searchbar"
 
 const SignIn = lazy(() => import('../components/authentication/Main/SignIn/SignIn'))
 const SignUp = lazy(() => import('../components/authentication/Main/SignUp/SignUp'))
@@ -38,6 +39,7 @@ const Root = () => {
                                         {sidebarObj.map(({ id, path: pathname, Component }) => (
                                             <Route key={id} path={pathname} element={<Component />} />
                                         ))}
+                                        <Route path="searchbar" element={<Searchbar />} />
                                         <Route path='*' element={<MyDay />} />
                                     </Routes>
                                 </MenuHideContext>
