@@ -4,12 +4,9 @@ import Sidebar from '../components/sidebar/Sidebar'
 import MyDay from '../components/myday'
 import Searchbar from "../components/Searchbar"
 
-const SignIn = lazy(() => import('../components/authentication/Main/SignIn/SignIn'))
-const SignUp = lazy(() => import('../components/authentication/Main/SignUp/SignUp'))
-const LandingPage = lazy(() => import('../components/authentication/Main/LandingPage/LandingPage'));
-
+// import _ from 'lodash';
 import { sidebarObj } from '../utils/sidebar'
-import { Route, Routes } from "react-router-dom"
+import { Route, Routes, useNavigate } from "react-router-dom"
 import { Wrapper } from './style'
 
 //CONTEXT
@@ -18,6 +15,10 @@ import TaskContext from '../context/tasksContext'
 import ReducerContextProvider from '../context/reducerContext'
 import { LogInContext } from '../context/LogInContext'
 import DrawerContextProvider from '../context/DrawerContext'
+//REACT LAZY
+const SignIn = lazy(() => import('../components/authentication/Main/SignIn/SignIn'))
+const SignUp = lazy(() => import('../components/authentication/Main/SignUp/SignUp'))
+const LandingPage = lazy(() => import('../components/authentication/Main/LandingPage/LandingPage'));
 
 
 const Root = () => {
@@ -25,6 +26,10 @@ const Root = () => {
     useEffect(() => {
         setIsLoggedIn(false);
     }, [])
+    // const navigate = useNavigate();
+    // if (isLoggedIn) {
+    //     navigate("myDay");
+    // }
     if (isLoggedIn) {
         return (
             <>
