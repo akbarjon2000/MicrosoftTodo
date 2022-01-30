@@ -1,15 +1,29 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useNavigate } from "react-router-dom"
 import { Nav } from './style'
 import { CgMenuGridO } from "react-icons/cg"
 import { VscSettingsGear, VscSearch } from "react-icons/vsc"
 import { BiQuestionMark } from "react-icons/bi"
 import { AiOutlineNotification, AiOutlineUser } from "react-icons/ai"
+import { SearchContext } from "../../context/SearchContext";
+import axios from 'axios';
 const Navbar = () => {
-    const [searchText, setSearchText] = useState("");
+    // const [searchText, setSearchText] = useState("");
+    const [searchText, setSearchText] = useContext(SearchContext);
     const [showInput, setShowInput] = useState(false);
+    const fetchTodo = async () => {
+        try {
+            const { data } = await axios.get(`/todos`);
+            const { data: todo } = data;
+            console.log(todo)
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
     const handleTextChange = (e) => {
         setSearchText(e.target.value)
+        fetchTodo();
     }
     const navigate = useNavigate();
     const handleShowInput = () => {
