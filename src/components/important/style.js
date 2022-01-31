@@ -4,7 +4,8 @@ export const Container = styled.div`
 width:100%;
 height:100vh;
 display:flex;
-flex-direction:column;
+flex-direction:row;
+
 .underlines{
     margin: 0 24px 0;
     flex:1;

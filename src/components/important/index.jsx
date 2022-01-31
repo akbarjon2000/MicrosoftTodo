@@ -1,16 +1,33 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Navbar from './nav';
 import { Container } from './style';
-import Tasks from './Tasks';
-
+import axios from '../../utils/axios';
+import Drawer from './drawer/Drawer';
 
 const Important = () => {
+    const [todos, setTodos] = useState([]);
+    const fetchTodo = async () => {
+        try {
+            const { data } = await axios.get("/todos?filters[important][$eq]=true");
+            const { data: todo } = data;
+            setTodos(todo)
+            console.log(todo)
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+    useEffect(() => {
+        fetchTodo();
+    }, [])
     return (
         <Container>
 
-            <Navbar />
-            <Tasks />
-            <div className='underlines'></div>
+            <div style={{ width: "100%", display: "flex", flexDirection: "column", overflow: "scroll" }}>
+                <Navbar todos={todos} fetchTodo={fetchTodo} />
+                <div className='underlines'></div>
+            </div>
+            <Drawer todos={todos} fetchTodo={fetchTodo} />
         </Container>
     )
 }

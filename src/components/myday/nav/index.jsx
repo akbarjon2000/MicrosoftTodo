@@ -56,7 +56,7 @@ const Navbar = ({ todos, fetchTodo }) => {
     // const [change, setChange] = useState(todos);
 
     const handleChange = (e) => {
-        setTodo({ text: e.target.value });
+        setTodo(prevState => ({ ...prevState, text: e.target.value }));
         console.log(todo);
     }
 
