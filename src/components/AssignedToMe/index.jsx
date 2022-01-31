@@ -9,7 +9,7 @@ const Index = () => {
     return <Container hide={hide}>
         <div className='align__center' >
             <button className='menuIcon ' onClick={() => setHide(false)}>
-                <IoMenuOutline size={20} className='icon' style={{ position: `${hide ? "relative" : ""}`, top: `${hide ? "-0.5rem" : ""}` }} />
+                <IoMenuOutline size={20} className='icon' style={{}} />
             </button>
             <h3>Assigned to me</h3>
             <div className='dotsCon center' title='list opntions'>

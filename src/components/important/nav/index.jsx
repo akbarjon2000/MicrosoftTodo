@@ -91,7 +91,7 @@ const Navbar = ({ todos, fetchTodo }) => {
                         <div className='header' style={{ display: "flex", justifyContent: "flex-start" }}>
                             <div >
                                 <button className='menuIcon ' onClick={() => setHide(false)}>
-                                    <IoMenuOutline size={20} className='icon' style={{ position: `${hide ? "relative" : ""}`, top: `${hide ? "-0.5rem" : ""}` }} />
+                                    <IoMenuOutline size={20} className='icon' />
                                 </button>
                             </div>
                             <div className=' nav align__center' >
