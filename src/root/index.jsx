@@ -35,12 +35,12 @@ const Root = () => {
         return (
             <>
                 <SearchContextProvider>
-                    <Navbar />
-                    <Wrapper>
-                        <DrawerContextProvider>
-                            <ReducerContextProvider>
-                                <TaskContext>
-                                    <MenuHideContext>
+                    <MenuHideContext>
+                        <Navbar />
+                        <Wrapper>
+                            <DrawerContextProvider>
+                                <ReducerContextProvider>
+                                    <TaskContext>
                                         <Sidebar />
                                         <Routes>
                                             {sidebarObj.map(({ id, path: pathname, Component }) => (
@@ -49,11 +49,11 @@ const Root = () => {
                                             <Route path="searchbar" element={<Searchbar />} />
                                             <Route path='*' element={<MyDay />} />
                                         </Routes>
-                                    </MenuHideContext>
-                                </TaskContext>
-                            </ReducerContextProvider>
-                        </DrawerContextProvider>
-                    </Wrapper>
+                                    </TaskContext>
+                                </ReducerContextProvider>
+                            </DrawerContextProvider>
+                        </Wrapper>
+                    </MenuHideContext>
                 </SearchContextProvider>
             </>
         )

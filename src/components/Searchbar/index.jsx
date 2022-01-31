@@ -4,9 +4,14 @@ import axios from '../../utils/axios';
 import Drawer from './drawer/Drawer';
 import Tasks from "./Tasks";
 import { nanoid } from 'nanoid';
+import { Colors } from '../../constants/constants';
+import { pxToRem } from '../../utils/pxToRem';
+import { IoMenuOutline } from "react-icons/io5"
 import { SearchContext } from "../../context/SearchContext";
+import { MenuContext } from '../../context/menubarContext';
 const MyDay = () => {
     const [searchText, setSearchText] = useContext(SearchContext);
+    const [hide, setHide] = useContext(MenuContext);
     const [todos, setTodos] = useState([]);
     const fetchTodo = async () => {
         try {
@@ -22,15 +27,22 @@ const MyDay = () => {
     }
     useEffect(() => {
         fetchTodo();
-    }, [])
+    }, [searchText])
     return (
-        <Container>
-
-            <div style={{ width: "100%", display: "flex", flexDirection: "column", overflow: "scroll" }}>
-                {todos.map(({ id, attributes }) => (
-                    <Tasks value={{ id, ...attributes }} key={nanoid(4)} fetchTodo={fetchTodo} />
-                ))}
-                <div className='underlines'></div>
+        <Container hide={hide}>
+            <div style={{ width: "100%", height: "100vh" }}>
+                <div style={{ display: "flex", margin: "25px" }}>
+                    <button className='menuIcon ' onClick={() => setHide(false)}>
+                        <IoMenuOutline size={20} className='icon' style={{ position: `${hide ? "relative" : ""}`, top: `${hide ? "-0.5rem" : ""}` }} />
+                    </button>
+                    <p classcName='searchHead' style={{ color: `${Colors.blue}`, fontSize: `${pxToRem(25)}` }}>Searching for "{searchText}"</p>
+                </div>
+                <div style={{ width: "100%", display: "flex", flexDirection: "column", overflow: "scroll", height: "100vh" }}>
+                    {todos.map(({ id, attributes }) => (
+                        <Tasks value={{ id, ...attributes }} key={nanoid(4)} fetchTodo={fetchTodo} />
+                    ))}
+                    <div className='underlines'></div>
+                </div>
             </div>
             <Drawer todos={todos} fetchTodo={fetchTodo} />
         </Container>
