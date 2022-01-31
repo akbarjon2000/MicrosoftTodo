@@ -1,9 +1,10 @@
 //COMPONENTS
-import Generic from "../pages/generic"
+// import Generic from "../pages/generic"
 import MyDay from "../components/myday"
 import Important from "../components/Important"
 import AssignedToMe from "../components/AssignedToMe"
 import Planned from "../components/Planned"
+import Tasks from "../components/Tasks"
 //ICONS
 import { BsSun } from "react-icons/bs"
 import { IoStarOutline, IoCalendarOutline } from "react-icons/io5"
@@ -44,7 +45,7 @@ export const sidebarObj = [
         id: 5,
         title: "Tasks",
         icon: VscHome,
-        Component: Generic,
+        Component: Tasks,
         path: "tasks"
     },
 

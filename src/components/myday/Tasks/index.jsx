@@ -13,8 +13,10 @@ import { ReactComponent as Move } from "../../../assets/icons/movetask.svg";
 import Swal from 'sweetalert2'
 
 const Tasks = ({ value, fetchTodo }) => {
+    const [DATA, SETDATA] = useState(null)
+    console.log(DATA);
     const { completed, important, id } = value;
-    const [icon, setIcon] = useState(false)
+    // const [icon, setIcon] = useState(false)
     const [taskIsActive, setTaskIsActive] = useState(false);
     const [isImportant, setIsImportant] = useState(important);
     const [isCompleted, setIsCompleted] = useState(completed);
@@ -23,10 +25,9 @@ const Tasks = ({ value, fetchTodo }) => {
     const [client, setClient] = useState({
         clientX: null,
         clientY: null,
-        xTranslate: null,
-        yTranslate: null,
         x: null,
-        y: null
+        top: null,
+        bottom: null
     })
 
     const handleImportant = async () => {
@@ -41,7 +42,7 @@ const Tasks = ({ value, fetchTodo }) => {
     const handleCompleted = async () => {
         try {
             const { data } = await axios.put(`/todos/${id}`, { data: { completed: isCompleted } })
-            console.log(data)
+            SETDATA(data)
         } catch (error) {
             console.log(error)
         }
@@ -59,14 +60,13 @@ const Tasks = ({ value, fetchTodo }) => {
 
     }, [isCompleted]);
 
-    const handleDrawerUtility = (e) => {
-        // e.stopPropogation();
+    const handleDrawerUtility = () => {
         setDrawerIsActive(prevState => ({ ...prevState, id: id, open: true }));
         setTaskIsActive(true);
+        SETDATA(drawerIsActive)
     }
 
-    const handleComplete = (e) => {
-
+    const handleComplete = () => {
         setIsCompleted(!isCompleted)
     }
 
@@ -87,9 +87,14 @@ const Tasks = ({ value, fetchTodo }) => {
         if (client.clientX > window.innerWidth / 2) {
             setClient(prevState => ({ ...prevState, x: "-100%" }));
         }
-        if (client.clientY > window.innerHeight / 2.5) {
-            setClient(prevState => ({ ...prevState, y: "-50%" }));
+        if (client.clientY > window.innerHeight / 2) {
+            setClient(prevState => ({ ...prevState, bottom: true }));
+            setClient(prevState => ({ ...prevState, top: false }));
 
+
+        } else {
+            setClient(prevState => ({ ...prevState, top: true }));
+            setClient(prevState => ({ ...prevState, bottom: false }));
         }
         setShowContextMenu(true);
         // console.log("clientX: ", e.clientX)
@@ -111,6 +116,7 @@ const Tasks = ({ value, fetchTodo }) => {
             }).then(async (data) => {
                 if (data.isConfirmed) {
                     const { data } = await axios.delete(`/todos/${id}`);
+                    SETDATA(data)
                     fetchTodo();
                 }
             }
@@ -120,12 +126,13 @@ const Tasks = ({ value, fetchTodo }) => {
         }
     }
 
-    const { clientX, clientY, xTranslate, yTranslate, x, y } = client;
+    const { clientX, clientY, x, top, bottom } = client;
+
 
 
     return (
         <Container taskIsActive={taskIsActive} onContextMenu={handleContextMenu}  >
-            <RighClickMenu clientX={clientX} clientY={clientY} x={x} y={y} onMouseLeave={() => setShowContextMenu(false)} showContextMenu={showContextMenu} >
+            <RighClickMenu clientX={clientX} clientY={clientY} x={x} top={top} bottom={bottom} onMouseLeave={() => setShowContextMenu(false)} onClick={() => setShowContextMenu(false)} showContextMenu={showContextMenu} >
                 <p className='align__center section '><BsSun className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Add to My Day</p>
                 <p className='align__center section '><IoStarOutline className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Mark as important</p>
                 <p className='align__center section ' ><BsCircle className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Mark as not completed</p>
@@ -147,7 +154,7 @@ const Tasks = ({ value, fetchTodo }) => {
                     // onMouseLeave={() => setIcon(false)}
                     onClick={handleComplete}
                 >
-                    {(icon || isCompleted) ?
+                    {(isCompleted) ?
                         <AiFillCheckCircle className='icon ' color="#6e8eeb" size={21} title='Mark as complete!' />
                         : <BsCircle className='icon center' color="#6e8eeb" size={18} />
                     }

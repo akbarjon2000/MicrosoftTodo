@@ -14,7 +14,7 @@ import Swal from 'sweetalert2'
 
 const Tasks = ({ value, fetchTodo }) => {
     const [DATA, SETDATA] = useState(null);
-    console.log(DATA)
+    console.log(DATA);
     const { completed, important, id } = value;
     // const [icon, setIcon] = useState(false)
     const [taskIsActive, setTaskIsActive] = useState(false);
@@ -25,6 +25,8 @@ const Tasks = ({ value, fetchTodo }) => {
     const [client, setClient] = useState({
         clientX: null,
         clientY: null,
+        xTranslate: null,
+        yTranslate: null,
         x: null,
         top: null,
         bottom: null
@@ -52,6 +54,7 @@ const Tasks = ({ value, fetchTodo }) => {
             handleImportant();
             fetchTodo();
         }
+
     }, [isImportant]);
 
     useEffect(() => {
@@ -63,10 +66,11 @@ const Tasks = ({ value, fetchTodo }) => {
     const handleDrawerUtility = () => {
         setDrawerIsActive(prevState => ({ ...prevState, id: id, open: true }));
         setTaskIsActive(true);
-        SETDATA(drawerIsActive)
+        SETDATA(drawerIsActive);
     }
 
     const handleComplete = () => {
+
         setIsCompleted(!isCompleted)
     }
 
@@ -83,7 +87,8 @@ const Tasks = ({ value, fetchTodo }) => {
                 yTranslate: window.innerHeight,
             })
         )
-
+        console.log(client.clientX + "-" + window.innerWidth)
+        console.log(client.clientY + "-" + window.innerHeight)
         if (client.clientX > window.innerWidth / 2) {
             setClient(prevState => ({ ...prevState, x: "-100%" }));
         }
@@ -131,7 +136,7 @@ const Tasks = ({ value, fetchTodo }) => {
 
     return (
         <Container taskIsActive={taskIsActive} onContextMenu={handleContextMenu}  >
-            <RighClickMenu clientX={clientX} clientY={clientY} x={x} top={top} bottom={bottom} onClick={() => setShowContextMenu(false)} onMouseLeave={() => setShowContextMenu(false)} showContextMenu={showContextMenu} >
+            <RighClickMenu clientX={clientX} clientY={clientY} x={x} top={top} bottom={bottom} onMouseLeave={() => setShowContextMenu(false)} onClick={() => setShowContextMenu(false)} showContextMenu={showContextMenu} >
                 <p className='align__center section '><BsSun className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Add to My Day</p>
                 <p className='align__center section '><IoStarOutline className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Mark as important</p>
                 <p className='align__center section ' ><BsCircle className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Mark as not completed</p>

@@ -32,10 +32,11 @@ overflow: hidden auto;
 position: fixed;
 border-radius: 2px;
 padding: 6px 0;
-top:${({ clientY }) => clientY + "px"};
+top:${({ top }) => top && 0};
+bottom:${({ bottom }) => bottom && 0};
 left:${({ clientX }) => clientX + "px"};
-transform: translateX(237px) !important;
-transform: translateY(${({ y }) => y}) !important;
+transform: translateX(${({ x }) => x}) !important;
+
 
 .section{
 padding:0 8px 0 4px;
