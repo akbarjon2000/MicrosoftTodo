@@ -66,7 +66,9 @@ const Navbar = ({ todos, fetchTodo }) => {
                 const { data } = await axios.post("/todos", { data: todo })
                 console.log(data)
                 fetchTodo();
-                setTodo({ text: "" });
+                setTodo(prevState => ({
+                    ...prevState, text: "", date: "", reminder: "", repeat: ""
+                }));
             } catch (error) {
                 console.log(error);
             }

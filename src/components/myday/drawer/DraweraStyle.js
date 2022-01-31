@@ -4,7 +4,8 @@ import { pxToRem } from '../../../utils/pxToRem';
 
 export const Container = styled.div`
 min-width:${pxToRem(370)};
-min-height:${pxToRem(1000)};    
+min-height:${pxToRem(1000)}; 
+height:100%;   
 background-color:${Colors.grey};
 display:${({ drawerIsActive }) => drawerIsActive ? "flex" : "none"};
 flex-direction:column;

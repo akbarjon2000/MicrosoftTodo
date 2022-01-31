@@ -7,18 +7,21 @@ import { sidebarObj as sidebar } from '../../utils/sidebar';
 import { IoMenuOutline } from "react-icons/io5"
 //CONTEXT:
 import { MenuContext } from '../../context/menubarContext';
-
+import { DrawerContext } from '../../context/DrawerContext';
 
 
 const Sidebar = () => {
     const [hide, setHide] = useContext(MenuContext);
+    const [drawerIsActive, setDrawerIsActive] = useContext(DrawerContext);
+    console.log(drawerIsActive);
+
     return (
         <Container hide={hide}>
             <button className='menuIcon' onClick={() => setHide(true)}>
                 <IoMenuOutline size={20} className='icon' />
             </button>
             {sidebar.map(({ id, title, path, icon: Icon }) => (
-                <NavLink to={path} key={id} style={({ isActive }) => {
+                <NavLink onClick={() => setDrawerIsActive(false)} to={path} key={id} style={({ isActive }) => {
                     return {
                         color: isActive ? 'blue' : '#black',
                         textDecoration: "none",
