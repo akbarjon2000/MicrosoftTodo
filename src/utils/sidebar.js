@@ -3,6 +3,7 @@ import Generic from "../pages/generic"
 import MyDay from "../components/myday"
 import Important from "../components/Important"
 import AssignedToMe from "../components/AssignedToMe"
+import Planned from "../components/Planned"
 //ICONS
 import { BsSun } from "react-icons/bs"
 import { IoStarOutline, IoCalendarOutline } from "react-icons/io5"
@@ -29,7 +30,7 @@ export const sidebarObj = [
         id: 3,
         title: "Planned",
         icon: IoCalendarOutline,
-        Component: Generic,
+        Component: Planned,
         path: "planned"
     },
     {
