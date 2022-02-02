@@ -31,8 +31,6 @@ function SignUp() {
             const { data } = await axios.post("/auth/local/register", user);
             setLoading(false);
             console.log(data);
-            localStorage.setItem("user", JSON.stringify(data.user))
-            localStorage.setItem("token", JSON.stringify(data.jwt))
             Swal.fire({
                 icon: "success",
                 title: "Success",

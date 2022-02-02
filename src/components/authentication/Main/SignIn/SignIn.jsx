@@ -26,6 +26,7 @@ function SignIn() {
         try {
             const { data } = await axios.post("/auth/local", { identifier: user.identifier, password: user.password });
             console.log(data);
+
             setLoading(true)
             setIsLoggedIn(true);
             Swal.fire({
@@ -33,6 +34,11 @@ function SignIn() {
                 title: "Successful log in!",
                 text: "Enjoy your time!!!",
                 timer: 2000
+            }).then((value) => {
+                localStorage.setItem("user", JSON.stringify(data.user))
+                localStorage.setItem("token", JSON.stringify(data.jwt))
+                setLoading(false);
+                window.location.href = "/"
             })
 
         } catch (error) {
@@ -45,6 +51,7 @@ function SignIn() {
             })
         }
     }
+
 
     return (
         <Container>

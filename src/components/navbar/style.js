@@ -49,7 +49,11 @@ display:${({ show }) => show ? "" : "none"};
     background-color:transparent;
     border:none;
     outline:none;
+    &:hover{
+        background-color:${Colors.lightblue}
+    }
 }
+
 .iconbtn > span{
  height: 16px;
     width: 16px;
@@ -64,5 +68,21 @@ display:${({ show }) => show ? "" : "none"};
     align-items:center;
     justify-content:center;
 }
+
+`
+
+export const SignOutModal = styled.div`
+width:${pxToRem(100)};
+height:${pxToRem(30)};
+border:1px solid;
+display:${({ showSignOut }) => showSignOut ? "flex" : "none"};
+align-items:center;
+padding:${pxToRem(5)};
+gap:${pxToRem(5)};
+position:absolute;
+z-index:1000;
+right:0;
+border:1px solid rgba(200,200,200,1);
+background-color:rgb(220,220,220);
 
 `

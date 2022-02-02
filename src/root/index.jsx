@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, lazy, Suspense } from 'react'
+import React, { useContext, useEffect, lazy, Suspense, useState } from 'react'
 import Navbar from '../components/navbar/Navbar'
 import Sidebar from '../components/sidebar/Sidebar'
 import MyDay from '../components/myday'
@@ -21,22 +21,37 @@ const SignIn = lazy(() => import('../components/authentication/Main/SignIn/SignI
 const SignUp = lazy(() => import('../components/authentication/Main/SignUp/SignUp'))
 const LandingPage = lazy(() => import('../components/authentication/Main/LandingPage/LandingPage'));
 
-
 const Root = () => {
+
     const [isLoggedIn, setIsLoggedIn] = useContext(LogInContext);
+    const token = localStorage.token;
+    const [user, setUser] = useState(JSON.parse(localStorage.user || "{}"));
+
+    const signOut = () => {
+        try {
+            setUser({});
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     useEffect(() => {
         setIsLoggedIn(false);
     }, [])
+
     // const navigate = useNavigate();
     // if (isLoggedIn) {
     //     navigate("myDay");
     // }
-    if (isLoggedIn) {
+
+    if (token && user?.id) {
         return (
             <>
                 <SearchContextProvider>
                     <MenuHideContext>
-                        <Navbar />
+                        <Navbar signOut={signOut} />
                         <Wrapper>
                             <DrawerContextProvider>
                                 <ReducerContextProvider>

@@ -1,17 +1,18 @@
 import React, { useContext, useState } from 'react'
 import { useNavigate } from "react-router-dom"
-import { Nav } from './style'
+import { Nav, SignOutModal } from './style'
 import { CgMenuGridO } from "react-icons/cg"
 import { VscSettingsGear, VscSearch } from "react-icons/vsc"
 import { BiQuestionMark } from "react-icons/bi"
-import { AiOutlineNotification, AiOutlineUser } from "react-icons/ai"
+import { AiOutlineNotification, AiOutlinePoweroff, AiOutlineSwitcher, AiOutlineUser } from "react-icons/ai"
 import { SearchContext } from "../../context/SearchContext";
 import { Colors } from '../../constants/constants'
 import axios from 'axios';
-const Navbar = () => {
+const Navbar = ({ signOut }) => {
     // const [searchText, setSearchText] = useState("");
     const [searchText, setSearchText] = useContext(SearchContext);
     const [showInput, setShowInput] = useState(false);
+    const [showSignOut, setShowSignOut] = useState(false);
     // const fetchTodo = async () => {
     //     try {
     //         const { data } = await axios.get(`/todos`);
@@ -30,6 +31,10 @@ const Navbar = () => {
         setShowInput(true);
         navigate("/searchbar");
     }
+    const handleSignOut = () => {
+        setShowSignOut(false);
+        signOut();
+    }
     return (
         <Nav show={showInput}>
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -46,7 +51,11 @@ const Navbar = () => {
                 <button className='iconbtn'><VscSettingsGear size={24} color='#fff' className='icons' /></button>
                 <button className='iconbtn'><BiQuestionMark size={24} color='#fff' className='icons' /></button>
                 <button className='iconbtn'><span>{0}</span><AiOutlineNotification size={24} color='#fff' className='icons' /></button>
-                <button className='iconbtn'><AiOutlineUser size={24} color='#fff' className='icons' /></button>
+                <button className='iconbtn' onClick={() => setShowSignOut(!showSignOut)}><AiOutlineUser size={24} color='#fff' className='icons' /></button>
+                <SignOutModal showSignOut={showSignOut} onClick={handleSignOut}>
+                    <AiOutlinePoweroff style={{ color: "red" }} />
+                    <p>Sign out</p>
+                </SignOutModal>
             </div>
         </Nav>
     )
