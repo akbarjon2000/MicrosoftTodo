@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Navbar from './nav';
 import { Container } from './style';
 import axios from '../../utils/axios';
 import Drawer from './drawer/Drawer';
+import { UserIdContext } from '../../context/UserIdContext';
 
 const MyDay = () => {
     const [todos, setTodos] = useState([]);
+    const userId = useContext(UserIdContext);
     const fetchTodo = async () => {
         try {
-            const { data } = await axios.get("/todos");
+            const { data } = await axios.get(`/todos?filters[userId][$eq]=${userId}`);
             const { data: todo } = data;
             setTodos(todo)
             console.log(todo)

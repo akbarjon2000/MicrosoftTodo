@@ -16,6 +16,7 @@ import ReducerContextProvider from '../context/reducerContext'
 import { LogInContext } from '../context/LogInContext'
 import DrawerContextProvider from '../context/DrawerContext'
 import SearchContextProvider from '../context/SearchContext'
+import UserIdContext from '../context/UserIdContext'
 //REACT LAZY
 const SignIn = lazy(() => import('../components/authentication/Main/SignIn/SignIn'))
 const SignUp = lazy(() => import('../components/authentication/Main/SignUp/SignUp'))
@@ -33,6 +34,7 @@ const Root = () => {
     const signOut = () => {
         try {
             setAuth({});
+            setIsLoggedIn(false);
             localStorage.removeItem("token");
             localStorage.removeItem("user");
         } catch (error) {
@@ -49,30 +51,32 @@ const Root = () => {
     //     navigate("myDay");
     // }
 
-    if (token && user?.id) {
+    if ((token && user?.id) || isLoggedIn) {
         return (
             <>
-                <SearchContextProvider>
-                    <MenuHideContext>
-                        <Navbar signOut={signOut} />
-                        <Wrapper>
-                            <DrawerContextProvider>
-                                <ReducerContextProvider>
-                                    <TaskContext>
-                                        <Sidebar />
-                                        <Routes>
-                                            {sidebarObj.map(({ id, path: pathname, Component }) => (
-                                                <Route key={id} path={pathname} element={<Component />} />
-                                            ))}
-                                            <Route path="searchbar" element={<Searchbar />} />
-                                            <Route path='*' element={<MyDay />} />
-                                        </Routes>
-                                    </TaskContext>
-                                </ReducerContextProvider>
-                            </DrawerContextProvider>
-                        </Wrapper>
-                    </MenuHideContext>
-                </SearchContextProvider>
+                <UserIdContext>
+                    <SearchContextProvider>
+                        <MenuHideContext>
+                            <Navbar signOut={signOut} />
+                            <Wrapper>
+                                <DrawerContextProvider>
+                                    <ReducerContextProvider>
+                                        <TaskContext>
+                                            <Sidebar />
+                                            <Routes>
+                                                {sidebarObj.map(({ id, path: pathname, Component }) => (
+                                                    <Route key={id} path={pathname} element={<Component />} />
+                                                ))}
+                                                <Route path="searchbar" element={<Searchbar />} />
+                                                <Route path='*' element={<MyDay />} />
+                                            </Routes>
+                                        </TaskContext>
+                                    </ReducerContextProvider>
+                                </DrawerContextProvider>
+                            </Wrapper>
+                        </MenuHideContext>
+                    </SearchContextProvider>
+                </UserIdContext>
             </>
         )
     } else {

@@ -25,7 +25,7 @@ import { ReactComponent as CircleDoubleArrow } from "../../../assets/icons/circl
 
 //CONTEXT
 import { MenuContext } from '../../../context/menubarContext';
-// import { DrawerContext } from '../../../context/DrawerContext';
+import { UserIdContext } from '../../../context/UserIdContext';
 
 
 const Navbar = ({ todos, fetchTodo }) => {
@@ -42,6 +42,7 @@ const Navbar = ({ todos, fetchTodo }) => {
         date: "",
         reminder: "",
         repeat: "",
+        userId: null
     })
 
     const [modals, setModals] = useState({
@@ -53,6 +54,7 @@ const Navbar = ({ todos, fetchTodo }) => {
 
     const [hide, setHide] = useContext(MenuContext);
     const [active, setActive] = useState(false);
+    const userId = useContext(UserIdContext);
     // const [change, setChange] = useState(todos);
 
     const handleChange = (e) => {
@@ -60,10 +62,12 @@ const Navbar = ({ todos, fetchTodo }) => {
         console.log(todo);
     }
 
+    const updateUser = { ...todo, userId: userId };
+
     const Add = async () => {
         if (todo.text !== "") {
             try {
-                const { data } = await axios.post("/todos", { data: todo })
+                const { data } = await axios.post("/todos", { data: updateUser })
                 console.log(data)
                 fetchTodo();
                 setTodo(prevState => ({ ...prevState, text: "" }));

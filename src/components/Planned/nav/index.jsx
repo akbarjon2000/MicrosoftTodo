@@ -4,7 +4,6 @@ import { AddMenu, Container, ListOptionsModal, Modal1, Modal2, Modal3, UnderLine
 import { nanoid } from 'nanoid';
 import { pxToRem } from '../../../utils/pxToRem';
 import { Colors } from '../../../constants/constants';
-
 import axios from "../../../utils/axios";
 import Tasks from '../Tasks';
 //ICONS
@@ -25,7 +24,8 @@ import { ReactComponent as CircleDoubleArrow } from "../../../assets/icons/circl
 
 //CONTEXT
 import { MenuContext } from '../../../context/menubarContext';
-// import { DrawerContext } from '../../../context/DrawerContext';
+import { UserIdContext } from '../../../context/UserIdContext';
+
 
 
 const Navbar = ({ todos, fetchTodo }) => {
@@ -42,6 +42,7 @@ const Navbar = ({ todos, fetchTodo }) => {
         date: "Today",
         reminder: "",
         repeat: "",
+        userId: null
     })
 
     const [modals, setModals] = useState({
@@ -53,8 +54,8 @@ const Navbar = ({ todos, fetchTodo }) => {
 
     const [hide, setHide] = useContext(MenuContext);
     const [active, setActive] = useState(false);
-    // const [change, setChange] = useState(todos);
-
+    const userId = useContext(UserIdContext);
+    const updateUser = { ...todo, userId: userId };
     const handleChange = (e) => {
         setTodo(prevState => ({ ...prevState, text: e.target.value }));
         console.log(todo);
@@ -63,7 +64,7 @@ const Navbar = ({ todos, fetchTodo }) => {
     const Add = async () => {
         if (todo.text !== "") {
             try {
-                const { data } = await axios.post("/todos", { data: todo })
+                const { data } = await axios.post("/todos", { data: updateUser })
                 console.log(data)
                 fetchTodo();
                 setTodo(prevState => ({ ...prevState, text: "" }));

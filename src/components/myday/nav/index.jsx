@@ -26,8 +26,7 @@ import { ReactComponent as CircleDoubleArrow } from "../../../assets/icons/circl
 //CONTEXT
 import { MenuContext } from '../../../context/menubarContext';
 import Loader from '../../Loader/Loader';
-// import { DrawerContext } from '../../../context/DrawerContext';
-
+import { UserIdContext } from '../../../context/UserIdContext';
 
 const Navbar = ({ todos, fetchTodo }) => {
 
@@ -43,6 +42,7 @@ const Navbar = ({ todos, fetchTodo }) => {
         date: "",
         reminder: "",
         repeat: "",
+        userId: null
     })
 
     const [modals, setModals] = useState({
@@ -53,20 +53,19 @@ const Navbar = ({ todos, fetchTodo }) => {
     })
 
     const [hide, setHide] = useContext(MenuContext);
+    const userId = useContext(UserIdContext);
     const [active, setActive] = useState(false);
-    // const [change, setChange] = useState(todos);
 
     const handleChange = (e) => {
         setTodo(prevState => ({ ...prevState, text: e.target.value }));
-        console.log(todo);
     }
 
+    const updateUser = { ...todo, userId: userId };
     const Add = async () => {
         if (todo.text !== "") {
             try {
                 setLoading(true)
-                const { data } = await axios.post("/todos", { data: todo })
-                console.log(data)
+                const { data } = await axios.post("/todos", { data: updateUser })
                 await fetchTodo();
                 setLoading(false);
                 setTodo(prevState => ({
@@ -79,13 +78,6 @@ const Navbar = ({ todos, fetchTodo }) => {
 
     }
 
-    // const handleModalClose = (e) => {
-    //     // e.stopPropogation();
-    //     setModals({ modal1: false, modal2: false, modal3: false })
-    // }
-    // useEffect(() => {
-    //     Add();
-    // }, [])
     return (
         <div style={{ display: "flex", width: "100%" }}>
             <div style={{ width: "100%" }}>

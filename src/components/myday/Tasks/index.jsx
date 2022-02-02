@@ -13,10 +13,7 @@ import { ReactComponent as Move } from "../../../assets/icons/movetask.svg";
 import Swal from 'sweetalert2'
 
 const Tasks = ({ value, fetchTodo }) => {
-    const [DATA, SETDATA] = useState(null)
-    console.log(DATA);
     const { completed, important, id } = value;
-    // const [icon, setIcon] = useState(false)
     const [taskIsActive, setTaskIsActive] = useState(false);
     const [isImportant, setIsImportant] = useState(important);
     const [isCompleted, setIsCompleted] = useState(completed);
@@ -34,7 +31,6 @@ const Tasks = ({ value, fetchTodo }) => {
         try {
             const { data } = await axios.put(`/todos/${id}`, { data: { important: isImportant } });
             fetchTodo();
-            console.log(data)
         } catch (error) {
             console.log(error)
         }
@@ -42,7 +38,6 @@ const Tasks = ({ value, fetchTodo }) => {
     const handleCompleted = async () => {
         try {
             const { data } = await axios.put(`/todos/${id}`, { data: { completed: isCompleted } })
-            SETDATA(data)
         } catch (error) {
             console.log(error)
         }
@@ -63,7 +58,6 @@ const Tasks = ({ value, fetchTodo }) => {
     const handleDrawerUtility = () => {
         setDrawerIsActive(prevState => ({ ...prevState, id: id, open: true }));
         setTaskIsActive(true);
-        SETDATA(drawerIsActive)
     }
 
     const handleComplete = () => {
@@ -116,7 +110,6 @@ const Tasks = ({ value, fetchTodo }) => {
             }).then(async (data) => {
                 if (data.isConfirmed) {
                     const { data } = await axios.delete(`/todos/${id}`);
-                    SETDATA(data)
                     fetchTodo();
                 }
             }

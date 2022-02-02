@@ -25,12 +25,10 @@ function SignIn({ updateAuth }) {
     const handleSignIn = async () => {
         try {
             const { data } = await axios.post("/auth/local", { identifier: user.identifier, password: user.password });
-            console.log(data);
-
-            setLoading(true)
-            setIsLoggedIn(true);
             localStorage.setItem("user", JSON.stringify(data.user))
             localStorage.setItem("token", data.jwt)
+            setIsLoggedIn(true);
+            setLoading(true)
             Swal.fire({
                 icon: "success",
                 title: "Successful log in!",
