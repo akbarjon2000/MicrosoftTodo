@@ -24,12 +24,15 @@ const LandingPage = lazy(() => import('../components/authentication/Main/Landing
 const Root = () => {
 
     const [isLoggedIn, setIsLoggedIn] = useContext(LogInContext);
-    const token = localStorage.token;
-    const [user, setUser] = useState(JSON.parse(localStorage.user || "{}"));
-
+    const [auth, setAuth] = useState(() => ({
+        user: JSON.parse(localStorage.user || "{}"),
+        token: localStorage.token
+    }));
+    console.log(auth, ": auth")
+    const { token, user } = auth;
     const signOut = () => {
         try {
-            setUser({});
+            setAuth({});
             localStorage.removeItem("token");
             localStorage.removeItem("user");
         } catch (error) {
@@ -77,7 +80,7 @@ const Root = () => {
             <>
                 <Suspense fallback={<div>Loading...</div>}>
                     <Routes>
-                        <Route path='/sign-in' element={<SignIn />} />
+                        <Route path='/sign-in' element={<SignIn updateAuth={setAuth} />} />
                         <Route path='/sign-up' element={<SignUp />} />
                         <Route path='*' element={<LandingPage />} />
                     </Routes>

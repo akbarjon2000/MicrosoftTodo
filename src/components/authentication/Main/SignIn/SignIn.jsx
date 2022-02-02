@@ -8,7 +8,7 @@ import { LogInContext } from '../../../../context/LogInContext'
 import Swal from 'sweetalert2'
 // import {useHistory} from 'react-router-dom'
 
-function SignIn() {
+function SignIn({ updateAuth }) {
     const [isLoggedIn, setIsLoggedIn] = useContext(LogInContext);
     console.log(isLoggedIn)
     const [loading, setLoading] = useState(false)
@@ -20,7 +20,7 @@ function SignIn() {
     const navigate = useNavigate();
     const handleInput = ({ target }) => {
         const { name, value } = target
-        setUser(prevState => ({ ...prevState, [name]: value }))
+        setUser(prevState => ({ ...prevState, [name]: value }));
     }
     const handleSignIn = async () => {
         try {
@@ -29,16 +29,22 @@ function SignIn() {
 
             setLoading(true)
             setIsLoggedIn(true);
+            localStorage.setItem("user", JSON.stringify(data.user))
+            localStorage.setItem("token", data.jwt)
             Swal.fire({
                 icon: "success",
                 title: "Successful log in!",
                 text: "Enjoy your time!!!",
                 timer: 2000
             }).then((value) => {
-                localStorage.setItem("user", JSON.stringify(data.user))
-                localStorage.setItem("token", JSON.stringify(data.jwt))
+                console.log(data.jwt);
                 setLoading(false);
-                window.location.href = "/"
+                const userData = {
+                    token: data.jwt,
+                    user: data.user
+                }
+                updateAuth(userData);
+                navigate('/myDay')
             })
 
         } catch (error) {

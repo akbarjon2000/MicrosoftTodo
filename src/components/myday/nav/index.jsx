@@ -25,13 +25,14 @@ import { ReactComponent as CircleDoubleArrow } from "../../../assets/icons/circl
 
 //CONTEXT
 import { MenuContext } from '../../../context/menubarContext';
+import Loader from '../../Loader/Loader';
 // import { DrawerContext } from '../../../context/DrawerContext';
 
 
 const Navbar = ({ todos, fetchTodo }) => {
 
     const componentRef = useRef();
-
+    const [loading, setLoading] = useState(false);
     const [todo, setTodo] = useState({
         category: "My Day",
         text: "",
@@ -63,9 +64,11 @@ const Navbar = ({ todos, fetchTodo }) => {
     const Add = async () => {
         if (todo.text !== "") {
             try {
+                setLoading(true)
                 const { data } = await axios.post("/todos", { data: todo })
                 console.log(data)
-                fetchTodo();
+                await fetchTodo();
+                setLoading(false);
                 setTodo(prevState => ({
                     ...prevState, text: "", date: "", reminder: "", repeat: ""
                 }));
@@ -235,9 +238,10 @@ const Navbar = ({ todos, fetchTodo }) => {
                         }
                     </AddMenu>
                 </Container >
-                {todos.map(({ id, attributes }) => (
-                    <Tasks value={{ id, ...attributes }} key={nanoid(4)} fetchTodo={fetchTodo} />
-                ))}
+                {loading ? <Loader />
+                    : todos.map(({ id, attributes }) => (
+                        <Tasks value={{ id, ...attributes }} key={nanoid(4)} fetchTodo={fetchTodo} />
+                    ))}
                 <UnderLine />
             </div>
         </div >
