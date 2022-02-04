@@ -7,7 +7,6 @@ import { LogInContext } from '../../../../context/LogInContext';
 //IMAGES
 import logo from '../../../../assets/images/RE1Mu3b.png';
 import { Container } from './style'
-// import {useHistory} from 'react-router-dom'
 
 function SignUp() {
     const [isLoggedIn, setIsLoggedIn] = useContext(LogInContext);
@@ -23,14 +22,12 @@ function SignUp() {
     const handleInputChange = ({ target }) => {
         const { name, value } = target;
         setUser(prevState => ({ ...prevState, [name]: value }))
-        console.log(user);
     }
     const handleSubmit = async () => {
         try {
             setLoading(true);
             const { data } = await axios.post("/auth/local/register", user);
             setLoading(false);
-            console.log(data);
             Swal.fire({
                 icon: "success",
                 title: "Success",

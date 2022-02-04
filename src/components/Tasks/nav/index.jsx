@@ -12,7 +12,6 @@ import { BsThreeDots, BsCircle, BsArrowRepeat, BsCalendar2Date, BsPrinter } from
 import { IoMenuOutline, IoTodayOutline, IoCalendarOutline, IoCalendarClearOutline } from "react-icons/io5"
 import { IoIosArrowForward } from "react-icons/io"
 import { VscBell, VscTrash } from "react-icons/vsc"
-// import { GoLightBulb } from "react-icons/go"
 import { AiOutlinePlus } from "react-icons/ai"
 import { ReactComponent as Daily } from "../../../assets/icons/daily.svg"
 import { ReactComponent as Weekdays } from "../../../assets/icons/weekdays.svg"

@@ -10,7 +10,6 @@ import Swal from 'sweetalert2'
 
 function SignIn({ updateAuth }) {
     const [isLoggedIn, setIsLoggedIn] = useContext(LogInContext);
-    console.log(isLoggedIn)
     const [loading, setLoading] = useState(false)
     const [user, setUser] = useState({
         identifier: "",
@@ -35,7 +34,6 @@ function SignIn({ updateAuth }) {
                 text: "Enjoy your time!!!",
                 timer: 2000
             }).then((value) => {
-                console.log(data.jwt);
                 setLoading(false);
                 const userData = {
                     token: data.jwt,

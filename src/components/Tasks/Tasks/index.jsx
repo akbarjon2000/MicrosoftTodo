@@ -13,10 +13,7 @@ import { ReactComponent as Move } from "../../../assets/icons/movetask.svg";
 import Swal from 'sweetalert2'
 
 const Tasks = ({ value, fetchTodo }) => {
-    const [DATA, SETDATA] = useState(null);
-    console.log(DATA);
     const { completed, important, id } = value;
-    // const [icon, setIcon] = useState(false)
     const [taskIsActive, setTaskIsActive] = useState(false);
     const [isImportant, setIsImportant] = useState(important);
     const [isCompleted, setIsCompleted] = useState(completed);
@@ -36,7 +33,6 @@ const Tasks = ({ value, fetchTodo }) => {
         try {
             const { data } = await axios.put(`/todos/${id}`, { data: { important: isImportant } });
             fetchTodo();
-            SETDATA(data)
         } catch (error) {
             console.log(error)
         }
@@ -44,7 +40,6 @@ const Tasks = ({ value, fetchTodo }) => {
     const handleCompleted = async () => {
         try {
             const { data } = await axios.put(`/todos/${id}`, { data: { completed: isCompleted } })
-            SETDATA(data)
         } catch (error) {
             console.log(error)
         }
@@ -58,19 +53,15 @@ const Tasks = ({ value, fetchTodo }) => {
     }, [isImportant]);
 
     useEffect(() => {
-
         handleCompleted();
-
     }, [isCompleted]);
 
     const handleDrawerUtility = () => {
         setDrawerIsActive(prevState => ({ ...prevState, id: id, open: true }));
         setTaskIsActive(true);
-        SETDATA(drawerIsActive);
     }
 
     const handleComplete = () => {
-
         setIsCompleted(!isCompleted)
     }
 
@@ -87,8 +78,6 @@ const Tasks = ({ value, fetchTodo }) => {
                 yTranslate: window.innerHeight,
             })
         )
-        console.log(client.clientX + "-" + window.innerWidth)
-        console.log(client.clientY + "-" + window.innerHeight)
         if (client.clientX > window.innerWidth / 2) {
             setClient(prevState => ({ ...prevState, x: "-100%" }));
         }
@@ -102,13 +91,6 @@ const Tasks = ({ value, fetchTodo }) => {
             setClient(prevState => ({ ...prevState, bottom: false }));
         }
         setShowContextMenu(true);
-        // console.log("clientX: ", e.clientX)
-        // console.log("state clientX: ", client.clientX)
-        // console.log("clientY: ", client.clientY)
-        // console.log("innerWidth:", window.innerWidth)
-        // console.log("innerHeight:", window.innerHeight)
-        // console.log("x: ", client.x)
-        // console.log("y: ", client.y)
     }
 
     const deleteTask = async () => {
@@ -121,7 +103,6 @@ const Tasks = ({ value, fetchTodo }) => {
             }).then(async (data) => {
                 if (data.isConfirmed) {
                     const { data } = await axios.delete(`/todos/${id}`);
-                    SETDATA(data)
                     fetchTodo();
                 }
             }
@@ -153,11 +134,7 @@ const Tasks = ({ value, fetchTodo }) => {
             </RighClickMenu>
 
             <div className='align__center' style={{ width: "100%" }}>
-                <div
-                    // onMouseEnter={() => setIcon(true)}
-                    // onMouseLeave={() => setIcon(false)}
-                    onClick={handleComplete}
-                >
+                <div onClick={handleComplete}>
                     {(isCompleted) ?
                         <AiFillCheckCircle className='icon ' color="#6e8eeb" size={21} title='Mark as complete!' />
                         : <BsCircle className='icon center' color="#6e8eeb" size={18} />

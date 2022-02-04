@@ -23,17 +23,15 @@ const Tasks = ({ value, fetchTodo }) => {
     const [client, setClient] = useState({
         clientX: null,
         clientY: null,
-        xTranslate: null,
-        yTranslate: null,
         x: null,
-        y: null
+        top: null,
+        bottom: null
     })
 
     const handleImportant = async () => {
         try {
             const { data } = await axios.put(`/todos/${id}`, { data: { important: isImportant } });
             fetchTodo();
-            console.log(data)
         } catch (error) {
             console.log(error)
         }
@@ -41,7 +39,6 @@ const Tasks = ({ value, fetchTodo }) => {
     const handleCompleted = async () => {
         try {
             const { data } = await axios.put(`/todos/${id}`, { data: { completed: isCompleted } })
-            console.log(data)
         } catch (error) {
             console.log(error)
         }
@@ -59,18 +56,14 @@ const Tasks = ({ value, fetchTodo }) => {
 
     }, [isCompleted]);
 
-    const handleDrawerUtility = (e) => {
-        // e.stopPropogation();
+    const handleDrawerUtility = () => {
         setDrawerIsActive(prevState => ({ ...prevState, id: id, open: true }));
         setTaskIsActive(true);
     }
 
-    const handleComplete = (e) => {
-
+    const handleComplete = () => {
         setIsCompleted(!isCompleted)
     }
-
-
 
     const handleContextMenu = (e) => {
         e.preventDefault();
@@ -87,18 +80,16 @@ const Tasks = ({ value, fetchTodo }) => {
         if (client.clientX > window.innerWidth / 2) {
             setClient(prevState => ({ ...prevState, x: "-100%" }));
         }
-        if (client.clientY > window.innerHeight / 2.5) {
-            setClient(prevState => ({ ...prevState, y: "-50%" }));
+        if (client.clientY > window.innerHeight / 2) {
+            setClient(prevState => ({ ...prevState, bottom: true }));
+            setClient(prevState => ({ ...prevState, top: false }));
 
+
+        } else {
+            setClient(prevState => ({ ...prevState, top: true }));
+            setClient(prevState => ({ ...prevState, bottom: false }));
         }
         setShowContextMenu(true);
-        // console.log("clientX: ", e.clientX)
-        // console.log("state clientX: ", client.clientX)
-        // console.log("clientY: ", client.clientY)
-        // console.log("innerWidth:", window.innerWidth)
-        // console.log("innerHeight:", window.innerHeight)
-        // console.log("x: ", client.x)
-        // console.log("y: ", client.y)
     }
 
     const deleteTask = async () => {
@@ -120,12 +111,12 @@ const Tasks = ({ value, fetchTodo }) => {
         }
     }
 
-    const { clientX, clientY, xTranslate, yTranslate, x, y } = client;
+    const { clientX, clientY, x, top, bottom } = client;
 
 
     return (
         <Container taskIsActive={taskIsActive} onContextMenu={handleContextMenu}  >
-            <RighClickMenu clientX={clientX} clientY={clientY} x={x} y={y} onMouseLeave={() => setShowContextMenu(false)} showContextMenu={showContextMenu} >
+            <RighClickMenu clientX={clientX} clientY={clientY} x={x} top={top} bottom={bottom} onMouseLeave={() => setShowContextMenu(false)} showContextMenu={showContextMenu} >
                 <p className='align__center section '><BsSun className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Add to My Day</p>
                 <p className='align__center section '><IoStarOutline className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Mark as important</p>
                 <p className='align__center section ' ><BsCircle className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Mark as not completed</p>

@@ -1,5 +1,14 @@
 import styled from "styled-components";
 import { pxToRem } from "../../utils/pxToRem"
+
+
+const media = {
+    phone: "@media(max-width:320px)",
+    tablet: "@media(max-width:770px)",
+    desktop: "@media(max-width:1000px)"
+}
+
+
 export const Container = styled.div`
 display: ${({ hide }) => hide ? "none" : "flex"};
 flex-direction:column;
@@ -7,7 +16,11 @@ width:${pxToRem(300)} !important;
 height:100vh;
 min-height: 800px;
 background-color:#f5f3f4;
-
+${media.phone}{
+    position:absolute;
+    z-index:1000;
+    width:70%;
+}
 
 .menuIcon{
 margin-top: ${pxToRem(25)};

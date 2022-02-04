@@ -1,6 +1,12 @@
 import styled from "styled-components";
 import { Colors } from "../../constants/constants";
 import { pxToRem } from "../../utils/pxToRem";
+const media = {
+    phone: "@media(max-width:360px)",
+    tablet: "@media(max-width:770px)",
+    desktop: "@media(max-width:900px)"
+}
+
 export const Nav = styled.div`
 height:${pxToRem(48)};
 width:100%;
@@ -20,6 +26,10 @@ justify-content:space-between;
     &:hover{
         background-color:white;
     }
+    ${media.tablet}{ 
+            width:${({ show }) => show ? pxToRem(100) : pxToRem(40)};
+
+}
 }
 .searchbtn{
    width:${pxToRem(40)};
@@ -39,6 +49,9 @@ justify-content:space-between;
     padding-left:${pxToRem(10)};
     padding-right:${pxToRem(10)};
 display:${({ show }) => show ? "" : "none"};
+    ${media.tablet}{
+           width:fit-content;
+}
 
 }
 .iconbtn{
@@ -51,6 +64,10 @@ display:${({ show }) => show ? "" : "none"};
     outline:none;
     &:hover{
         background-color:${Colors.lightblue}
+    }
+    @media(max-width:350px){
+        width:${pxToRem(30)};
+        height:${pxToRem(30)};
     }
 }
 
@@ -68,6 +85,7 @@ display:${({ show }) => show ? "" : "none"};
     align-items:center;
     justify-content:center;
 }
+
 
 `
 

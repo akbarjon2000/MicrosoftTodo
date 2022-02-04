@@ -3,8 +3,7 @@ import Navbar from '../components/navbar/Navbar'
 import Sidebar from '../components/sidebar/Sidebar'
 import MyDay from '../components/myday'
 import Searchbar from "../components/Searchbar"
-
-// import _ from 'lodash';
+import { Provider } from 'react-redux';
 import { sidebarObj } from '../utils/sidebar'
 import { Route, Routes, useNavigate } from "react-router-dom"
 import { Wrapper } from './style'
@@ -17,6 +16,7 @@ import { LogInContext } from '../context/LogInContext'
 import DrawerContextProvider from '../context/DrawerContext'
 import SearchContextProvider from '../context/SearchContext'
 import UserIdContext from '../context/UserIdContext'
+import store from '../store';
 //REACT LAZY
 const SignIn = lazy(() => import('../components/authentication/Main/SignIn/SignIn'))
 const SignUp = lazy(() => import('../components/authentication/Main/SignUp/SignUp'))
@@ -29,7 +29,6 @@ const Root = () => {
         user: JSON.parse(localStorage.user || "{}"),
         token: localStorage.token
     }));
-    console.log(auth, ": auth")
     const { token, user } = auth;
     const signOut = () => {
         try {
@@ -46,37 +45,34 @@ const Root = () => {
         setIsLoggedIn(false);
     }, [])
 
-    // const navigate = useNavigate();
-    // if (isLoggedIn) {
-    //     navigate("myDay");
-    // }
-
     if ((token && user?.id) || isLoggedIn) {
         return (
             <>
-                <UserIdContext>
-                    <SearchContextProvider>
-                        <MenuHideContext>
-                            <Navbar signOut={signOut} />
-                            <Wrapper>
-                                <DrawerContextProvider>
-                                    <ReducerContextProvider>
-                                        <TaskContext>
-                                            <Sidebar />
-                                            <Routes>
-                                                {sidebarObj.map(({ id, path: pathname, Component }) => (
-                                                    <Route key={id} path={pathname} element={<Component />} />
-                                                ))}
-                                                <Route path="searchbar" element={<Searchbar />} />
-                                                <Route path='*' element={<MyDay />} />
-                                            </Routes>
-                                        </TaskContext>
-                                    </ReducerContextProvider>
-                                </DrawerContextProvider>
-                            </Wrapper>
-                        </MenuHideContext>
-                    </SearchContextProvider>
-                </UserIdContext>
+                <Provider store={store}>
+                    <UserIdContext>
+                        <SearchContextProvider>
+                            <MenuHideContext>
+                                <Navbar signOut={signOut} />
+                                <Wrapper>
+                                    <DrawerContextProvider>
+                                        <ReducerContextProvider>
+                                            <TaskContext>
+                                                <Sidebar />
+                                                <Routes>
+                                                    {sidebarObj.map(({ id, path: pathname, Component }) => (
+                                                        <Route key={id} path={pathname} element={<Component />} />
+                                                    ))}
+                                                    <Route path="searchbar" element={<Searchbar />} />
+                                                    <Route path='*' element={<MyDay />} />
+                                                </Routes>
+                                            </TaskContext>
+                                        </ReducerContextProvider>
+                                    </DrawerContextProvider>
+                                </Wrapper>
+                            </MenuHideContext>
+                        </SearchContextProvider>
+                    </UserIdContext>
+                </Provider>
             </>
         )
     } else {

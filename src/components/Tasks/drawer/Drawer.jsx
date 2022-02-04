@@ -14,8 +14,6 @@ import { IoCalendarOutline, IoPricetagOutline, IoStar, IoCalendarClearOutline, I
 import { VscBell, VscTrash } from "react-icons/vsc"
 import { AiFillCheckCircle } from "react-icons/ai"
 import { BsCircle } from "react-icons/bs"
-// import { GoLightBulb } from "react-icons/go"
-// import { AiOutlinePlus } from "react-icons/ai"
 import { ReactComponent as Daily } from "../../../assets/icons/daily.svg"
 import { ReactComponent as Weekdays } from "../../../assets/icons/weekdays.svg"
 import { ReactComponent as Weekly } from "../../../assets/icons/weekly.svg"
@@ -27,8 +25,6 @@ import { ReactComponent as CircleDoubleArrow } from "../../../assets/icons/circl
 
 
 const Drawer = ({ todos, fetchTodo }) => {
-    const [DATA, SETDATA] = useState(null);
-    console.log(DATA)
     const [active, setActive] = useState(false)
     const [drawerIsActive, setDrawerIsActive] = useContext(DrawerContext);
     const [closeDisplay, setCloseDisplay] = useState({
@@ -43,9 +39,8 @@ const Drawer = ({ todos, fetchTodo }) => {
         modal2: false,
         modal3: false
     })
-    // const [text, setText] = useState('')
+
     const [task, setTask] = useState({});
-    // console.log(task.completed)
     const [important, setImportant] = useState(null);
     const [completed, setCompleted] = useState(task.completed);
     const [myday, setMyDay] = useState(true)
@@ -59,45 +54,9 @@ const Drawer = ({ todos, fetchTodo }) => {
 
     }, [drawerIsActive.id])
 
-    // console.log(drawerIsActive.id)
-    // console.log(todos)
-    // console.log(task)
-    // const fetchTask = async () => {
-    //     try {
-    //         const { data } = await axios.get("/todos");
-    //         // console.log("Data from Drawer", data.data);
-    //         const tasks = await data.data.filter((value) => value.id === drawerIsActive.id).map((value) => value.attributes);
-    //        tasks.map((value) => {setTask(value.attributes)})
-    //         // setText(tasks.map((value) => value.text));
-    //         // setImportant(tasks.map((value) => value.important));
-    //         // setCompleted(tasks.map((value) => value.completed));
-    //         // console.log(completed)
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     fetchTask();
-    //     // updateTitle();
-    // }, [drawerIsActive])
-
-    // const updateTitle = async () => {
-    //     try {
-    //         const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { text: text } })
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     updateTitle();
-    // }, [text])
-
     const updateImportance = async () => {
         try {
             const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { important: important } });
-            SETDATA(data);
             fetchTodo();
         } catch (error) {
             console.log(error);
@@ -111,7 +70,6 @@ const Drawer = ({ todos, fetchTodo }) => {
     const updateCompleted = async () => {
         try {
             const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { completed: completed } });
-            SETDATA(data);
             fetchTodo();
         } catch (error) {
             console.log(error);
@@ -126,21 +84,18 @@ const Drawer = ({ todos, fetchTodo }) => {
     const handleInputChange = ({ target }) => {
         setTask(prevState => ({ ...prevState, text: target.value }));
         const { data } = axios.put(`/todos/${drawerIsActive.id}`, { data: { text: target.value } })
-        SETDATA(data);
         fetchTodo();
     }
     const updateCategory = async () => {
         if (myday === true) {
             try {
                 const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { category: "My Day" } });
-                SETDATA(data);
             } catch (error) {
                 console.log(error);
             }
         } else {
             try {
                 const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { category: "Tasks" } });
-                SETDATA(data);
             } catch (error) {
                 console.log(error);
             }
@@ -174,7 +129,6 @@ const Drawer = ({ todos, fetchTodo }) => {
             }).then(async (value) => {
                 if (value.isConfirmed) {
                     const { data } = await axios.delete(`/todos/${drawerIsActive.id}`);
-                    SETDATA(data);
                     setDrawerIsActive(prevState => ({ ...prevState, open: false }));
                     fetchTodo();
                 }
@@ -187,7 +141,6 @@ const Drawer = ({ todos, fetchTodo }) => {
     const handleCloseClick = async (key) => {
         try {
             const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { [key]: "" } });
-            SETDATA(data);
             fetchTodo();
         } catch (error) {
             console.log(error);
@@ -197,7 +150,6 @@ const Drawer = ({ todos, fetchTodo }) => {
     const handleUpdateDate = async (value) => {
         try {
             const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { date: value } });
-            SETDATA(data);
             fetchTodo();
         } catch (error) {
             console.log(error)
@@ -206,7 +158,6 @@ const Drawer = ({ todos, fetchTodo }) => {
     const handleUpdateReminder = async (value) => {
         try {
             const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { reminder: value } });
-            SETDATA(data);
             fetchTodo();
         } catch (error) {
             console.log(error)
@@ -216,7 +167,6 @@ const Drawer = ({ todos, fetchTodo }) => {
     const handleUpdateRepeat = async (value) => {
         try {
             const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { repeat: value } });
-            SETDATA(data);
             fetchTodo();
         } catch (error) {
             console.log(error)

@@ -10,7 +10,6 @@ background-color:${Colors.grey};
 display:${({ drawerIsActive }) => drawerIsActive ? "flex" : "none"};
 flex-direction:column;
 align-items:center;
-${'' /* display:none; */}
 overflow-y:scroll;
 
 `
@@ -189,7 +188,6 @@ width:100%;
 height:${pxToRem(45)};
 background-color:${Colors.grey};
 border-top: 1px solid #eaeaea;
-${'' /* border-top:1px solid green; */}
 display:flex;
 align-items:center;
 justify-content:space-between;

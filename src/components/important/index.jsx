@@ -12,7 +12,6 @@ const Important = () => {
             const { data } = await axios.get(`/todos?filters[important][$eq]=true&filters[userId]=${userId}`);
             const { data: todo } = data;
             setTodos(todo)
-            console.log(todo)
         } catch (error) {
             console.log(error)
         }

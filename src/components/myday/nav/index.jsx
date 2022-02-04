@@ -114,8 +114,8 @@ const Navbar = ({ todos, fetchTodo }) => {
                         </div>
 
                         <div style={{ display: "flex" }} className='align__center' title='Sort'>
-                            <span className='arrows center'><VscArrowSwap style={{ transform: "rotate(90deg)" }} className='icon' /> Sort</span>
-                            <span className='suggestions center'><GoLightBulb className='icon' /> Suggestions</span>
+                            <span className='arrows center'><VscArrowSwap style={{ transform: "rotate(90deg)" }} className='icon' /><p className='navText'>Sort</p> </span>
+                            <span className='suggestions center'><GoLightBulb className='icon' /><p className='navText'>Suggestions</p> </span>
                         </div>
                     </div>
                     <AddMenu active={active} >

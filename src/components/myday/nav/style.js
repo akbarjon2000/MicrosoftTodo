@@ -1,23 +1,42 @@
 import styled from 'styled-components';
 import { pxToRem } from '../../../utils/pxToRem';
 import { Colors } from '../../../constants/constants';
+
+const media = {
+    phone: "@media(max-width:360px)",
+    tablet: "@media(max-width:720px)",
+    desktop: "@media(max-width:900px)"
+}
+
+
 export const Container = styled.div`
 width:100%;
-${'' /* height:${pxToRem(100)}; */}
 padding:12px 16px 0;
-${'' /* margin-bottom:100px; */}
 
+${media.phone}{
+    padding:0;
+}
 .header{
 width:100%;
-height:100px;
+height:${pxToRem(100)};
 display:flex;
 align-items:center;
 justify-content:center;
+${media.desktop}{
+    padding:0;
+height:${pxToRem(80)};
+
+}
+${media.phone}{
+    padding:0;
+height:${pxToRem(70)};
+
+}
 }
 .nav > h3{
     color:${Colors.textcolor};
     font-weight:300px;
-}
+}   
 
 .menuIcon{
 width:40px;
@@ -45,18 +64,30 @@ display:${({ hide }) => hide ? "" : "none"};
 color:${Colors.textcolor};
 height:30px;
 width:70px;
+${media.desktop}{
+    width:30px;
+}
 }
 
 .suggestions{
 color:${Colors.textcolor};
 height:30px;
 width:120px;
+${media.desktop}{
+    width:30px;
+}
 }
 .arrows:hover{
     background-color:${Colors.grey}
 }
 .suggestions:hover{
     background-color:${Colors.grey}
+}
+.navText{
+    ${media.desktop}{
+        display:none;
+     
+    }
 }
 `
 export const AddMenu = styled.div`

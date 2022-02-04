@@ -16,10 +16,8 @@ const MyDay = () => {
     const fetchTodo = async () => {
         try {
             const { data } = await axios.get(`/todos?filters[text][$contains]=${searchText}`);
-            // const { data } = await axios.get(`/todos`);
             const { data: todo } = data;
             setTodos(todo)
-            console.log(todo)
         } catch (error) {
             console.log(error)
         }

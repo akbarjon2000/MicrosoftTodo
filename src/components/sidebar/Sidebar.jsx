@@ -13,7 +13,6 @@ import { DrawerContext } from '../../context/DrawerContext';
 const Sidebar = () => {
     const [hide, setHide] = useContext(MenuContext);
     const [drawerIsActive, setDrawerIsActive] = useContext(DrawerContext);
-    console.log(drawerIsActive);
 
     return (
         <Container hide={hide}>

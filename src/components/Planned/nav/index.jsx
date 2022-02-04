@@ -10,8 +10,7 @@ import Tasks from '../Tasks';
 import { BsThreeDots, BsCircle, BsArrowRepeat, BsCalendar2Date, BsPrinter } from "react-icons/bs";
 import { IoMenuOutline, IoTodayOutline, IoCalendarOutline, IoCalendarClearOutline } from "react-icons/io5"
 import { IoIosArrowForward } from "react-icons/io"
-import { VscArrowSwap, VscBell, VscTrash } from "react-icons/vsc"
-import { GoLightBulb } from "react-icons/go"
+import { VscBell, VscTrash } from "react-icons/vsc"
 import { AiOutlinePlus } from "react-icons/ai"
 import { ReactComponent as Daily } from "../../../assets/icons/daily.svg"
 import { ReactComponent as Weekdays } from "../../../assets/icons/weekdays.svg"
@@ -58,14 +57,12 @@ const Navbar = ({ todos, fetchTodo }) => {
     const updateUser = { ...todo, userId: userId };
     const handleChange = (e) => {
         setTodo(prevState => ({ ...prevState, text: e.target.value }));
-        console.log(todo);
     }
 
     const Add = async () => {
         if (todo.text !== "") {
             try {
                 const { data } = await axios.post("/todos", { data: updateUser })
-                console.log(data)
                 fetchTodo();
                 setTodo(prevState => ({ ...prevState, text: "" }));
             } catch (error) {
@@ -75,13 +72,6 @@ const Navbar = ({ todos, fetchTodo }) => {
 
     }
 
-    // const handleModalClose = (e) => {
-    //     // e.stopPropogation();
-    //     setModals({ modal1: false, modal2: false, modal3: false })
-    // }
-    // useEffect(() => {
-    //     Add();
-    // }, [])
     return (
         <div style={{ display: "flex", width: "100%" }}>
             <div style={{ width: "100%" }}>

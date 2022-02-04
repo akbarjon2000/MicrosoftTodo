@@ -91,13 +91,6 @@ const Tasks = ({ value, fetchTodo }) => {
             setClient(prevState => ({ ...prevState, bottom: false }));
         }
         setShowContextMenu(true);
-        // console.log("clientX: ", e.clientX)
-        // console.log("state clientX: ", client.clientX)
-        // console.log("clientY: ", client.clientY)
-        // console.log("innerWidth:", window.innerWidth)
-        // console.log("innerHeight:", window.innerHeight)
-        // console.log("x: ", client.x)
-        // console.log("y: ", client.y)
     }
 
     const deleteTask = async () => {

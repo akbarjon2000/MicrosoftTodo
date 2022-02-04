@@ -41,9 +41,7 @@ const Drawer = ({ todos, fetchTodo }) => {
         modal2: false,
         modal3: false
     })
-    const [text, setText] = useState('')
     const [task, setTask] = useState({});
-    // console.log(task.completed)
     const [important, setImportant] = useState(null);
     const [completed, setCompleted] = useState(task.completed);
     const [myday, setMyDay] = useState(true)
@@ -56,41 +54,6 @@ const Drawer = ({ todos, fetchTodo }) => {
         })
 
     }, [drawerIsActive.id])
-
-    // console.log(drawerIsActive.id)
-    // console.log(todos)
-    // console.log(task)
-    // const fetchTask = async () => {
-    //     try {
-    //         const { data } = await axios.get("/todos");
-    //         // console.log("Data from Drawer", data.data);
-    //         const tasks = await data.data.filter((value) => value.id === drawerIsActive.id).map((value) => value.attributes);
-    //        tasks.map((value) => {setTask(value.attributes)})
-    //         // setText(tasks.map((value) => value.text));
-    //         // setImportant(tasks.map((value) => value.important));
-    //         // setCompleted(tasks.map((value) => value.completed));
-    //         // console.log(completed)
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     fetchTask();
-    //     // updateTitle();
-    // }, [drawerIsActive])
-
-    // const updateTitle = async () => {
-    //     try {
-    //         const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { text: text } })
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     updateTitle();
-    // }, [text])
 
     const updateImportance = async () => {
         try {

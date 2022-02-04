@@ -13,7 +13,6 @@ const MyDay = () => {
             const { data } = await axios.get(`/todos?filters[userId][$eq]=${userId}`);
             const { data: todo } = data;
             setTodos(todo)
-            console.log(todo)
         } catch (error) {
             console.log(error)
         }
