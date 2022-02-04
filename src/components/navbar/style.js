@@ -27,10 +27,8 @@ justify-content:space-between;
         background-color:white;
     }
     ${media.tablet}{ 
-            width:${({ show }) => show ? pxToRem(100) : pxToRem(40)};
-
-}
-}
+        width:${({ show }) => show ? pxToRem(100) : pxToRem(40)}}
+}   
 .searchbtn{
    width:${pxToRem(40)};
    height:100%;
@@ -68,6 +66,11 @@ display:${({ show }) => show ? "" : "none"};
     @media(max-width:350px){
         width:${pxToRem(30)};
         height:${pxToRem(30)};
+        display:${({ show }) => show ? "none" : ""};
+    }
+        @media(max-width:770px){
+
+        display:${({ show }) => show ? "none" : ""};
     }
 }
 
