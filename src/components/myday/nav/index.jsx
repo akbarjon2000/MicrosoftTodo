@@ -4,9 +4,11 @@ import { AddMenu, Container, ListOptionsModal, Modal1, Modal2, Modal3, UnderLine
 import { nanoid } from 'nanoid';
 import { pxToRem } from '../../../utils/pxToRem';
 import { Colors } from '../../../constants/constants';
-
 import axios from "../../../utils/axios";
 import Tasks from '../Tasks';
+import { getFirestore, collection, Firestore, getDocs } from "firebase/firestore"
+import { addDoc } from "firebase/firestore"
+
 //ICONS
 import { BsThreeDots, BsCircle, BsArrowRepeat, BsCalendar2Date, BsPrinter } from "react-icons/bs";
 import { IoMenuOutline, IoTodayOutline, IoCalendarOutline, IoCalendarClearOutline } from "react-icons/io5"
@@ -34,15 +36,15 @@ const Navbar = ({ todos, fetchTodo }) => {
     const [loading, setLoading] = useState(false);
     const [todo, setTodo] = useState({
         category: "My Day",
-        text: "",
+        title: "",
         content: "",
-        steps: [],
-        completed: false,
-        important: false,
-        date: "",
+        is_completed: false,
+        is_important: false,
+        due_date: new Date().toISOString(),
         reminder: "",
         repeat: "",
-        userId: null
+        user: null,
+        ownerID: 1
     })
 
     const [modals, setModals] = useState({
@@ -53,23 +55,27 @@ const Navbar = ({ todos, fetchTodo }) => {
     })
 
     const [hide, setHide] = useContext(MenuContext);
-    const userId = useContext(UserIdContext);
+    const user = useContext(UserIdContext);
     const [active, setActive] = useState(false);
 
+    const db = getFirestore();
+    const colRef = collection(db, "todo")
+
     const handleChange = (e) => {
-        setTodo(prevState => ({ ...prevState, text: e.target.value }));
+        setTodo(prevState => ({ ...prevState, title: e.target.value }));
     }
 
-    const updateUser = { ...todo, userId: userId };
+    const updateUser = { ...todo, user: user };
     const Add = async () => {
-        if (todo.text !== "") {
+        if (todo.title !== "") {
             try {
                 setLoading(true)
-                const { data } = await axios.post("/todos", { data: updateUser })
+                // const { data } = await axios.post("/todos", { data: updateUser })
+                addDoc(colRef, updateUser)
                 await fetchTodo();
                 setLoading(false);
                 setTodo(prevState => ({
-                    ...prevState, text: "", date: "", reminder: "", repeat: ""
+                    ...prevState, title: "", due_date: "", reminder: "", repeat: ""
                 }));
             } catch (error) {
                 console.log(error);
@@ -129,21 +135,21 @@ const Navbar = ({ todos, fetchTodo }) => {
                         {active &&
                             <div className='align__center alarm'>
                                 <div className="align__center">
-                                    <button className={`${todo.date ? "modalSelector" : "modalIcon"}`}>
+                                    <button className={`${todo.due_date ? "modalSelector" : "modalIcon"}`}>
                                         <IoCalendarOutline onClick={() => setModals({ modal1: !modals.modal1, modal2: false, modal3: false, listOptions: false })} className='icon' style={{}} />
-                                        <p style={{ color: `${Colors.greyTextColor}` }}>{todo.date && todo.date}</p>
+                                        <p style={{ color: `${Colors.greyTextColor}` }}>{todo.due_date && todo.due_date}</p>
                                     </button>
                                     <Modal1 modal1={modals.modal1} className='modal' onClick={() => setModals({ modal1: false })} >
                                         <p className='center title'>Due</p>
-                                        <div className='align__center dateInfo' onClick={() => setTodo(previewState => ({ ...previewState, date: "Today" }))} style={{ color: `${Colors.greyTextColor}` }} >
+                                        <div className='align__center dateInfo' onClick={() => setTodo(previewState => ({ ...previewState, due_date: "Today" }))} style={{ color: `${Colors.greyTextColor}` }} >
                                             <div className='align__center'><IoTodayOutline className='icon' /> <p style={{ marginLeft: "10px" }}>Today</p></div>
                                             <span >{(new Date()).toDateString().slice(0, 3)}</span>
                                         </div>
-                                        <div className='align__center dateInfo' onClick={() => setTodo(previewState => ({ ...previewState, date: "Tomorrow" }))} style={{ color: `${Colors.greyTextColor}` }} >
+                                        <div className='align__center dateInfo' onClick={() => setTodo(previewState => ({ ...previewState, due_date: "Tomorrow" }))} style={{ color: `${Colors.greyTextColor}` }} >
                                             <div className='align__center'><IoCalendarClearOutline className='icon' /> <p style={{ marginLeft: "10px" }}>Tomorrow</p></div>
                                             <span >{(new Date()).toDateString().slice(0, 3)}</span>
                                         </div>
-                                        <div className='align__center dateInfo' onClick={() => setTodo(previewState => ({ ...previewState, date: "Next week" }))} style={{ color: `${Colors.greyTextColor}`, borderBottom: "1px solid rgba(200, 200, 200)" }} >
+                                        <div className='align__center dateInfo' onClick={() => setTodo(previewState => ({ ...previewState, due_date: "Next week" }))} style={{ color: `${Colors.greyTextColor}`, borderBottom: "1px solid rgba(200, 200, 200)" }} >
                                             <div className='align__center'><IoTodayOutline className='icon' /> <p style={{ marginLeft: "10px" }}>Next week</p></div>
                                             <span >{(new Date()).toDateString().slice(0, 3)}</span>
                                         </div>
@@ -151,8 +157,8 @@ const Navbar = ({ todos, fetchTodo }) => {
                                             <div className='align__center'><BsCalendar2Date className='icon' /> <p style={{ marginLeft: "10px" }}>Pick a date</p></div>
                                             <span ><IoIosArrowForward /></span>
                                         </div>
-                                        {todo.date &&
-                                            <div className='align__center removeDate' onClick={() => setTodo(previewState => ({ ...previewState, date: "" }))}>
+                                        {todo.due_date &&
+                                            <div className='align__center removeDate' onClick={() => setTodo(previewState => ({ ...previewState, due_date: "" }))}>
                                                 <VscTrash className='icon' color='red' />
                                                 <p style={{ color: "red", marginLeft: "10px" }}>Remove due date</p>
                                             </div>
@@ -231,8 +237,8 @@ const Navbar = ({ todos, fetchTodo }) => {
                     </AddMenu>
                 </Container >
                 {loading ? <Loader />
-                    : todos.map(({ id, attributes }) => (
-                        <Tasks value={{ id, ...attributes }} key={nanoid(4)} fetchTodo={fetchTodo} />
+                    : todos.map(({ id, title, content, is_completed, is_important, due_date, reminder, repeat, user, ownerID }) => (
+                        <Tasks value={{ id, title, content, is_completed, is_important, due_date, reminder, repeat, user, ownerID }} key={nanoid(4)} fetchTodo={fetchTodo} />
                     ))}
                 <UnderLine />
             </div>

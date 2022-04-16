@@ -5,6 +5,8 @@ import { DrawerContext } from '../../../context/DrawerContext'
 import Swal from "sweetalert2";
 import { pxToRem } from '../../../utils/pxToRem';
 import { Colors } from '../../../constants/constants';
+import { updateDoc, getFirestore, collection, deleteDoc, doc } from "firebase/firestore"
+
 //ICONS:
 
 import { BiStar, BiExit } from "react-icons/bi"
@@ -41,21 +43,28 @@ const Drawer = ({ todos, fetchTodo }) => {
     })
     const [task, setTask] = useState({});
     const [important, setImportant] = useState(null);
-    const [completed, setCompleted] = useState(task.completed);
+    const [completed, setCompleted] = useState(task.is_completed);
     const [myday, setMyDay] = useState(true)
+
+    const db = getFirestore();
+    const colRef = collection(db, "todo");
 
     useEffect(() => {
         fetchTodo();
         let todo = todos.filter((value) => value.id === drawerIsActive.id)
         todo.map((value) => {
-            return setTask(value.attributes)
+            return setTask(value)
         })
 
     }, [drawerIsActive.id])
 
     const updateImportance = async () => {
         try {
-            const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { important: important } });
+            // const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { is_important: important } });
+            const docRef = doc(db, "todo", task?.id);
+            updateDoc(docRef, {
+                is_important: important
+            })
             fetchTodo();
         } catch (error) {
             console.log(error);
@@ -68,8 +77,11 @@ const Drawer = ({ todos, fetchTodo }) => {
 
     const updateCompleted = async () => {
         try {
-            const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { completed: completed } });
-
+            // const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { is_completed: completed } });
+            const docRef = doc(db, "todo", task?.id);
+            updateDoc(docRef, {
+                is_completed: completed
+            })
             fetchTodo();
         } catch (error) {
             console.log(error);
@@ -82,20 +94,32 @@ const Drawer = ({ todos, fetchTodo }) => {
     }, [completed]);
 
     const handleInputChange = ({ target }) => {
-        setTask(prevState => ({ ...prevState, text: target.value }));
-        const { data } = axios.put(`/todos/${drawerIsActive.id}`, { data: { text: target.value } })
+        setTask(prevState => ({ ...prevState, title: target.value }));
+        // const { data } = axios.put(`/todos/${drawerIsActive.id}`, { data: { title: target.value } })
+        const docRef = doc(db, "todo", task?.id);
+        updateDoc(docRef, {
+            title: target.value
+        })
         fetchTodo();
     }
     const updateCategory = async () => {
-        if (myday === true) {
+        if (myday) {
             try {
-                const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { category: "My Day" } });
+                // const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { category: "My Day" } });
+                const docRef = doc(db, "todo", task?.id);
+                updateDoc(docRef, {
+                    category: "My Day"
+                })
             } catch (error) {
                 console.log(error);
             }
         } else {
             try {
-                const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { category: "Tasks" } });
+                // const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { category: "Tasks" } });
+                const docRef = doc(db, "todo", task?.id);
+                updateDoc(docRef, {
+                    category: "Tasks"
+                })
             } catch (error) {
                 console.log(error);
             }
@@ -123,12 +147,15 @@ const Drawer = ({ todos, fetchTodo }) => {
         try {
             Swal.fire({
                 icon: "warning",
-                title: `${task.text} will be permanently deleted.`,
+                title: `${task.title} will be permanently deleted.`,
                 text: "you won't be able to undo this action.",
                 showCancelButton: true
             }).then(async (value) => {
                 if (value.isConfirmed) {
-                    const { data } = await axios.delete(`/todos/${drawerIsActive.id}`);
+                    // const { data } = await axios.delete(`/todos/${drawerIsActive.id}`);
+                    const docRef = doc(db, "todo", task?.id);
+                    deleteDoc(docRef)
+                    fetchTodo();
                     setDrawerIsActive(prevState => ({ ...prevState, open: false }));
                     fetchTodo();
                 }
@@ -140,7 +167,11 @@ const Drawer = ({ todos, fetchTodo }) => {
 
     const handleCloseClick = async (key) => {
         try {
-            const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { [key]: "" } });
+            // const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { [key]: "" } });
+            const docRef = doc(db, "todo", task?.id);
+            updateDoc(docRef, {
+                [key]: ""
+            })
             fetchTodo();
         } catch (error) {
             console.log(error);
@@ -149,7 +180,11 @@ const Drawer = ({ todos, fetchTodo }) => {
 
     const handleUpdateDate = async (value) => {
         try {
-            const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { date: value } });
+            // const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { due_date: value } });
+            const docRef = doc(db, "todo", task?.id);
+            updateDoc(docRef, {
+                due_date: value
+            })
             fetchTodo();
         } catch (error) {
             console.log(error)
@@ -157,7 +192,11 @@ const Drawer = ({ todos, fetchTodo }) => {
     }
     const handleUpdateReminder = async (value) => {
         try {
-            const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { reminder: value } });
+            // const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { reminder: value } });
+            const docRef = doc(db, "todo", task?.id);
+            updateDoc(docRef, {
+                reminder: value
+            })
             fetchTodo();
         } catch (error) {
             console.log(error)
@@ -166,7 +205,11 @@ const Drawer = ({ todos, fetchTodo }) => {
 
     const handleUpdateRepeat = async (value) => {
         try {
-            const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { repeat: value } });
+            // const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { repeat: value } });
+            const docRef = doc(db, "todo", task?.id);
+            updateDoc(docRef, {
+                repeat: value
+            })
             fetchTodo();
         } catch (error) {
             console.log(error)
@@ -179,11 +222,11 @@ const Drawer = ({ todos, fetchTodo }) => {
                 <div className='align__center' style={{ height: "100%", justifyContent: "space-between" }}>
                     {/* <div className='circle center'><TiTick color='#6e8eeb' /></div> */}
                     <div onClick={() => setCompleted(!completed)} style={{ cursor: "pointer" }}>
-                        {task.completed ? <AiFillCheckCircle className='icon' color="#6e8eeb" size={21} /> : <BsCircle className='icon' color="#6e8eeb" size={19} />}
+                        {completed ? <AiFillCheckCircle className='icon' color="#6e8eeb" size={21} /> : <BsCircle className='icon' color="#6e8eeb" size={19} />}
                     </div>
-                    <input value={task.text} className="input" onChange={handleInputChange} />
+                    <input value={task.title} className="input" onChange={handleInputChange} />
                     <div onClick={() => setImportant(!important)} style={{ cursor: "pointer" }} >
-                        {task.important ? <IoStar className='icon' color="#6e8eeb" /> : <BiStar className='icon' />}
+                        {important ? <IoStar className='icon' color="#6e8eeb" /> : <BiStar className='icon' />}
                     </div>
                 </div>
             </AddStep>
@@ -198,11 +241,11 @@ const Drawer = ({ todos, fetchTodo }) => {
                 <div className='align__center' style={{ width: "100%" }}>
                     <BsSun className='icon' style={{ color: `${task.category === "My Day" ? Colors.blue : ""}` }} />
                     {/* <p style={{ marginLeft: "20px" }}>{task.category === "My Day" ? "Added to My Day" : "Add to My Day"}</p> */}
-                    <div>{task.category === "My Day" ?
+                    <div>{myday ?
                         <div >
-                            <p style={{ color: `${Colors.blue}`, marginLeft: `${pxToRem(15)}` }} className='align__center'>Added to {task.category}</p>
+                            <p style={{ color: `${Colors.blue}`, marginLeft: `${pxToRem(15)}` }} className='align__center'>Added to {task?.category}</p>
                         </div>
-                        : <p style={{ marginLeft: `${pxToRem(15)}` }}>Add to My Day</p>
+                        : <p style={{ marginLeft: `${pxToRem(15)}`, cursor: "pointer", width: "100%" }} onClick={() => setMyDay(true)}>Add to My Day</p>
                     }</div>
                 </div>
                 <IoMdClose style={{ display: `${(task.category && closeDisplay.close1) ? "" : "none"}`, cursor: "pointer" }} className='icon' onClick={() => setMyDay(false)} />
@@ -212,9 +255,9 @@ const Drawer = ({ todos, fetchTodo }) => {
                     <div className="align__center" >
                         <span className='iconContainer center'> <VscBell className='icon' style={{ color: task.reminder && `${Colors.blue}` }} /></span>
                         <div style={{ display: "flex", flexDirection: "column", }} className='text'>
-                            <div>{task.reminder ?
+                            <div>{task?.reminder ?
                                 <div>
-                                    <p style={{ color: `${Colors.blue}` }} className='align__center'>Remind me <br /> {task.reminder}</p>
+                                    <p style={{ color: `${Colors.blue}` }} className='align__center'>Remind me <br /> {todos[0]?.reminder}</p>
 
                                 </div>
 
@@ -254,9 +297,9 @@ const Drawer = ({ todos, fetchTodo }) => {
                     <div className="align__center" >
                         <span className='iconContainer center'> <IoCalendarOutline className='icon' style={{ color: task.date && `${Colors.blue}` }} /></span>
                         <div style={{ display: "flex", flexDirection: "column", }} className='text'>
-                            <div>{task.date ?
+                            <div>{task?.date ?
                                 <div>
-                                    <p style={{ color: `${Colors.blue}` }} className='align__center'>{task.date}</p>
+                                    <p style={{ color: `${Colors.blue}` }} className='align__center'>{task?.date}</p>
 
                                 </div>
 
@@ -264,7 +307,7 @@ const Drawer = ({ todos, fetchTodo }) => {
                             }</div>
                         </div>
                     </div>
-                    <IoMdClose onClick={() => handleCloseClick("date")} className='close' style={{ display: `${(task.date && closeDisplay.close3) ? "" : "none"}`, cursor: "pointer" }} />
+                    <IoMdClose onClick={() => handleCloseClick("date")} className='close' style={{ display: `${(task?.date && closeDisplay?.close3) ? "" : "none"}`, cursor: "pointer" }} />
                 </DueDate>
                 <Modal1 modal1={modals.modal1} className='modal' onClick={() => setModals({ modal1: false })} >
                     <p className='center title'>Due</p>

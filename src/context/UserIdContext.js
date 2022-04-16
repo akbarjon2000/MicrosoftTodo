@@ -3,9 +3,9 @@ import React, { useState, createContext } from 'react';
 export const UserIdContext = createContext();
 
 const UserId = ({ children }) => {
-    const [userId, setUserId] = useState(JSON.parse(localStorage.user).id);
+    const [user, setUser] = useState(localStorage.user);
     return (
-        <UserIdContext.Provider value={userId}>
+        <UserIdContext.Provider value={user}>
             {children}
         </UserIdContext.Provider>
     )

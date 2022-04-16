@@ -6,15 +6,27 @@ import { Container } from './style'
 import axios from '../../../../utils/axios'
 import { LogInContext } from '../../../../context/LogInContext'
 import Swal from 'sweetalert2'
-// import {useHistory} from 'react-router-dom'
-
+import { signInWithEmailAndPassword, getAuth, updateCurrentUser } from "firebase/auth"
+import { initializeApp } from "firebase/app"
+import AuthContextProvider from '../../../../context/authContext'
+const firebaseConfig = {
+    apiKey: "AIzaSyDJxs-B5MkfTvuYU1m94b28ibevrMA57DE",
+    authDomain: "todo-1416b.firebaseapp.com",
+    projectId: "todo-1416b",
+    storageBucket: "todo-1416b.appspot.com",
+    messagingSenderId: "207546512803",
+    appId: "1:207546512803:web:ecf6d52fff5895d3551616"
+};
 function SignIn({ updateAuth }) {
+    initializeApp(firebaseConfig);
+    const auth = getAuth();
     const [isLoggedIn, setIsLoggedIn] = useContext(LogInContext);
     const [loading, setLoading] = useState(false)
     const [user, setUser] = useState({
         identifier: "",
         password: ""
     })
+    const [cred, setCred] = useState(null);
 
     const navigate = useNavigate();
     const handleInput = ({ target }) => {
@@ -22,36 +34,45 @@ function SignIn({ updateAuth }) {
         setUser(prevState => ({ ...prevState, [name]: value }));
     }
     const handleSignIn = async () => {
-        try {
-            const { data } = await axios.post("/auth/local", { identifier: user.identifier, password: user.password });
-            localStorage.setItem("user", JSON.stringify(data.user))
-            localStorage.setItem("token", data.jwt)
-            setIsLoggedIn(true);
-            setLoading(true)
-            Swal.fire({
-                icon: "success",
-                title: "Successful log in!",
-                text: "Enjoy your time!!!",
-                timer: 2000
+
+        signInWithEmailAndPassword(auth, user.identifier, user.password)
+            .then((cred) => {
+                console.log(auth)
+                console.log(cred)
+                setCred(cred.user);
+                updateAuth(cred.user)
+                localStorage.setItem("user", cred.user.uid)
+                localStorage.setItem("token", cred.user.accessToken)
+                setIsLoggedIn(true);
+                setLoading(true)
+            })
+            .then(() => {
+                Swal.fire({
+                    icon: "success",
+                    title: "Successful log in!",
+                    text: "Enjoy your time!!!",
+                    timer: 2000
+                })
             }).then((value) => {
                 setLoading(false);
-                const userData = {
-                    token: data.jwt,
-                    user: data.user
-                }
-                updateAuth(userData);
+                // const userData = {
+                //     token: data.jwt,
+                //     user: data.user
+                // }
+
+                updateCurrentUser(auth, cred)
                 navigate('/myDay')
             })
 
-        } catch (error) {
-            console.log(error);
-            Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: error.response.data.error.message,
+            .catch((error) => {
+                console.log(error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: error.response.data.error.message,
 
+                })
             })
-        }
     }
 
 

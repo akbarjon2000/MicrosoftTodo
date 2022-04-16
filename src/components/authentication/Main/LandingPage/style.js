@@ -6,7 +6,7 @@ export const Container = styled.div`
 overflow-y:hidden;
 display: flex;
 justify-content:space-between;
-padding:100px;
+padding:20px 100px;
 margin-bottom: 0; 
 width:100%;
 
