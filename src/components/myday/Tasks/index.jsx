@@ -18,7 +18,7 @@ import { updateDoc, getFirestore, collection, deleteDoc, doc } from "firebase/fi
 const Tasks = ({ value, fetchTodo }) => {
     const { is_completed, is_important, id } = value;
     const [taskIsActive, setTaskIsActive] = useState(false);
-    const [isImportant, setIsImportant] = useState(is_important);
+    const [isImportant, setIsImportant] = useState(false);
     const [isCompleted, setIsCompleted] = useState(is_completed);
     const [drawerIsActive, setDrawerIsActive] = useContext(DrawerContext);
     const [showContextMenu, setShowContextMenu] = useState(false);
@@ -56,6 +56,8 @@ const Tasks = ({ value, fetchTodo }) => {
     }
     useEffect(() => {
         if (isImportant !== is_important) {
+
+            console.log("Working")
             handleImportant();
             fetchTodo();
         }
@@ -134,7 +136,7 @@ const Tasks = ({ value, fetchTodo }) => {
         <Container taskIsActive={taskIsActive} onContextMenu={handleContextMenu}  >
             <RighClickMenu clientX={clientX} clientY={clientY} x={x} top={top} bottom={bottom} onMouseLeave={() => setShowContextMenu(false)} onClick={() => setShowContextMenu(false)} showContextMenu={showContextMenu} >
                 <p className='align__center section '><BsSun className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Add to My Day</p>
-                <p className='align__center section '><IoStarOutline className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Mark as important</p>
+                <p className='align__center section ' onClick={() => setIsImportant(!isImportant)}><IoStarOutline className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Mark as important</p>
                 <p className='align__center section ' ><BsCircle className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Mark as not completed</p>
                 <div style={{ borderBottom: "1px solid rgba(0,0,0,0.08)", marginBottom: "6px" }}></div>
                 <p className='align__center section '><Due className='icon' style={{ marginRight: "10px" }} /> Due today</p>

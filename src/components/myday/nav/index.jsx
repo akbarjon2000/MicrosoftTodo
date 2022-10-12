@@ -4,11 +4,9 @@ import { AddMenu, Container, ListOptionsModal, Modal1, Modal2, Modal3, UnderLine
 import { nanoid } from 'nanoid';
 import { pxToRem } from '../../../utils/pxToRem';
 import { Colors } from '../../../constants/constants';
-import axios from "../../../utils/axios";
 import Tasks from '../Tasks';
-import { getFirestore, collection, Firestore, getDocs } from "firebase/firestore"
 import { addDoc } from "firebase/firestore"
-
+import colRef from '../../../constants/firebase';
 //ICONS
 import { BsThreeDots, BsCircle, BsArrowRepeat, BsCalendar2Date, BsPrinter } from "react-icons/bs";
 import { IoMenuOutline, IoTodayOutline, IoCalendarOutline, IoCalendarClearOutline } from "react-icons/io5"
@@ -30,8 +28,10 @@ import { MenuContext } from '../../../context/menubarContext';
 import Loader from '../../Loader/Loader';
 import { UserIdContext } from '../../../context/UserIdContext';
 
-const Navbar = ({ todos, fetchTodo }) => {
 
+
+const Navbar = ({ todos, fetchTodo }) => {
+    // const app = initializeApp(firebaseConfig);
     const componentRef = useRef();
     const [loading, setLoading] = useState(false);
     const [todo, setTodo] = useState({
@@ -58,9 +58,6 @@ const Navbar = ({ todos, fetchTodo }) => {
     const user = useContext(UserIdContext);
     const [active, setActive] = useState(false);
 
-    const db = getFirestore();
-    const colRef = collection(db, "todo")
-
     const handleChange = (e) => {
         setTodo(prevState => ({ ...prevState, title: e.target.value }));
     }
@@ -68,9 +65,9 @@ const Navbar = ({ todos, fetchTodo }) => {
     const updateUser = { ...todo, user: user };
     const Add = async () => {
         if (todo.title !== "") {
+            console.log(updateUser)
             try {
                 setLoading(true)
-                // const { data } = await axios.post("/todos", { data: updateUser })
                 addDoc(colRef, updateUser)
                 await fetchTodo();
                 setLoading(false);
@@ -83,6 +80,20 @@ const Navbar = ({ todos, fetchTodo }) => {
         }
 
     }
+
+    // const Add = () => {
+    //     set(ref(db, "todo/"), updateUser)
+    //         .then(() => {
+    //             setLoading(true)
+    //             console.log("data stored succesfully")
+    //             fetchTodo();
+    //             setLoading(false);
+    //             setTodo(prevState => ({
+    //                 ...prevState, title: "", due_date: "", reminder: "", repeat: ""
+    //             }));
+    //         })
+    //         .catch((err) => console.log(err))
+    // }
 
     return (
         <div style={{ display: "flex", width: "100%" }}>
@@ -130,7 +141,7 @@ const Navbar = ({ todos, fetchTodo }) => {
                                 <BsCircle className='icon' ></BsCircle>
                                 : <AiOutlinePlus className='icon' style={{ cursor: "pointer" }} />
                             }
-                            <input type="text" placeholder='Add a task' className='input' value={todo.text} onChange={(e) => handleChange(e)} />
+                            <input type="text" placeholder='Add a task' className='input' value={todo.title} onChange={(e) => handleChange(e)} />
                         </div>
                         {active &&
                             <div className='align__center alarm'>

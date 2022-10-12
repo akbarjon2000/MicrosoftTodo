@@ -11,12 +11,15 @@ import { ReactComponent as Due } from "../../../assets/icons/duedate.svg";
 import { ReactComponent as DueTomorrow } from "../../../assets/icons/dueTomorrow.svg";
 import { ReactComponent as Move } from "../../../assets/icons/movetask.svg";
 import Swal from 'sweetalert2'
+//FIREBASE:
+import { updateDoc, getFirestore, collection, deleteDoc, doc } from "firebase/firestore"
+
 
 const Tasks = ({ value, fetchTodo }) => {
-    const { completed, important, id } = value;
+    const { is_completed, is_important, id } = value;
     const [taskIsActive, setTaskIsActive] = useState(false);
-    const [isImportant, setIsImportant] = useState(important);
-    const [isCompleted, setIsCompleted] = useState(completed);
+    const [isImportant, setIsImportant] = useState(is_important);
+    const [isCompleted, setIsCompleted] = useState(is_completed);
     const [drawerIsActive, setDrawerIsActive] = useContext(DrawerContext);
     const [showContextMenu, setShowContextMenu] = useState(false);
     const [client, setClient] = useState({
@@ -26,10 +29,15 @@ const Tasks = ({ value, fetchTodo }) => {
         top: null,
         bottom: null
     })
-
+    const db = getFirestore();
+    const colRef = collection(db, "todo");
     const handleImportant = async () => {
         try {
-            const { data } = await axios.put(`/todos/${id}`, { data: { important: isImportant } });
+            // const { data } = await axios.put(`/todos/${id}`, { data: { is_important: isImportant } });
+            const docRef = doc(db, "todo", value?.id);
+            updateDoc(docRef, {
+                is_important: isImportant
+            })
             fetchTodo();
         } catch (error) {
             console.log(error)
@@ -37,13 +45,17 @@ const Tasks = ({ value, fetchTodo }) => {
     }
     const handleCompleted = async () => {
         try {
-            const { data } = await axios.put(`/todos/${id}`, { data: { completed: isCompleted } })
+            // const { data } = await axios.put(`/todos/${id}`, { data: { is_completed: isCompleted } })
+            const docRef = doc(db, "todo", value?.id);
+            updateDoc(docRef, {
+                is_completed: isCompleted
+            })
         } catch (error) {
             console.log(error)
         }
     }
     useEffect(() => {
-        if (isImportant !== important) {
+        if (isImportant !== is_important) {
             handleImportant();
             fetchTodo();
         }
@@ -56,7 +68,7 @@ const Tasks = ({ value, fetchTodo }) => {
     }, [isCompleted]);
 
     const handleDrawerUtility = () => {
-        setDrawerIsActive(prevState => ({ ...prevState, id: id, open: true }));
+        setDrawerIsActive(prevState => ({ ...prevState, id: value.id, open: true }));
         setTaskIsActive(true);
     }
 
@@ -97,12 +109,14 @@ const Tasks = ({ value, fetchTodo }) => {
         try {
             Swal.fire({
                 icon: "warning",
-                title: `${value.text} will be permanently deleted.`,
+                title: `${value.title} will be permanently deleted.`,
                 text: "You won't be able to undo this action.",
                 showCancelButton: true,
             }).then(async (data) => {
                 if (data.isConfirmed) {
-                    const { data } = await axios.delete(`/todos/${id}`);
+                    // const { data } = await axios.delete(`/todos/${id}`);
+                    const docRef = doc(db, "todo", value?.id);
+                    deleteDoc(docRef)
                     fetchTodo();
                 }
             }
@@ -115,9 +129,10 @@ const Tasks = ({ value, fetchTodo }) => {
     const { clientX, clientY, x, top, bottom } = client;
 
 
+
     return (
         <Container taskIsActive={taskIsActive} onContextMenu={handleContextMenu}  >
-            <RighClickMenu clientX={clientX} clientY={clientY} x={x} top={top} bottom={bottom} onClick={() => setShowContextMenu(false)} onMouseLeave={() => setShowContextMenu(false)} showContextMenu={showContextMenu} >
+            <RighClickMenu clientX={clientX} clientY={clientY} x={x} top={top} bottom={bottom} onMouseLeave={() => setShowContextMenu(false)} onClick={() => setShowContextMenu(false)} showContextMenu={showContextMenu} >
                 <p className='align__center section '><BsSun className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Add to My Day</p>
                 <p className='align__center section '><IoStarOutline className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Mark as important</p>
                 <p className='align__center section ' ><BsCircle className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Mark as not completed</p>
@@ -145,12 +160,12 @@ const Tasks = ({ value, fetchTodo }) => {
                     }
                 </div>
                 <div onClick={handleDrawerUtility} style={{ width: "100%" }}>
-                    <p style={{ marginLeft: "10px" }}>{value.text}</p>
+                    <p style={{ marginLeft: "10px" }}>{value.title}</p>
                     <div className='align__center'>
                         <p className='text align__center' style={{ marginLeft: "10px" }}>Tasks</p>
 
-                        {value.date && <p className='text align__center'>
-                            <BsDot className='align__center' /> {value.date}
+                        {value.due_date && <p className='text align__center'>
+                            <BsDot className='align__center' /> {value.due_date}
                         </p>}
 
                         {value.reminder && <p className='text align__center'>

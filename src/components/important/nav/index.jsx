@@ -26,6 +26,7 @@ import { ReactComponent as CircleDoubleArrow } from "../../../assets/icons/circl
 //CONTEXT
 import { MenuContext } from '../../../context/menubarContext';
 import { UserIdContext } from '../../../context/UserIdContext';
+import { collection, getFirestore } from 'firebase/firestore';
 
 
 const Navbar = ({ todos, fetchTodo }) => {
@@ -54,7 +55,8 @@ const Navbar = ({ todos, fetchTodo }) => {
     const [hide, setHide] = useContext(MenuContext);
     const [active, setActive] = useState(false);
     const userId = useContext(UserIdContext);
-
+    const db = getFirestore();
+    const colRef = collection(db, "todo")
     const handleChange = (e) => {
         setTodo(prevState => ({ ...prevState, text: e.target.value }));
     }
@@ -62,9 +64,10 @@ const Navbar = ({ todos, fetchTodo }) => {
     const updateUser = { ...todo, userId: userId };
 
     const Add = async () => {
-        if (todo.text !== "") {
+        if (todo.title !== "") {
             try {
-                const { data } = await axios.post("/todos", { data: updateUser })
+                // const { data } = await axios.post("/todos", { data: updateUser })
+                addDoc(colRef, updateUser)
                 fetchTodo();
                 setTodo(prevState => ({ ...prevState, text: "" }));
             } catch (error) {

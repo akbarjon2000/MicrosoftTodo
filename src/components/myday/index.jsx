@@ -17,7 +17,7 @@ const firebaseConfig = {
 };
 
 const MyDay = () => {
-    // initializeApp(firebaseConfig);
+    initializeApp(firebaseConfig);
     const [todos, setTodos] = useState([]);
     const user = useContext(UserIdContext);
     const db = getFirestore();
@@ -27,9 +27,11 @@ const MyDay = () => {
         getDocs(colRef)
             .then((snapshot) => {
                 let todo = [];
-                snapshot.docs.forEach((doc) => [
-                    todo.push({ ...doc.data(), id: doc.id })
-                ])
+                snapshot.docs.forEach((doc) => {
+                    if (doc.data().user == localStorage.getItem("user")) {
+                        todo.push({ ...doc.data(), id: doc.id })
+                    }
+                })
                 setTodos(todo);
                 console.log(todo);
             })
