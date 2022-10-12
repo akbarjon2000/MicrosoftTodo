@@ -18,7 +18,7 @@ import { updateDoc, getFirestore, collection, deleteDoc, doc } from "firebase/fi
 const Tasks = ({ value, fetchTodo }) => {
     const { is_completed, is_important, id } = value;
     const [taskIsActive, setTaskIsActive] = useState(false);
-    const [isImportant, setIsImportant] = useState(false);
+    const [isImportant, setIsImportant] = useState(is_important);
     const [isCompleted, setIsCompleted] = useState(is_completed);
     const [drawerIsActive, setDrawerIsActive] = useContext(DrawerContext);
     const [showContextMenu, setShowContextMenu] = useState(false);
@@ -38,7 +38,6 @@ const Tasks = ({ value, fetchTodo }) => {
             updateDoc(docRef, {
                 is_important: isImportant
             })
-            fetchTodo();
         } catch (error) {
             console.log(error)
         }
@@ -54,13 +53,24 @@ const Tasks = ({ value, fetchTodo }) => {
             console.log(error)
         }
     }
-    useEffect(() => {
-        if (isImportant !== is_important) {
 
-            console.log("Working")
-            handleImportant();
-            fetchTodo();
+    const handleDue = async (val) => {
+        try {
+            // const { data } = await axios.put(`/todos/${id}`, { data: { is_completed: isCompleted } })
+            const docRef = doc(db, "todo", value?.id);
+            updateDoc(docRef, {
+                due_date: val
+            })
+            fetchTodo()
+        } catch (error) {
+            console.log(error)
         }
+    }
+    useEffect(() => {
+
+        console.log("Working")
+        handleImportant();
+
     }, [isImportant]);
 
     useEffect(() => {
@@ -135,13 +145,13 @@ const Tasks = ({ value, fetchTodo }) => {
     return (
         <Container taskIsActive={taskIsActive} onContextMenu={handleContextMenu}  >
             <RighClickMenu clientX={clientX} clientY={clientY} x={x} top={top} bottom={bottom} onMouseLeave={() => setShowContextMenu(false)} onClick={() => setShowContextMenu(false)} showContextMenu={showContextMenu} >
-                <p className='align__center section '><BsSun className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Add to My Day</p>
+                <p className='align__center section ' onClick={() => handleDue("Today")} ><BsSun className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Add to Planned</p>
                 <p className='align__center section ' onClick={() => setIsImportant(!isImportant)}><IoStarOutline className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Mark as important</p>
-                <p className='align__center section ' ><BsCircle className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Mark as not completed</p>
+                <p className='align__center section ' onClick={handleComplete} ><BsCircle className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Mark as not completed</p>
                 <div style={{ borderBottom: "1px solid rgba(0,0,0,0.08)", marginBottom: "6px" }}></div>
-                <p className='align__center section '><Due className='icon' style={{ marginRight: "10px" }} /> Due today</p>
-                <p className='align__center section '><DueTomorrow className='icon' style={{ marginRight: "10px" }} /> Due tomorrow</p>
-                <p className='align__center section '><IoCalendarOutline className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Remove due date</p>
+                <p className='align__center section ' onClick={() => handleDue("Today")} ><Due className='icon' style={{ marginRight: "10px" }} /> Due today</p>
+                <p className='align__center section ' onClick={() => handleDue("Tomorrow")} ><DueTomorrow className='icon' style={{ marginRight: "10px" }} /> Due tomorrow</p>
+                <p className='align__center section ' onClick={() => handleDue("")} ><IoCalendarOutline className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Remove due date</p>
                 <div style={{ borderBottom: "1px solid rgba(0,0,0,0.08)", marginBottom: "6px" }}></div>
                 <p className='align__center section '><AiOutlinePlus className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Create new list from this task</p>
                 <p className='align__center section '><Move className='icon' color='#34373d' style={{ marginRight: "10px" }} /> Move task to...</p>
