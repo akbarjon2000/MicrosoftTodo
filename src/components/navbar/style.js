@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Colors } from "../../constants/constants";
 import { pxToRem } from "../../utils/pxToRem";
 const media = {
-    phone: "@media(max-width:360px)",
+    phone: "@media(max-width:450px)",
     tablet: "@media(max-width:770px)",
     desktop: "@media(max-width:900px)"
 }
@@ -63,7 +63,7 @@ display:${({ show }) => show ? "" : "none"};
     &:hover{
         background-color:${Colors.lightblue}
     }
-    @media(max-width:350px){
+    @media(max-width:450px){
         width:${pxToRem(30)};
         height:${pxToRem(30)};
         display:${({ show }) => show ? "none" : ""};

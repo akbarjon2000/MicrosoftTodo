@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 import { Colors } from '../../constants/constants';
 import { pxToRem } from '../../utils/pxToRem';
-
+const media = {
+    phone: "@media(max-width:450px)",
+    tablet: "@media(max-width:720px)",
+    desktop: "@media(max-width:900px)"
+}
 export const Container = styled.div`
 min-width:${pxToRem(370)};
 min-height:${pxToRem(1000)}; 
@@ -11,7 +15,9 @@ display:${({ drawerIsActive }) => drawerIsActive ? "flex" : "none"};
 flex-direction:column;
 align-items:center;
 overflow-y:scroll;
-
+${media.phone}{
+    min-width:100%;
+}
 `
 
 export const AddStep = styled.div`

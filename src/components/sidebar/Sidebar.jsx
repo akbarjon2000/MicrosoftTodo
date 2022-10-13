@@ -20,7 +20,12 @@ const Sidebar = () => {
                 <IoMenuOutline size={20} className='icon' />
             </button>
             {sidebar.map(({ id, title, path, icon: Icon }) => (
-                <NavLink onClick={() => setDrawerIsActive(false)} to={path} key={id} style={({ isActive }) => {
+                <NavLink onClick={() => {
+                    setDrawerIsActive(false);
+                    if (window.innerWidth < 450) {
+                        setHide(true)
+                    }
+                }} to={path} key={id} style={({ isActive }) => {
                     return {
                         color: isActive ? 'blue' : '#black',
                         textDecoration: "none",

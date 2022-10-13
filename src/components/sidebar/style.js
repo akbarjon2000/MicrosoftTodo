@@ -19,7 +19,7 @@ background-color:#f5f3f4;
 ${media.phone}{
     position:absolute;
     z-index:1000;
-    width:70%;
+    width:100% !important;
 }
 
 .menuIcon{
