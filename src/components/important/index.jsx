@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
-import Navbar from './nav';
+import Navbar from '../../generic/nav';
 import { Container } from './style';
 import axios from '../../utils/axios';
-import Drawer from './drawer/Drawer';
+import Drawer from '../../generic/drawer/Drawer';
 import { UserIdContext } from "../../context/UserIdContext";
 import { getFirestore, collection, Firestore, onSnapshot, getDocs, query, where } from "firebase/firestore"
 import { initializeApp } from 'firebase/app';
@@ -31,12 +31,14 @@ const Important = () => {
     // })
     const fetchTodo = async () => {
 
-        getDocs(q)
+        getDocs(colRef)
             .then((snapshot) => {
                 let todo = [];
-                snapshot.docs.forEach((doc) => [
-                    todo.push({ ...doc.data(), id: doc.id })
-                ])
+                snapshot.docs.forEach((doc) => {
+                    if (doc.data().user == localStorage.getItem("user") && doc.data().is_important === true) {
+                        todo.push({ ...doc.data(), id: doc.id })
+                    }
+                })
                 setTodos(todo);
                 console.log(todo);
             })
@@ -55,7 +57,7 @@ const Important = () => {
         <Container>
 
             <div style={{ width: "100%", display: "flex", flexDirection: "column", overflow: "scroll" }}>
-                <Navbar todos={todos} fetchTodo={fetchTodo} />
+                <Navbar category="Important" todos={todos} fetchTodo={fetchTodo} />
                 <div className='underlines'></div>
             </div>
             <Drawer todos={todos} fetchTodo={fetchTodo} />

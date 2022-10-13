@@ -1,29 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react'
-import Navbar from './nav';
+import Navbar from '../../generic/nav';
 import { Container } from './style';
-import axios from '../../utils/axios';
-import Drawer from './drawer/Drawer';
+import Drawer from '../../generic/drawer/Drawer';
 import { UserIdContext } from '../../context/UserIdContext';
-import { getFirestore, collection, Firestore, onSnapshot, getDocs } from "firebase/firestore"
-import { initializeApp } from 'firebase/app';
-
-const firebaseConfig = {
-    apiKey: "AIzaSyDJxs-B5MkfTvuYU1m94b28ibevrMA57DE",
-    authDomain: "todo-1416b.firebaseapp.com",
-    projectId: "todo-1416b",
-    storageBucket: "todo-1416b.appspot.com",
-    messagingSenderId: "207546512803",
-    appId: "1:207546512803:web:ecf6d52fff5895d3551616"
-};
+import { getDocs } from "firebase/firestore"
+import colRef from '../../constants/firebase';
 
 const MyDay = () => {
-    initializeApp(firebaseConfig);
     const [todos, setTodos] = useState([]);
     const user = useContext(UserIdContext);
-    const db = getFirestore();
-    const colRef = collection(db, "todo")
-    const fetchTodo = async () => {
 
+    const fetchTodo = async () => {
         getDocs(colRef)
             .then((snapshot) => {
                 let todo = [];
@@ -38,6 +25,7 @@ const MyDay = () => {
             .catch((er) => {
                 console.log(er)
             })
+
         // onSnapshot(colRef, (snapshot) => {
         //     let todo = [];
         //     snapshot.docs.forEach((doc) => {
@@ -57,7 +45,7 @@ const MyDay = () => {
         <Container>
 
             <div style={{ width: "100%", display: "flex", flexDirection: "column", overflow: "scroll" }}>
-                <Navbar todos={todos} fetchTodo={fetchTodo} />
+                <Navbar category="My Day" todos={todos} fetchTodo={fetchTodo} />
                 <div className='underlines'></div>
             </div>
             <Drawer todos={todos} fetchTodo={fetchTodo} />

@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AddMyDay, AddStep, Container, Steps, Remind, DueDate, Repeat, Category, AddFile, Editor, Close, Modal1, Modal2, Modal3 } from './DraweraStyle'
-import axios from '../../../utils/axios'
-import { DrawerContext } from '../../../context/DrawerContext'
+import { DrawerContext } from '../../context/DrawerContext'
 import Swal from "sweetalert2";
-import { pxToRem } from '../../../utils/pxToRem';
-import { Colors } from '../../../constants/constants';
+import { pxToRem } from '../../utils/pxToRem';
+import { Colors } from '../../constants/constants';
 import { updateDoc, getFirestore, collection, deleteDoc, doc } from "firebase/firestore"
 
 //ICONS:
@@ -16,14 +15,14 @@ import { IoCalendarOutline, IoPricetagOutline, IoStar, IoCalendarClearOutline, I
 import { VscBell, VscTrash } from "react-icons/vsc"
 import { AiFillCheckCircle } from "react-icons/ai"
 import { BsCircle } from "react-icons/bs"
-import { ReactComponent as Daily } from "../../../assets/icons/daily.svg"
-import { ReactComponent as Weekdays } from "../../../assets/icons/weekdays.svg"
-import { ReactComponent as Weekly } from "../../../assets/icons/weekly.svg"
-import { ReactComponent as Monthly } from "../../../assets/icons/monthly.svg"
-import { ReactComponent as Yearly } from "../../../assets/icons/yearly.svg"
-import { ReactComponent as Clock } from "../../../assets/icons/clockWithArrow.svg"
-import { ReactComponent as CircleArrow } from "../../../assets/icons/circleArrow.svg"
-import { ReactComponent as CircleDoubleArrow } from "../../../assets/icons/circleDoubleArrow.svg"
+import { ReactComponent as Daily } from "../../assets/icons/daily.svg"
+import { ReactComponent as Weekdays } from "../../assets/icons/weekdays.svg"
+import { ReactComponent as Weekly } from "../../assets/icons/weekly.svg"
+import { ReactComponent as Monthly } from "../../assets/icons/monthly.svg"
+import { ReactComponent as Yearly } from "../../assets/icons/yearly.svg"
+import { ReactComponent as Clock } from "../../assets/icons/clockWithArrow.svg"
+import { ReactComponent as CircleArrow } from "../../assets/icons/circleArrow.svg"
+import { ReactComponent as CircleDoubleArrow } from "../../assets/icons/circleDoubleArrow.svg"
 
 
 const Drawer = ({ todos, fetchTodo }) => {
@@ -42,7 +41,7 @@ const Drawer = ({ todos, fetchTodo }) => {
         modal3: false
     })
     const [task, setTask] = useState({});
-    const [important, setImportant] = useState(null);
+    const [important, setImportant] = useState(task.is_important);
     const [completed, setCompleted] = useState(task.is_completed);
     const [myday, setMyDay] = useState(true)
 
