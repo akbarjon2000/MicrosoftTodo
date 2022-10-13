@@ -5,14 +5,14 @@ import { AiFillCheckCircle, AiOutlinePlus } from "react-icons/ai"
 import { BsCircle, BsDot, BsSun } from "react-icons/bs"
 import { IoStarOutline, IoStar, IoCalendarOutline } from "react-icons/io5"
 import { VscCopy, VscTrash } from "react-icons/vsc"
-import { DrawerContext } from '../../context/DrawerContext'
 import { ReactComponent as Due } from "../../assets/icons/duedate.svg";
 import { ReactComponent as DueTomorrow } from "../../assets/icons/dueTomorrow.svg";
 import { ReactComponent as Move } from "../../assets/icons/movetask.svg";
 import Swal from 'sweetalert2'
 //FIREBASE:
 import { updateDoc, getFirestore, collection, deleteDoc, doc } from "firebase/firestore"
-
+//CONTEXT
+import { DrawerContext } from '../../context/DrawerContext'
 
 const Tasks = ({ value, fetchTodo }) => {
     const { is_completed, is_important, id } = value;

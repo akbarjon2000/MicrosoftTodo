@@ -3,16 +3,22 @@ import React, { useState, createContext } from 'react'
 export const MyTaskContext = createContext();
 
 const TasksContext = ({ children }) => {
-    const [data, setData] = useState({
-        text: "",
-        date: "",
-        reminder: "",
-        repeat: "",
-        add: false
+    const [task, setTask] = useState({
+        // title: "",
+        // reminder: "",
+        // repeat: "",
+        // due_date: "",
+        // category: "",
+        // is_completed: false,
+        // is_important: false,
+        // user: "",
+        // ownerID: 1,
+        // id: "",
+        // content: ""
     });
 
     return (
-        <MyTaskContext.Provider value={[data, setData]}>
+        <MyTaskContext.Provider value={[task, setTask]}>
             {children}
         </MyTaskContext.Provider>
     )

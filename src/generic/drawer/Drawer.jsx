@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AddMyDay, AddStep, Container, Steps, Remind, DueDate, Repeat, Category, AddFile, Editor, Close, Modal1, Modal2, Modal3 } from './DraweraStyle'
-import { DrawerContext } from '../../context/DrawerContext'
 import Swal from "sweetalert2";
 import { pxToRem } from '../../utils/pxToRem';
 import { Colors } from '../../constants/constants';
@@ -11,7 +10,7 @@ import { updateDoc, getFirestore, collection, deleteDoc, doc } from "firebase/fi
 import { BiStar, BiExit } from "react-icons/bi"
 import { BsSun, BsArrowRepeat, BsCalendar2Date } from "react-icons/bs"
 import { IoMdClose, IoIosAttach, IoIosArrowForward } from "react-icons/io"
-import { IoCalendarOutline, IoPricetagOutline, IoStar, IoCalendarClearOutline, IoTodayOutline } from "react-icons/io5"
+import { IoCalendarOutline, IoPricetagOutline, IoStar, IoCalendarClearOutline, IoTodayOutline, IoCompassOutline } from "react-icons/io5"
 import { VscBell, VscTrash } from "react-icons/vsc"
 import { AiFillCheckCircle } from "react-icons/ai"
 import { BsCircle } from "react-icons/bs"
@@ -24,7 +23,9 @@ import { ReactComponent as Clock } from "../../assets/icons/clockWithArrow.svg"
 import { ReactComponent as CircleArrow } from "../../assets/icons/circleArrow.svg"
 import { ReactComponent as CircleDoubleArrow } from "../../assets/icons/circleDoubleArrow.svg"
 
-
+//CONTEXT
+import { DrawerContext } from '../../context/DrawerContext'
+import { MyTaskContext } from '../../context/tasksContext';
 const Drawer = ({ todos, fetchTodo }) => {
     const [active, setActive] = useState(false)
     const [drawerIsActive, setDrawerIsActive] = useContext(DrawerContext);
@@ -40,31 +41,31 @@ const Drawer = ({ todos, fetchTodo }) => {
         modal2: false,
         modal3: false
     })
-    const [task, setTask] = useState({});
+    const [task, setTask] = useContext(MyTaskContext)
     const [important, setImportant] = useState(task.is_important);
     const [completed, setCompleted] = useState(task.is_completed);
     const [myday, setMyDay] = useState(true)
 
     const db = getFirestore();
     const colRef = collection(db, "todo");
-
-    useEffect(() => {
+    const reload = () => {
         fetchTodo();
         let todo = todos.filter((value) => value.id === drawerIsActive.id)
         todo.map((value) => {
             return setTask(value)
         })
-
+    }
+    useEffect(() => {
+        reload()
     }, [drawerIsActive.id])
 
     const updateImportance = async () => {
         try {
-            // const { data } = await axios.put(`/todos/${drawerIsActive.id}`, { data: { is_important: important } });
             const docRef = doc(db, "todo", task?.id);
             updateDoc(docRef, {
                 is_important: important
             })
-            fetchTodo();
+            reload()
         } catch (error) {
             console.log(error);
         }
@@ -81,7 +82,7 @@ const Drawer = ({ todos, fetchTodo }) => {
             updateDoc(docRef, {
                 is_completed: completed
             })
-            fetchTodo();
+            reload()
         } catch (error) {
             console.log(error);
         }
