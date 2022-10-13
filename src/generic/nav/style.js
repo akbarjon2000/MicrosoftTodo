@@ -34,7 +34,7 @@ height:${pxToRem(70)};
 }
 }
 .nav > h3{
-    color:${({ category }) => category == "My Day" ? Colors.textcolor : Colors.blue};
+    color:${({ category }) => category == "My Day" ? Colors.textcolor : category == "Tasks" ? "#7A45BF" : Colors.blue};
     font-weight:500;
 }   
 
@@ -109,7 +109,7 @@ border:1px solid rgb(235,235,235);
     box-shadow:${({ active }) => active ? "0 -17px 0 -16px #465efc inset !important" : "none"} ;
     ::placeholder{
         
-        color:${({ category }) => category !== "My Day" && Colors.blue};
+        color:${({ category }) => (category !== "My Day" && category !== "Tasks") ? Colors.blue : category == "Tasks" ? "#7A45BF" : null};
     }
 }
 

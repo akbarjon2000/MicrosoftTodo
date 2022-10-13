@@ -16,7 +16,7 @@ const Planned = () => {
             .then((snapshot) => {
                 let todo = [];
                 snapshot.docs.forEach((doc) => {
-                    if (doc.data().user == localStorage.getItem("user")) {
+                    if (doc.data().user == localStorage.getItem("user") && doc.data().due_date === "Today") {
                         todo.push({ ...doc.data(), id: doc.id })
                     }
                 })

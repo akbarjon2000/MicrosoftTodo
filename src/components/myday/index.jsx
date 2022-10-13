@@ -25,19 +25,8 @@ const MyDay = () => {
             .catch((er) => {
                 console.log(er)
             })
-
-        // onSnapshot(colRef, (snapshot) => {
-        //     let todo = [];
-        //     snapshot.docs.forEach((doc) => {
-        //         todo.push({ ...doc.data(), id: doc.id })
-        //         setTodos(todo);
-
-        //     })
-        // })
-        // const { data } = await axios.get(`/todos/?filters[user][$eq]=${user}`);
-        // const { data: todo } = data;
-
     }
+
     useEffect(() => {
         fetchTodo();
     }, [])

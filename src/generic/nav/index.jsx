@@ -47,7 +47,7 @@ const Navbar = ({ category, todos, fetchTodo }) => {
         content: "",
         is_completed: false,
         is_important: category == "Important" ? true : false,
-        due_date: (category == "Planned" || category == "Tasks") ? "Today" : new Date().toISOString(),
+        due_date: (category == "Planned" || category === "Tasks") ? "Today" : new Date().toISOString(),
         reminder: "",
         repeat: "",
         user: null,
@@ -88,20 +88,6 @@ const Navbar = ({ category, todos, fetchTodo }) => {
 
     }
 
-    // const Add = () => {
-    //     set(ref(db, "todo/"), updateUser)
-    //         .then(() => {
-    //             setLoading(true)
-    //             console.log("data stored succesfully")
-    //             fetchTodo();
-    //             setLoading(false);
-    //             setTodo(prevState => ({
-    //                 ...prevState, title: "", due_date: "", reminder: "", repeat: ""
-    //             }));
-    //         })
-    //         .catch((err) => console.log(err))
-    // }
-
     return (
         <div style={{ display: "flex", width: "100%" }}>
             <div style={{ width: "100%" }}>
@@ -119,7 +105,7 @@ const Navbar = ({ category, todos, fetchTodo }) => {
                                 <div className=' nav align__center' >
                                     <h3>{category}</h3>
                                     <div className='dotsCon center' title='list opntions' onClick={() => setModals({ modal1: false, modal2: false, modal3: false, listOptions: !modals.listOptions })}>
-                                        <BsThreeDots className='icon' style={{ color: `${category !== "My Day" && Colors.blue}` }} />
+                                        <BsThreeDots className='icon' style={{ color: `${(category !== "My Day" && category !== "Tasks") ? Colors.blue : category == "Tasks" ? "#7A45BF" : Colors.textcolor} ` }} />
                                     </div>
                                     <ListOptionsModal listOptions={modals.listOptions} className='modal' onClick={() => setModals({ listOptions: false })} >
                                         <p className='center title'>List options</p>
@@ -150,7 +136,7 @@ const Navbar = ({ category, todos, fetchTodo }) => {
                         <div className='align__center' onClick={() => setActive(true)}>
                             {active ?
                                 <BsCircle className='icon' ></BsCircle>
-                                : <AiOutlinePlus className='icon' style={{ cursor: "pointer", color: `${category !== "My Day" && Colors.blue}` }} />
+                                : <AiOutlinePlus className='icon' style={{ cursor: "pointer", color: `${(category !== "My Day" && category !== "Tasks") ? Colors.blue : category == "Tasks" ? "#7A45BF" : Colors.textcolor} ` }} />
                             }
                             <input type="text" placeholder={categoryPlaceholder()} className='input' value={todo.title} onChange={(e) => handleChange(e)} />
                         </div>

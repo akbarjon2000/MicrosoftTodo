@@ -1,23 +1,29 @@
-import React, { useContext, useState, useEffect } from 'react'
-import Navbar from './nav';
+import React, { useState, useEffect } from 'react'
+import Navbar from '../../generic/nav';
 import { Container } from './style';
-import axios from '../../utils/axios';
-import Drawer from './drawer/Drawer';
-import { UserIdContext } from "../../context/UserIdContext"
+import Drawer from '../../generic/drawer/Drawer';
+import { getDocs } from "firebase/firestore"
 
+import colRef from '../../constants/firebase';
 
 const Tasks = () => {
     const [todos, setTodos] = useState([]);
-    const userId = useContext(UserIdContext);
-    const fetchTodo = async () => {
-        try {
-            const { data } = await axios.get(`/todos?filters[userId]=${userId}`);
-            const { data: todo } = data;
-            setTodos(todo)
-        } catch (error) {
-            console.log(error)
-        }
 
+    const fetchTodo = async () => {
+        getDocs(colRef)
+            .then((snapshot) => {
+                let todo = [];
+                snapshot.docs.forEach((doc) => {
+                    if (doc.data().user == localStorage.getItem("user")) {
+                        todo.push({ ...doc.data(), id: doc.id })
+                    }
+                })
+                setTodos(todo);
+                console.log(todo);
+            })
+            .catch((er) => {
+                console.log(er)
+            })
     }
     useEffect(() => {
         fetchTodo();
@@ -26,7 +32,7 @@ const Tasks = () => {
         <Container>
 
             <div style={{ width: "100%", display: "flex", flexDirection: "column", overflow: "scroll" }}>
-                <Navbar todos={todos} fetchTodo={fetchTodo} />
+                <Navbar category="Tasks" todos={todos} fetchTodo={fetchTodo} />
                 <div className='underlines'></div>
             </div>
             <Drawer todos={todos} fetchTodo={fetchTodo} />
