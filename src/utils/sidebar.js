@@ -1,10 +1,10 @@
 //COMPONENTS
 // import Generic from "../pages/generic"
 import MyDay from "../components/myday"
-import Important from "../components/Important"
-import AssignedToMe from "../components/AssignedToMe"
-import Planned from "../components/Planned"
-import Tasks from "../components/Tasks"
+import Important from "../components/Important/index"
+import AssignedToMe from "../components/AssignedToMe/index"
+import Planned from "../components/Planned/index"
+import Tasks from "../components/Tasks/index"
 //ICONS
 import { BsSun } from "react-icons/bs"
 import { IoStarOutline, IoCalendarOutline } from "react-icons/io5"
