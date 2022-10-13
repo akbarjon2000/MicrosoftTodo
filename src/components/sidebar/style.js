@@ -3,7 +3,7 @@ import { pxToRem } from "../../utils/pxToRem"
 
 
 const media = {
-    phone: "@media(max-width:320px)",
+    phone: "@media(max-width:450px)",
     tablet: "@media(max-width:770px)",
     desktop: "@media(max-width:1000px)"
 }
