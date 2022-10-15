@@ -39,15 +39,15 @@ const LandingPage = () => {
                 <a className='learnMore' href='https://www.microsoft.com/ko-kr/microsoft-365/microsoft-to-do-list-app?rtc=1'>Learn more</a>
                 <h3 className='download'>Download To Do</h3>
                 <div className="middle__side--icons">
-                    <div className="android">
-                        <AiFillAndroid />
-                    </div>
-                    <div className="windows">
-                        <AiFillWindows />
-                    </div>
-                    <div className="apple">
-                        <BsApple />
-                    </div>
+                    <a href='https://play.google.com/store/apps/details?id=com.microsoft.todos' className="android">
+                        <AiFillAndroid style={{ color: "#605e5c" }} />
+                    </a>
+                    <a className="windows" href='https://apps.microsoft.com/store/detail/microsoft-to-do-lists-tasks-reminders/9NBLGGH5R558?hl=ko-kr&gl=kr'>
+                        <AiFillWindows style={{ color: "#605e5c" }} />
+                    </a>
+                    <a className="apple" href='https://apps.apple.com/app/id1212616790?mt=8'>
+                        <BsApple style={{ color: "#605e5c" }} />
+                    </a>
                 </div>
                 <a href='https://www.microsoft.com/en-us/servicesagreement' className='readme'>Terms of use for To Do</a>
             </div>

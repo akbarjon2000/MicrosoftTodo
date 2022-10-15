@@ -86,7 +86,7 @@ function SignIn({ updateAuth }) {
                 <p style={{ fontSize: `${pxToRem(14)}`, marginTop: `${pxToRem(15)}` }}>No  account? <Link to="/sign-up" className='link'>Create one!</Link></p>
                 <p style={{ marginTop: `${pxToRem(13)}`, marginBottom: `${pxToRem(30)}` }} className='link'>Can't access your account?   </p>
                 <div className='buttons'>
-                    <button className='backBtn'>Back</button>
+                    <button className='backBtn' onClick={() => navigate("/")}>Back</button>
                     <button className='nextBtn' onClick={handleSignIn}>{loading ? "Logging in..." : "Sign in"}</button>
                 </div>
 

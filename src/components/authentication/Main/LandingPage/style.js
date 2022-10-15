@@ -97,6 +97,7 @@ background-color:rgba(0, 120, 212, 0.9);
     border-radius: 5px;
     font-size: 30px;
     cursor:pointer;
+    
 }   
 .android:hover {
     background-color: rgba(214, 203, 203, 0.253);
